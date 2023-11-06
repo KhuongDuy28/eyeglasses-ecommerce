@@ -1,6 +1,7 @@
 import instance from "../../service/ConfigAxios"
 
 const UserApi = {
+    //admin
     getAllUser() {
         const url = `/admin/users`
         return instance.get(url)
@@ -35,6 +36,13 @@ const UserApi = {
         return instance.get(url)
     },
 
+    adminChangePassword(data) {
+        const url = `/admin/change_password`
+        return instance.post(url, data)
+    },
+
+
+    //client
     changePassword(data) {
         const url = `/change_password`
         return instance.post(url, data)

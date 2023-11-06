@@ -1,16 +1,15 @@
 import { message } from 'antd';
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { addUser, getAllUser, getUserByID, updateUser } from '../../../../redux/slice/admin/userSlice';
+import {  getAllUser, getUserByID, updateUser } from '../../../../redux/slice/admin/userSlice';
 import { Modal } from 'antd';
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { useEffect } from 'react';
 import { Select } from 'antd';
-import { Upload } from 'antd';
 import { useState } from 'react';
-import { CameraOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { CameraOutlined } from '@ant-design/icons';
 import './updateAccount.scss'
 
 const {Option} = Select

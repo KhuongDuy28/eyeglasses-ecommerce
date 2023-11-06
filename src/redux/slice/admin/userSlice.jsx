@@ -31,6 +31,11 @@ export const searchUserByKey = createAsyncThunk('/user/searchUserByKey', async(d
     return userByKeySearch
 })
 
+export const adminChangePassword = createAsyncThunk('/user/adminChangePassword', async(data) => {
+    const res = await UserApi.adminChangePassword(data)
+    return res
+})
+
 export const changePassword = createAsyncThunk('/user/changePassword', async(data) => {
     const res = await UserApi.changePassword(data)
     return res
