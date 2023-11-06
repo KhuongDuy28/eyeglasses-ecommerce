@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300&family=Montserrat:ital,wght@0,500;0,600;0,700;0,800;0,900;1,400&family=Roboto:wght@300;400;500;700&display=swap');
+
+.sort {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+
+    .the__lens {
+        display: none;
+    }
+
+    .sort-by-material {
+        display: flex;
+        flex-direction: column;
+        font-family: 'Roboto', sans-serif;
+        color: #414141;
+        width: 100%;
+    
+        p {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 2.5px;
+        }
+        
+        label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 2.5px 0;
+            width: 60%;
+            padding: 0;
+    
+            input {
+                cursor: pointer;
+            }
+    
+            span {
+                font-size: 15px;
+                font-weight: 400;
+            }
+        }
+    
+    }
+
+    .sort-by-shape {
+        display: flex;
+        flex-direction: column;
+        font-family: 'Roboto', sans-serif;
+        color: #414141;
+    
+        p {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 2.5px;
+        }
+        
+        label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 2.5px 0;
+    
+            input {
+                cursor: pointer;
+            }
+    
+            span {
+                font-size: 15px;
+                font-weight: 400;
+            }
+        }
+    }  
+    
+    .sort-by-price {
+        display: flex;
+        flex-direction: column;
+        font-family: 'Roboto', sans-serif;
+        color: #414141;
+    
+        p {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 2.5px;
+        }
+        
+        label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 2.5px 0;
+    
+            input {
+                cursor: pointer;
+            }
+    
+            span {
+                font-size: 15px;
+                font-weight: 400;
+            }
+        }
+    
+        // input[type="checkbox"] {
+        //     appearance: none;
+        //     width: 1.2rem;
+        //     height: 1.2rem;
+        //     border: solid 2px #ccc;
+        //     border-radius: 5px;
+        // }
+    
+        // input[type="checkbox"]:checked {
+        //     background: #82c1c8; 
+        //     border: none;
+        // }
+        
+        // input[type="checkbox"]::before {
+        //     content: '\2714'; 
+        //     display: block;
+        //     font-size: 16px;
+        //     text-align: center;
+        //     line-height: 20px;
+        //     color: #fff; 
+        //   }
+    
+    }
+    
+}
+
+.ant-radio-inner {
+    border-color: #999999 !important;
+}

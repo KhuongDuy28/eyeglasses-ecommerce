@@ -1,0 +1,71 @@
+.account-information {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 50px;
+
+    .intro {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+
+        .avatar {
+            cursor: pointer;
+            background: #81c8c2;
+        }
+
+        h2 {
+            font-size: 30px;
+            font-weight: 600;
+            margin: 0;
+            padding-top: 25px;
+        }
+
+        p {
+            padding-bottom: 25px;
+        }
+    }
+
+    hr {
+        width: 100%;
+        border: 1px solid #d9d9d9; /* Màu và kích thước đường kẻ */
+    }
+
+    .details__intro-account {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+        padding: 50px 0;
+
+        .change-info-account,.list-heart, .log-out {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            background: #fff;
+            border: solid 2px #81c8c2;
+            color: #81c8c2;
+
+            svg {
+                padding: 5px 10px;
+                font-size: 2rem;
+                background: #fff;
+                color: #81c8c2;
+            }
+        }
+
+        .active {
+            color: #fff;
+            background: #81c8c2;
+
+            svg {
+                background: #81c8c2;
+                color: #fff;
+            }
+        } 
+    }
+}

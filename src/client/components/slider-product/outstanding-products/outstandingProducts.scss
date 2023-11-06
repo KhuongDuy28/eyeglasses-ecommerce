@@ -1,0 +1,97 @@
+.slider-outstanding__products {
+    position: relative;
+    background: #bfe8e3;
+    padding: 40px 30px;
+    border-radius: 20px;
+
+    .slick-prev {
+        position: absolute ;
+        left: -22.5px;
+        background-color: rgba(128, 128, 128, 0.5);
+        border-radius: 50%;
+        border: solid 1px #fff;
+        height: 1.5rem ;
+        width: 1.5rem;
+        padding: 10px; 
+        color: #fff;
+        z-index: 1;
+    }
+
+    .slick-next {
+        position: absolute ;
+        right: -22.5px;
+        background-color: rgba(128, 128, 128, 0.5);
+        border-radius: 50%;
+        border: solid 1px #fff;
+        height: 1.5rem ;
+        width: 1.5rem;
+        padding: 10px; 
+        color: #fff;
+        z-index: 1;
+    }
+
+    .slick-slide {
+        display: flex;
+        justify-content: center;
+
+        .element {
+            outline: none;
+            position: relative;
+
+            .sale {
+                position: absolute;
+                top: 0;
+                background: #FF0033;
+                color: #fff;
+                border-radius: 20px 0 20px 0;
+                padding: 5px;
+                margin: 0;
+                width: 45px;
+                text-align: center;
+                font-size: 11px;
+                font-weight: 400;
+            }
+
+            img {
+                border-radius: 20px 20px 0 0;
+                width: 225px;
+                height: 250px;
+            }
+
+            .info-product {
+                background: #fff;
+                border-radius: 0 0 20px 20px;
+                padding: 25px 0;
+
+                .name, .price-old, .price-sale {
+                    margin: 0;
+                }
+
+                .name {
+                    text-align: center;
+                    font-size: 14px;
+                    font-weight: 700;
+                }
+
+                .price {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+
+                    .price-old {
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: #81c8c2;
+                    }
+
+                    .price-sale {
+                        font-size: 13px;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
+}

@@ -1,0 +1,92 @@
+.modal-supplier {
+    .ant-modal-content {
+        background: #f6f5f5;
+    }
+
+    .ant-modal-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #81c8c2;
+        background: #f6f5f5;
+        margin-bottom: 20px;
+
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+
+        .form-container {
+            display: flex;
+            column-gap: 40px;
+
+            .left, .right {
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+    
+                .name, .email, .telephone, .address {
+                    height: 110px;
+                }
+        
+                .desc {
+                    height: 195px;
+                }
+        
+                .name, .email, .telephone, .address, .desc {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+        
+                    h4 {
+                        font-size: 15px;
+                        font-weight: 500;
+                        margin: 0;
+                        padding: 10px 0;
+                    }
+        
+                    input, textarea {
+                        border: solid 1px #dadada;
+                        outline: none;
+                        background: #fff;
+                        border-radius: 9px;
+                        padding: 0;
+                    }
+        
+                    input {
+                        padding: 10px;
+                        height: 20px;
+                    }
+        
+                    textarea {
+                        padding: 10px;
+                        height: 100%;
+                    }
+
+                    p {
+                        color: #ff6c6c;
+                    }
+                }
+            }
+        }
+        
+        .btn {
+            display: flex;
+            justify-content: flex-end;
+
+            button {
+                border: solid 1px #1778ff;
+                border-radius: 5px;
+                height: 40px;
+                width: 15%;
+                padding: 10px 0;
+                color: #1778ff;
+            }
+    
+            button:hover {
+                background: #1778ff;
+                color: #fff;
+            }
+        }
+    }
+}

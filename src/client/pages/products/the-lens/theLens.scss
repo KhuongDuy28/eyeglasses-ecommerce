@@ -1,0 +1,25 @@
+.the-lens {
+    // .title-the__lens {
+
+    // }
+
+    .all-the__lens {
+        display: flex;
+        margin-top: 50px;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .sort-the__lens {
+            display: flex;
+            flex-direction: column;
+            row-gap: 25px;
+        }
+        
+        .the__lens-by-pagination {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+}
+

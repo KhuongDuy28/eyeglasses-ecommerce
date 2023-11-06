@@ -1,0 +1,41 @@
+.dropdown-custom {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background: #f6f5f5;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    right: 10px;
+    top: 85px;
+    width: 155px;
+    border-radius: 6px;
+
+    .task {
+        display: flex;
+        align-items: center;
+        padding: 8.5px 15px;
+        column-gap: 10px;
+        border-radius: 6px;
+        cursor: pointer;
+
+
+        svg {
+            font-size: 1.2rem;
+            color: #000;
+        }
+
+        span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+
+    .task:hover {
+        background: #81c8c2;
+        color: #fff;
+
+        svg {
+            color: #fff;
+        }
+        
+    }
+}

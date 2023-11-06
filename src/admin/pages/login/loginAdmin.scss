@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Open+Sans:wght@300;400;500;600;700&family=Roboto:wght@100;300;400;500;700&display=swap');
+
+.login-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Open Sans', sans-serif;
+
+    .login-main__container {
+        display: flex;
+        justify-content: center;
+        width: 69%;
+        height: 70vh;
+        padding: 40px 0;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        border: none;
+        border-radius: 20px;
+
+        .login-left {
+            width: 35%;
+            padding: 10px 25px;
+    
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 9px;
+            }
+        }
+    
+        .login-right {
+            width: 40%;
+            border-radius: 9px;
+            padding: 25px;
+    
+            h1 {
+                text-align: center;
+                margin: 0;
+                padding: 25px 0;
+                font-size: 2.5rem;
+                color: #81c8c2;
+            }
+    
+            form {
+                display: flex;
+                flex-direction: column;
+                row-gap: 10px;
+    
+                .account, .password {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 5px;
+                    height: 95px;
+    
+                    h4 {
+                        margin: 0;
+    
+                        span {
+                            color: #ff594f;
+                        }
+                    }
+    
+                    input {
+                        outline: none;
+                        height: 35px;
+                        border: solid 1px #dadada;
+                        border-radius: 9px;
+                        font-size: 15px;
+                        padding: 5px 10px;
+                        font-size: 13.5px;
+                    }
+
+                    p {
+                        color: #ff2c2c;
+                        font-size: 13px;
+                        font-weight: 400;
+                    }
+
+                    .check-pass {
+                        width: 100%;
+                        position: relative;
+                        display: flex;
+
+                        input {
+                            width: 100%;
+                        }
+
+                        .ic-eye {
+                            position: absolute;
+                            right: 10px;
+                            top: 33%;
+                            color: #adadad;
+                        }
+
+                    }
+                }
+    
+                .btn-login__admin {
+                    border-radius: 9px;
+                    border: none;
+                    background: #000;
+                    color: #fff;
+                    height: 40px;
+                    width: 100%;
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin: 15px 0;
+                }
+    
+                .btn-login__admin:hover {
+                    background: #81c8c2;
+                    color: #fff;
+                }
+            }
+        }
+    
+    }
+
+}

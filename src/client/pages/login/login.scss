@@ -1,0 +1,115 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    // background-image: url('../../assets/img/background1.jpg');
+    // background-size: cover;
+    gap: 40px;
+
+    .logo {
+        img {
+            width: 500px;
+            height: 520px;
+            border-radius: 9px;
+        }
+    }
+
+    .form-login {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+
+        .title-login {
+            text-align: center;
+        }
+
+        form {
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+            // row-gap: 15px;
+
+            .account, .password {
+                display: flex;
+                flex-direction: column;
+                height: 105px;
+    
+                h4 {
+                    margin: 0;
+                    padding: 0 0 10px 0;
+                    font-size: 1.1rem;
+
+                    span {
+                        color: #ff2c2c;
+                    }
+                }
+
+                input {
+                    height: 40px;
+                    outline: none;
+                    border: solid 1px #d9d9d9;
+                    border-radius: 9px;
+                    // font-size: 15px;
+                    // font-weight: 500;
+                    padding: 0 15px;
+                }
+
+                .error {
+                    color: #ff2c2c;
+                    font-size: 13px;
+                    font-weight: 400;
+                }
+            }
+
+            .save-account {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                input {
+                    margin: 0 10px 0 0;
+                }
+                
+            }
+
+            .btn-login {
+                height: 40px;
+                border: none;
+                border-radius: 9px;
+                font-size: 15px;
+                font-weight: 700;
+                background: #000;
+                color: #fff;
+                margin-top: 27px;
+            }
+
+            .btn-login:hover {
+                background: #81c8c2;
+                color: #fff;
+            }
+        }
+
+        .support-login {
+            display: flex;
+            justify-content: space-between;
+            p {
+                cursor: pointer;
+            }
+
+            a {
+                text-decoration: none;
+                color: #000;
+            }
+
+            .forgot-password:hover {
+                color: #ff2c2c;
+            }
+
+            .register-now:hover {
+                color: #81c8c2;
+            }
+        }
+
+    }
+}

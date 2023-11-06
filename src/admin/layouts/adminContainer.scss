@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Open+Sans:wght@300;400;500;600;700&family=Roboto:wght@100;300;400;500;700&display=swap');
+
+.admin-container {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Open Sans', sans-serif;
+    background: #f6f5f5;
+    column-gap: 15px;
+
+    .admin-pages {
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
+        flex-grow: 1;
+        row-gap: 20px;
+        padding: 10px 10px 10px 20.5%;
+    }
+}

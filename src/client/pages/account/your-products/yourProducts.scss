@@ -1,0 +1,67 @@
+.your-products {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 25px;
+
+    .title {
+        
+        h2 {
+            text-align: center;
+            color: #81c8c2;
+        }
+        
+    }
+
+    hr {
+        border: solid 2px #81c8c2;
+        width: 100%;
+        margin: 50px 0;
+    }
+
+    table {
+        font-size: 15px;
+        font-weight: 500;
+
+        .info {
+            display: flex;
+            column-gap: 50px;
+            align-items: center;
+            justify-content: space-between;
+
+            img {
+                width: 100px;
+            }
+
+            p {
+                font-size: 16px;
+                font-weight: 600;
+                color: #81c8c2;
+            }
+        }
+    }
+}
+
+.ant-table {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.ant-table-footer {
+    display: flex ;
+    justify-content: flex-end;
+    align-items: center ;
+
+    .btn-delete__multiple {
+        padding: 15px 20px;
+        color: #fff;
+        background: #000;
+        border: none;
+        font-weight: 500;
+        margin: 15px 0;
+    }
+
+    .btn-delete__multiple:hover{
+        background: #81c8c2;
+    }
+}

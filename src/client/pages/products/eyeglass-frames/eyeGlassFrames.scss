@@ -1,0 +1,25 @@
+.eyeglass-frames {
+    // .title-eyeglass__frames {
+
+    // }
+
+    .all-eyeglass__frames {
+        display: flex;
+        margin-top: 50px;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .sort-eyeglass__frames {
+            display: flex;
+            flex-direction: column;
+            row-gap: 25px;
+        }
+        
+        .eyeglass__frames-by-pagination {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+}
+

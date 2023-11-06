@@ -1,0 +1,34 @@
+.dropdown-continer {
+    // width: 110px;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+    font-size: 14px;
+
+    .dropdown-select {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dropdown-list {
+        background: #fff;
+        border-radius: 9px;
+        position: absolute;
+        top: 110%;
+        left: 0;
+        right: 0;
+
+        .dropdown-list__item {
+            padding: 5px 10px;
+            border-radius: 9px;
+        }
+
+        .dropdown-list__item:hover {
+            background: #dadada;
+        }
+    }
+}
+

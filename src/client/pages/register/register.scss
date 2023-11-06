@@ -1,0 +1,115 @@
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    // background-image: url('../../assets/img/background1.jpg');
+    // background-size: cover;
+    gap: 40px;
+
+    .logo {
+        img {
+            width: 500px;
+            height: 520px;
+            border-radius: 9px;
+        }
+    }
+
+    .form-register {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+
+        .title-register {
+            text-align: center;
+
+            h1 {
+                margin: 0;
+                // padding-top: 20px;
+            }
+        }
+
+        form {
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            row-gap: 5px;
+
+            .email, .fullname, .password, .confirm-password {
+                display: flex;
+                flex-direction: column;
+                height: 100px;
+    
+                h4 {
+                    margin: 0;
+                    padding: 0 0 10px 0;
+                    font-size: 1.1rem;
+
+                    span {
+                        color: #ff2c2c;
+                    }
+                }
+
+                input {
+                    height: 40px;
+                    outline: none;
+                    border: solid 1px #d9d9d9;
+                    border-radius: 9px;
+                    // font-size: 15px;
+                    // font-weight: 500;
+                    padding: 0 15px;
+                }
+
+                .error {
+                    color: #ff2c2c;
+                    font-size: 13px;
+                    font-weight: 400;
+                }
+            }
+
+            .btn-register {
+                height: 40px;
+                border: none;
+                border-radius: 9px;
+                font-size: 15px;
+                font-weight: 700;
+                background: #000;
+                color: #fff;
+                margin-top: 10px;
+            }
+
+            .note {
+                font-size: 13px;
+                font-weight: 400;
+
+                span {
+                    color: #ff2c2c;
+                }
+            }
+
+            .btn-register:hover {
+                background: #81c8c2;
+                color: #fff;
+            }
+        }
+
+        .support-register {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            p {
+                cursor: pointer;
+            }
+
+            a {
+                text-decoration: none;
+                color: #000;
+            }
+
+            .login-now:hover {
+                color: #81c8c2;
+            }
+        }
+    }
+}

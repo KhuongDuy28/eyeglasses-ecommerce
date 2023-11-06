@@ -1,0 +1,54 @@
+.slider-my-customer {
+    .slick-slide {
+        transform: scale(0.9);
+        transition: all 0.4s ease-in-out;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+    
+        .customer {
+            height: 600px;
+            padding: 50px 0;
+            outline: none;
+    
+            img {
+                object-fit: cover;
+                width: 335px;
+                height: 500px;
+                max-width: 100%;
+                transition: all 0.4s ease-in-out;
+                border-radius: 20px;
+            }
+            p {
+                text-align: center;
+                padding: 25px 0 0 0;
+                font-size: 18px;
+                font-weight: 700;
+                color: #81c7c2;
+            }
+        }
+    }
+    
+    .slick-slide:not(.slick-center) {
+        opacity: 0.5;
+        transition: opacity 0.3s;
+      }
+      
+    // /* Khi hover vào slide không phải trung tâm, hiện thị bình thường */
+    // .slick-slide:not(.slick-center):hover {
+    //     opacity: 1;
+    // }
+    
+    .slick-center  {
+        transform: scale(1.1);
+    }
+    
+    .slick-dots {
+        .slick-active {
+            button::before {
+                color: #81c7c2 !important;
+                font-size: 10px
+            }  
+        }    
+    }    
+}
