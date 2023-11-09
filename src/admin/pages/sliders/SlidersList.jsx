@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteSlider, getAllSlider, searchSliderByName } from '../../../redux/slice/admin/sliderSlice'
+import { changeStatusSlider, deleteSlider, getAllSlider, searchSliderByName } from '../../../redux/slice/admin/sliderSlice'
 import { Table, message } from 'antd'
 import { useEffect } from 'react'
 import { Space } from 'antd'
@@ -12,6 +12,7 @@ import { PlusOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import { Image } from 'antd'
 import AddSlider from './add-slider/AddSlider'
+import {LiaExchangeAltSolid} from 'react-icons/lia'
 
 const SlidersList = () => {
   const dispatch = useDispatch()
@@ -30,6 +31,20 @@ const SlidersList = () => {
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  const changeStatus = (record) => {
+    dispatch(changeStatusSlider({
+      slider_id: record?.key,
+      status: record?.status === 1 ? 2 : 1
+    })).then((res) => {
+      if(res.payload?.data?.status === 200) {
+        message.success('Thay đổi trạng thái thành công')
+        dispatch(getAllSlider())
+      } else {
+        message.error('Thay đổi trạng thái thất bại')
+      }
+    })
+  }
   
   const columns = [
     {
@@ -47,6 +62,20 @@ const SlidersList = () => {
       render: (image) => <Image style={{width: '500px', height: '170px'}} src={image}/>
     },
     {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      width: 100,
+      render: (status) => 
+        <p style={{ 
+          textAlign: 'center',
+          padding: '2px 5px',
+          color: `${status === 1 ? '#ff6565' : '#56ee4e'}`
+        }}>
+          {status === 1 ? 'Disable' : 'Active'}
+        </p>
+    },
+    {
       title: 'Action',
       key: 'action',
       width: 50,
@@ -60,6 +89,7 @@ const SlidersList = () => {
             >
             <GoTrash className='ic-delete'/>
           </Popconfirm>
+          <LiaExchangeAltSolid className='ic-change'onClick={() => changeStatus(record)}/>
         </Space>
       ),
     },
@@ -72,7 +102,8 @@ const SlidersList = () => {
   const dataListSlider = data.map((item) => ({
     key: item.id,
     name: item?.name,
-    image: item?.image
+    image: item?.image,
+    status: item?.status
   })) 
 
   const [sliderName, setSliderName] = useState('')

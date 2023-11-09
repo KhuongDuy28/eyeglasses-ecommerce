@@ -36,6 +36,11 @@ export const getAllCategotyClient = createAsyncThunk('category/getAllCategotyCli
     return listCategoryClient
 })
 
+export const getCategoryByIDClient = createAsyncThunk('category/getCategoryByIDClient', async(id) => {
+    const res = await CategoryApi.getCategoryByIDClient(id)
+    return res
+})
+
 const categorySlice = createSlice({
     name: 'category',
     initialState: {
@@ -43,7 +48,8 @@ const categorySlice = createSlice({
         listCategory: [],
         listCategoryClient: [],
         categoryByID: {},
-        categoryByNameSearch: []
+        categoryByNameSearch: [],
+        categoryByIDClient: {}
     },
     extraReducers: {
         // All Category
@@ -92,6 +98,18 @@ const categorySlice = createSlice({
         [getAllCategotyClient.fulfilled]: (state, action) => {
             state.loading = false
             state.listCategoryClient = action?.payload?.data?.data
+        },
+
+
+        [getCategoryByIDClient.pending]: (state) => {
+            state.loading = true
+        },
+        [getCategoryByIDClient.rejected]: (state) => {
+            state.loading = false
+        },
+        [getCategoryByIDClient.fulfilled]: (state, action) => {
+            state.loading = false
+            state.categoryByIDClient = action?.payload?.data?.data
         },
     }
 })

@@ -14,6 +14,16 @@ const OrderProcessApi = {
     cancelOrder(order_id) {
         const url = `admin/cancel_order/${order_id}`
         return instance.delete(url)
+    },
+
+    getOrderByOrderCode(data) {
+        const url = `admin/order-by-ordercode?status=${data?.status}&order_code=${data.order_code}`
+        return instance.get(url)
+    },
+
+    getOrderByID(order_id) {
+        const url = `admin/orders/${order_id}`
+        return instance.get(url)
     }
 }
 

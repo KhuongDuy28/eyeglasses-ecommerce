@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getAllProductByCategory } from '../../../redux/slice/admin/productSlice'
 import ChildrenGlasses from './children-glasses/ChildrenGlasses'
+import { getAllCategotyClient } from '../../../redux/slice/admin/categorySlice.jsx'
+import ProductList from './product-list/ProductList.jsx'
 
 const Products = () => {
   const dispatch = useDispatch()
@@ -25,18 +27,38 @@ const Products = () => {
   const arrLocation = location.pathname.split('/')
   const lastLocation = arrLocation[arrLocation.length - 1]
   const arrPath = arrLocation.splice(1)
-  
+
   useEffect(() => {
-    if(lastLocation === 'eyeglass-frames') {
-      dispatch(getAllProductByCategory(1))
-    } else if(lastLocation === 'the-lens') {
-      dispatch(getAllProductByCategory(2))
-    } else if(lastLocation === 'sunglass') {
-      dispatch(getAllProductByCategory(3))
-    } else if(lastLocation === 'children-glasses') {
-      dispatch(getAllProductByCategory(4))
-    } 
-  }, [lastLocation])
+    dispatch(getAllCategotyClient())
+  }, [])
+  // const {listCategoryClient} = useSelector((state) => state?.category)
+  // const eyeglass = listCategoryClient?.find((item) => (item.name)?.toLowerCase()?.includes('gọng kính'))
+  // const theLens = listCategoryClient?.find((item) => (item.name)?.toLowerCase()?.includes('tròng kính'))
+  // const sunglass = listCategoryClient?.find((item) => (item.name)?.toLowerCase()?.includes('kính râm'))
+  // const childrenGlasses = listCategoryClient?.find((item) => (item.name)?.toLowerCase()?.includes('kính trẻ em'))
+  // useEffect(() => {
+  //   if(lastLocation === 'eyeglass-frames') {
+  //     // dispatch(getAllProductByCategory(1))
+  //     dispatch(getAllProductByCategory(eyeglass?.id))
+  //   } else if(lastLocation === 'the-lens') {
+  //     // dispatch(getAllProductByCategory(2))
+  //     dispatch(getAllProductByCategory(theLens?.id))
+  //   } else if(lastLocation === 'sunglass') {
+  //     // dispatch(getAllProductByCategory(3))
+
+  //     dispatch(getAllProductByCategory(sunglass?.id))
+  //   } else if(lastLocation === 'children-glasses') {
+  //     // dispatch(getAllProductByCategory(4))
+  //     dispatch(getAllProductByCategory(childrenGlasses?.id))
+  //   } 
+  // }, [lastLocation, eyeglass, theLens, sunglass, childrenGlasses])
+  const category_id = JSON.parse(sessionStorage.getItem('category_id'))
+  useEffect(() => {
+    if(category_id) {
+      dispatch(getAllProductByCategory(category_id))
+    }
+  }, [category_id])
+  // console.log(category_id);
   const {listProductByCategory} = useSelector((state) => state?.product)
 
   // console.log(listSortProductClient);
@@ -59,7 +81,7 @@ const Products = () => {
           </div>
         </div>
         <div className='eyeglass-products' style={{ display: `${lastLocation === 'products' ? 'none' : 'block'}`}}>
-          {
+          {/* {
             lastLocation === 'eyeglass-frames' && <EyeGlassFrames dataProducts={listProductByCategory}/>
           }
           {
@@ -70,7 +92,8 @@ const Products = () => {
           }
           {
             lastLocation === 'children-glasses' && <ChildrenGlasses dataProducts={listProductByCategory}/>
-          }
+          } */}
+          <ProductList dataProducts={listProductByCategory}/>
         </div>
 
         <div className='outstanding-products'>

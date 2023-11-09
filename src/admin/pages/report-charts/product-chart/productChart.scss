@@ -31,21 +31,31 @@
         }
     }
 
-    .ant-table {
-        border-radius: 9px;
+    .export-excel {
+        width: 100%;
+        display: flex;
+        justify-content: end;
 
+        .exportButton {
+            padding: 10px;
+            border: solid 1px #81c8c2;
+            color: #81c8c2;
+            border-radius: 9px;
+        }
+    }
+
+    .ant-table-wrapper {
+        width: 100%;
+        padding: 20px 0;
+    
         table {
-            width: 100%;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
             p {
                 font-weight: 500;
             }
         }
-    }
+    } 
 }
 
-// .ant-table-wrapper {
-//     width: 100%;
-//     padding: 20px;
-// }
 

@@ -9,6 +9,8 @@ import '../orderProcess.scss'
 import { message } from 'antd'
 import { ConvertToTimeVN } from '../../../utils/ConvertTimeVn'
 import { Image } from 'antd'
+import {BsSearch} from 'react-icons/bs'
+import { useState } from 'react'
 
 const WaitConfirm = () => {
     const {VND} = useConvertToVND()
@@ -16,7 +18,7 @@ const WaitConfirm = () => {
     useEffect(() => {
         dispatch(getOrderByStatus(1))
     }, [])
-    const {listOrderByStatus} = useSelector((state) => state?.orderProcess)
+    const {listOrderByStatus, listOrderByOrderCode} = useSelector((state) => state?.orderProcess)
 
     const handleConfirmOrder = (record) => {
         dispatch(changeStatusOrder({
@@ -120,8 +122,17 @@ const WaitConfirm = () => {
             ),
         },
       ];
+
+      const [search, setSearch] = useState('')
+      const handleSearch = (e) => {
+        setSearch(e.target.value)
+        dispatch(getOrderByOrderCode({
+          status: 1,
+          order_code: e.target.value
+        }))
+      }
     
-      const data = listOrderByStatus.map((item) => ({
+      const data = (search !== '' ? listOrderByOrderCode : listOrderByStatus)?.map((item) => ({
         key: item?.id,
         order_code: item?.order_code,
         name: item?.name,
@@ -138,13 +149,16 @@ const WaitConfirm = () => {
         <div className='order-process'>
             <h2>ĐƠN HÀNG CHỜ XÁC NHẬN</h2>
             <hr />
+            <div className='search'>
+              <input type="text" onChange={handleSearch}/>
+              <BsSearch/>
+            </div>
             <Table 
                 columns={columns}
                 dataSource={data}
-                locale={{emptyText: ''}}
                 pagination={{
                     pageSize: 5,
-                    total: listOrderByStatus.length
+                    total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length
                 }}
             />
         </div>

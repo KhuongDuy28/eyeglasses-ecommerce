@@ -2,97 +2,47 @@ import React from 'react'
 import './sortProduct.scss'
 import { Radio } from 'antd';
 import useConvertToVND from '../../hooks/useConvertToVND';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { sortProductClient } from '../../../redux/slice/admin/productSlice';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { getAllCategotyClient } from '../../../redux/slice/admin/categorySlice';
 
 const SortProduct = (props) => {
-    const {VND} = useConvertToVND()
     const dispatch = useDispatch()
-    const location = useLocation()
-    const arrLocation = location.pathname.split('/')
-    const lastLocation = arrLocation[arrLocation.length - 1]
+    // const location = useLocation()
+    // const arrLocation = location.pathname.split('/')
+    // const lastLocation = arrLocation[arrLocation.length - 1]
     const [material, setMaterial] = useState('')
     const [shape, setShape] = useState('')
     const [minPrice, setMinPrice] = useState('')
     const [maxPrice, setMaxPrice] = useState('')
 
-
+    const category_id = JSON.parse(sessionStorage.getItem('category_id'))
+    
     const getShape = (e) => {
         props.setCurrentPage(1)
         if (shape === e.target.value) {
             setShape('');
             props.onGetShape('')
-            if(lastLocation === 'eyeglass-frames') {
-                dispatch(sortProductClient({
-                    category: 1,
-                    material_id: material,
-                    shape_id: '',
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'the-lens') {
-                dispatch(sortProductClient({
-                    category: 2,
-                    material_id: material,
-                    shape_id: '',
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'sunglass') {
-                dispatch(sortProductClient({
-                    category: 3,
-                    material_id: material,
-                    shape_id: '',
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'children-glasses') {
-                dispatch(sortProductClient({
-                    category: 4,
-                    material_id: material,
-                    shape_id: '',
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } 
+            dispatch(sortProductClient({
+                category: category_id,
+                material_id: material,
+                shape_id: '',
+                min_price: minPrice,
+                max_price: maxPrice
+            }))
         } else {
             setShape(e.target.value)
             props.onGetShape(e.target.value)
-            if(lastLocation === 'eyeglass-frames') {
-                dispatch(sortProductClient({
-                    category: 1,
-                    material_id: material,
-                    shape_id: e.target.value,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'the-lens') {
-                dispatch(sortProductClient({
-                    category: 2,
-                    material_id: material,
-                    shape_id: e.target.value,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'sunglass') {
-                dispatch(sortProductClient({
-                    category: 3,
-                    material_id: material,
-                    shape_id: e.target.value,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'children-glasses') {
-                dispatch(sortProductClient({
-                    category: 4,
-                    material_id: material,
-                    shape_id: e.target.value,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } 
+            dispatch(sortProductClient({
+                category: category_id,
+                material_id: material,
+                shape_id: e.target.value,
+                min_price: minPrice,
+                max_price: maxPrice
+            }))
         }
     };
 
@@ -101,76 +51,24 @@ const SortProduct = (props) => {
         if(material === e.target.value) {
             setMaterial('')
             props.onGetMaterial('')
-            if(lastLocation === 'eyeglass-frames') {
-                dispatch(sortProductClient({
-                    category: 1,
-                    material_id: '',
-                    shape_id: shape,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'the-lens') {
-                dispatch(sortProductClient({
-                    category: 2,
-                    material_id: '',
-                    shape_id: shape,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'sunglass') {
-                dispatch(sortProductClient({
-                    category: 3,
-                    material_id: '',
-                    shape_id: shape,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'children-glasses') {
-                dispatch(sortProductClient({
-                    category: 4,
-                    material_id: '',
-                    shape_id: shape,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } 
+            dispatch(sortProductClient({
+                category: category_id,
+                material_id: '',
+                shape_id: shape,
+                min_price: minPrice,
+                max_price: maxPrice
+            }))
         }
         else {
             setMaterial(e.target.value)
             props.onGetMaterial(e.target.value)
-            if(lastLocation === 'eyeglass-frames') {
-                dispatch(sortProductClient({
-                    category: 1,
-                    material_id: e.target.value,
-                    shape_id: shape,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'the-lens') {
-                dispatch(sortProductClient({
-                    category: 2,
-                    material_id: e.target.value,
-                    shape_id: shape,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'sunglass') {
-                dispatch(sortProductClient({
-                    category: 3,
-                    material_id: e.target.value,
-                    shape_id: shape,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } else if(lastLocation === 'children-glasses') {
-                dispatch(sortProductClient({
-                    category: 4,
-                    material_id: e.target.value,
-                    shape_id: shape,
-                    min_price: minPrice,
-                    max_price: maxPrice
-                }))
-            } 
+            dispatch(sortProductClient({
+                category: category_id,
+                material_id: e.target.value,
+                shape_id: shape,
+                min_price: minPrice,
+                max_price: maxPrice
+            }))
         }
     }
     
@@ -181,82 +79,30 @@ const SortProduct = (props) => {
             setMinPrice('')
             setMaxPrice('')
             props.onGetPrice('')
-            if(lastLocation === 'eyeglass-frames') {
-                dispatch(sortProductClient({
-                    category: 1,
-                    material_id: material,
-                    shape_id: shape,
-                    min_price: '',
-                    max_price: ''
-                }))
-            } else if(lastLocation === 'the-lens') {
-                dispatch(sortProductClient({
-                    category: 2,
-                    material_id: material,
-                    shape_id: shape,
-                    min_price: '',
-                    max_price: ''
-                }))
-            } else if(lastLocation === 'sunglass') {
-                dispatch(sortProductClient({
-                    category: 3,
-                    material_id: material,
-                    shape_id: shape,
-                    min_price: '',
-                    max_price: ''
-                }))
-            } else if(lastLocation === 'children-glasses') {
-                dispatch(sortProductClient({
-                    category: 4,
-                    material_id: material,
-                    shape_id: shape,
-                    min_price: '',
-                    max_price: ''
-                }))
-            } 
+            dispatch(sortProductClient({
+                category: category_id,
+                material_id: material,
+                shape_id: shape,
+                min_price: '',
+                max_price: ''
+            })) 
         } else {
             setMinPrice(((e.target.value).split('-'))[0])
             setMaxPrice(((e.target.value).split('-'))[1])
             props.onGetPrice(e.target.value)
-            if(lastLocation === 'eyeglass-frames') {
-                dispatch(sortProductClient({
-                    category: 1,
-                    material_id: material,
-                    shape_id: shape,
-                    min_price: ((e.target.value).split('-'))[0],
-                    max_price: ((e.target.value).split('-'))[1]
-                }))
-            } else if(lastLocation === 'the-lens') {
-                dispatch(sortProductClient({
-                    category: 2,
-                    material_id: material,
-                    shape_id: shape,
-                    min_price: ((e.target.value).split('-'))[0],
-                    max_price: ((e.target.value).split('-'))[1]
-                }))
-            } else if(lastLocation === 'sunglass') {
-                dispatch(sortProductClient({
-                    category: 3,
-                    material_id: material,
-                    shape_id: shape,
-                    min_price: ((e.target.value).split('-'))[0],
-                    max_price: ((e.target.value).split('-'))[1]
-                }))
-            } else if(lastLocation === 'children-glasses') {
-                dispatch(sortProductClient({
-                    category: 4,
-                    material_id: material,
-                    shape_id: shape,
-                    min_price: ((e.target.value).split('-'))[0],
-                    max_price: ((e.target.value).split('-'))[1]
-                }))
-            }   
+            dispatch(sortProductClient({
+                category: category_id,
+                material_id: material,
+                shape_id: shape,
+                min_price: ((e.target.value).split('-'))[0],
+                max_price: ((e.target.value).split('-'))[1]
+            }))  
         }
     }
 
     return (
         <div className='sort'>
-            <div className={lastLocation === 'the-lens' ? 'the__lens' : 'sort-by-shape'}>
+            <div className='sort-by-shape'>
                 <p>Hình dáng</p>
                 <Radio value='1' checked={shape === "1"} onClick={getShape} >Browline</Radio>
                 <Radio value='2' checked={shape === "2"} onClick={getShape} >Hình vuông</Radio>
@@ -264,7 +110,7 @@ const SortProduct = (props) => {
                 <Radio value='4' checked={shape === "4"} onClick={getShape} >Oval</Radio>
             </div>
 
-            <div className={lastLocation === 'the-lens' ? 'the__lens' : 'sort-by-material'}>
+            <div className='sort-by-material'>
                 <p>Chất liệu</p>
                 <Radio value='1' checked={material === "1"} onClick={getMaterial} >Acetate</Radio>
                 <Radio value='2' checked={material === "2"} onClick={getMaterial} >Kim loại</Radio>

@@ -37,6 +37,11 @@ const CategoryApi = {
         return instance.get(url)
     },
 
+    getCategoryByIDClient(id) {
+        const url = `/categories-by-id-client/${id}`
+        return instance.get(url)
+    }
+
 }
 
 export default CategoryApi

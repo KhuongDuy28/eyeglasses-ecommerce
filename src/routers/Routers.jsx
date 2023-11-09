@@ -28,7 +28,6 @@ import Transported from "../admin/pages/order-process/transported/Transported";
 import Successful from "../admin/pages/order-process/successful/Successful";
 import Cancelled from "../admin/pages/order-process/cancelled/Cancelled";
 
-
 const Routers = createBrowserRouter([
     {
         path: '',
@@ -43,21 +42,21 @@ const Routers = createBrowserRouter([
                 element: <Products/>,
             },
             {
-                path: '/products/eyeglass-frames',
+                path: '/products/:name',
                 element: <Products/>,
             },
-            {
-                path: '/products/children-glasses',
-                element: <Products/>,
-            },
-            {
-                path: '/products/the-lens',
-                element: <Products/>,
-            },
-            {
-                path: '/products/sunglass',
-                element: <Products/>,
-            },
+            // {
+            //     path: '/products/children-glasses',
+            //     element: <Products/>,
+            // },
+            // {
+            //     path: '/products/the-lens',
+            //     element: <Products/>,
+            // },
+            // {
+            //     path: '/products/sunglass',
+            //     element: <Products/>,
+            // },
             {
                 path: '/products/details-product/:id',
                 element: <DetailsProduct/>,

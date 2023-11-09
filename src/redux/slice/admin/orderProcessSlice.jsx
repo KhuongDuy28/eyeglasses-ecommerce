@@ -16,11 +16,23 @@ export const adminCancelOrder = createAsyncThunk('orderProcess/adminCancelOrder'
     return res
 })
 
+export const getOrderByOrderCode = createAsyncThunk('orderProcess/getOrderByOrderCode', async(data) => {
+    const res = await OrderProcessApi.getOrderByOrderCode(data)
+    return res
+})
+
+export const getOrderByID = createAsyncThunk('orderProcess/getOrderByID', async(order_id) => {
+    const res = await OrderProcessApi.getOrderByID(order_id)
+    return res
+})
+
 const orderProcessSlice = createSlice({
     name: 'orderProcess',
     initialState: {
         loading: false,
-        listOrderByStatus: []
+        listOrderByStatus: [],
+        listOrderByOrderCode: [],
+        orderByID: {}
     }, 
     extraReducers: {
         [getOrderByStatus.pending]: (state) => {
@@ -32,6 +44,30 @@ const orderProcessSlice = createSlice({
         [getOrderByStatus.fulfilled]: (state, action) => {
             state.loading = false
             state.listOrderByStatus = action?.payload?.data?.data
+        },
+
+
+        [getOrderByOrderCode.pending]: (state) => {
+            state.loading = true
+        },
+        [getOrderByOrderCode.rejected]: (state) => {
+            state.loading = false
+        },
+        [getOrderByOrderCode.fulfilled]: (state, action) => {
+            state.loading = false
+            state.listOrderByOrderCode = action?.payload?.data?.data
+        },
+
+
+        [getOrderByID.pending]: (state) => {
+            state.loading = true
+        },
+        [getOrderByID.rejected]: (state) => {
+            state.loading = false
+        },
+        [getOrderByID.fulfilled]: (state, action) => {
+            state.loading = false
+            state.orderByID = action?.payload?.data?.data
         }
     }
 })

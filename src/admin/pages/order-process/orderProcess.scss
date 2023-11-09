@@ -9,6 +9,34 @@
         border: solid 1px #81c8c2;
     }
 
+    .search {
+        position: relative;
+        width: 45%;
+        display: flex;
+        justify-content: center;
+
+        input {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border: solid 1px #dadada;
+            border-radius: 9px;
+            margin: 15px 0;
+            outline: none;
+            padding: 5px 10px;
+        }
+
+        svg {
+            position: absolute;
+            bottom: 20%;
+            right: 0;
+            height: 50px;
+            padding: 0 10px;
+            border-radius: 0 9px 9px 0;
+            color: #81c8c2;
+        }
+    }
+
     table {
         background: #e8e8e8;
         font-size: 12.5px;
@@ -91,5 +119,89 @@
             background: #ff4d4f;
             border-radius: 9px;
         }
+
+        .btn-print {
+           display: flex;
+           font-size: 1.65rem;
+           padding: 5px;
+           border: solid 1px #81c8c2;
+           border-radius: 9px;
+           color: #81c8c2;
+        }
+    }
+}
+
+.hidden-for-print {
+    display: none;
+
+    .invoice {
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+        padding: 35px;
+        font-size: 16.5px;
+
+
+       .title-invoice {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0 50px 0;
+            position: relative;
+
+            .logo-invoice {
+                width: 95px;
+                height: 95px;
+                position: absolute;
+            }
+
+            h2 {
+                margin: 0;
+                width: 100%;
+                text-align: center;
+                color: #81c8c2;
+            }
+       }
+
+       .hr1 {
+            border: solid 1px #81c8c2;
+            width: 100%;
+            margin-bottom: 20px;
+       }
+
+        .order-details {
+            display: flex;
+            flex-direction: column;
+
+            .info-product-order {
+                display: flex;
+                align-items: center;
+                column-gap: 20px;
+                padding: 10px 0;
+                margin: 10px 0;
+
+                img {
+                    width: 100px;
+                    height: 100px;
+                }
+
+                .info {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 5px;
+                }
+            }
+        }
+        
+        h4 {
+            text-align: right;
+            margin: 0;
+        }
+    }
+}
+  
+@media print {
+    .hidden-for-print {
+        display: block;
     }
 }

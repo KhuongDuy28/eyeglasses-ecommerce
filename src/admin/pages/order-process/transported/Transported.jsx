@@ -3,11 +3,13 @@ import React from 'react'
 import useConvertToVND from '../../../../client/hooks/useConvertToVND'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { changeStatusOrder, getOrderByStatus } from '../../../../redux/slice/admin/orderProcessSlice'
+import { changeStatusOrder, getOrderByOrderCode, getOrderByStatus } from '../../../../redux/slice/admin/orderProcessSlice'
 import { message } from 'antd'
 import '../orderProcess.scss'
 import { ConvertToTimeVN } from '../../../utils/ConvertTimeVn'
+import {BsSearch} from 'react-icons/bs'
 import { Image } from 'antd'
+import { useState } from 'react'
 
 const Transported = () => {
   const {VND} = useConvertToVND()
@@ -15,7 +17,7 @@ const Transported = () => {
   useEffect(() => {
       dispatch(getOrderByStatus(3))
   }, [])
-  const {listOrderByStatus} = useSelector((state) => state?.orderProcess)
+  const {listOrderByStatus, listOrderByOrderCode} = useSelector((state) => state?.orderProcess)
 
   const handleSuccessfulOrder = (record) => {
       dispatch(changeStatusOrder({
@@ -111,8 +113,17 @@ const Transported = () => {
           ),
       },
     ];
+
+    const [search, setSearch] = useState('')  
+    const handleSearch = (e) => {
+      setSearch(e.target.value)
+      dispatch(getOrderByOrderCode({
+        status: 3,
+        order_code: e.target.value
+      }))
+    }
   
-    const data = listOrderByStatus.map((item) => ({
+    const data = (search !== '' ? listOrderByOrderCode : listOrderByStatus)?.map((item) => ({
       key: item?.id,
       order_code: item?.order_code,
       name: item?.name,
@@ -125,17 +136,21 @@ const Transported = () => {
       created_at: new Date(item?.created_at),
       updated_at: new Date(item?.updated_at)
     }))
+
   return (
     <div className='order-process'>
       <h2>ĐƠN HÀNG ĐANG VẬN CHUYỂN</h2>
       <hr />
+      <div className='search'>
+        <input type="text" onChange={handleSearch}/>
+        <BsSearch/>
+      </div>
       <Table 
           columns={columns}
           dataSource={data}
-          locale={{emptyText: ''}}
           pagination={{
             pageSize: 5,
-            total: listOrderByStatus.length
+            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length
         }}
       />
     </div>

@@ -146,7 +146,7 @@ const productSlice = createSlice({
             state.loading = false
         },
         [sortProductClient.fulfilled]: (state, action) => {
-            // console.log(action?.payload?.data?.data);
+            console.log(action?.payload?.data?.data);
             state.loading = false
             state.listSortProductClient = action?.payload?.data?.data
         },

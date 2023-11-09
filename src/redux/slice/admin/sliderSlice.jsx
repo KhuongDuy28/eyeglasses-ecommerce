@@ -16,9 +16,19 @@ export const addSlider = createAsyncThunk('slider/addSlider', async(data) => {
     return res
 })
 
+export const changeStatusSlider = createAsyncThunk('/slider/changeStatusSlider', async(data) => {
+    const res = await SliderApi.changeStatusSlider(data)
+    return res
+})
+
 export const searchSliderByName = createAsyncThunk('/slider/searchSlider', async(name) => {
     const sliderByNameSearch = await SliderApi.searchSlider(name)
     return sliderByNameSearch
+})
+
+export const getSliderActive = createAsyncThunk('/slider/getSliderActive', async() => {
+    const listSliderActive = await SliderApi.getSliderActive()
+    return listSliderActive
 })
 
 const sliderSlice = createSlice({
@@ -26,7 +36,8 @@ const sliderSlice = createSlice({
     initialState: {
         loading: false,
         listSlider: [],
-        sliderByNameSearch: []
+        sliderByNameSearch: [],
+        listSliderActive: []
     },
     extraReducers: {
         [getAllSlider.pending]: (state) => {
@@ -50,7 +61,20 @@ const sliderSlice = createSlice({
         [searchSliderByName.fulfilled]: (state, action) => {
             state.loading = false
             state.sliderByNameSearch = action?.payload?.data?.data
-        }
+        },
+
+
+        //client
+        [getSliderActive.pending]: (state) => {
+            state.loading = true
+        },
+        [getSliderActive.rejected]: (state) => {
+            state.loading = false
+        },
+        [getSliderActive.fulfilled]: (state, action) => {
+            state.loading = false
+            state.listSliderActive = action?.payload?.data?.data
+        },
     }
 })
 

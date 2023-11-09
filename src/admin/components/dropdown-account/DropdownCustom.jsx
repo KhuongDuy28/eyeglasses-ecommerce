@@ -1,6 +1,7 @@
 import React from 'react'
 import './dropdownCustom.scss'
 import {IoMdLogOut, IoMdSettings} from 'react-icons/io'
+import {RiLockPasswordFill} from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Modal } from 'antd'
@@ -27,12 +28,9 @@ const DropdownCustom = (props) => {
         props.getDataDropdownCustom(false)
         setIsModalOpen(true);
     };
-    const handleOk = () => {
-        setIsModalOpen(false);
-
-    };
     const handleCancel = () => {
         setIsModalOpen(false);
+        reset()
     };
 
     const handleLogout = () => {
@@ -43,6 +41,7 @@ const DropdownCustom = (props) => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
       } = useForm({
         resolver: yupResolver(schema),
@@ -64,18 +63,25 @@ const DropdownCustom = (props) => {
         })
     }
 
+    const showSetting = () => {
+        props.getDataDropdownCustom(false)
+    }
+
     return (
         <div className='dropdown-custom' style={{display: `${props.isOpen ? 'block' : 'none'}`}}>
-            <div className='task' onClick={showModal}>
+            <div className='task' onClick={showSetting}>
                 <IoMdSettings/>
+                <span>Cài đặt</span>
+            </div>
+            <div className='task' onClick={showModal}>
+                <RiLockPasswordFill/>
                 <span>Đổi mật khẩu</span>
             </div>
 
             <Modal 
                 className='modal-changepass-admin'
                 title="ĐỔI MẬT KHẨU" 
-                open={isModalOpen} 
-                onOk={handleOk} 
+                open={isModalOpen}  
                 onCancel={handleCancel}
                 footer={null}
             >

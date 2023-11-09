@@ -46,9 +46,14 @@ const AddSlider = (props) => {
     }
 
     const onSubmit = (data) => {
-        console.log(data);
-        dispatch(addSlider(data)).then((res) => {
-            console.log(res);
+        // console.log(data);
+        const dataSlider = {
+          name: data?.name,
+          image: data?.image,
+          status: 1,
+        }
+        dispatch(addSlider(dataSlider)).then((res) => {
+            // console.log(res);
             if(res.payload.status === 200) {
                 message.success('Thêm slider thành công')
                 handleCancel()

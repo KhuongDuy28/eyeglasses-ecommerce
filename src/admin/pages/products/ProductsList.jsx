@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeStatusProduct, getAllProduct, getProductByID } from '../../../redux/slice/admin/productSlice'
 import { BsFileEarmarkImage, BsSearch } from 'react-icons/bs'
+import {GoCircleSlash} from 'react-icons/go'
 import { PlusOutlined } from '@ant-design/icons'
 import { RxUpdate } from 'react-icons/rx'
 import {LiaExchangeAltSolid} from 'react-icons/lia'
@@ -15,9 +16,11 @@ import { Image } from 'antd'
 import IMGError from '../../assets/img/errorIMG.png'
 import DropdownSelect from '../../components/dropdown-select/DropdownSelect'
 import { message } from 'antd'
+import useConvertToVND from '../../../client/hooks/useConvertToVND'
 
 const ProductsList = () => {
   const dispatch = useDispatch()
+  const {VND} = useConvertToVND()
 
   const [idUpdate, setIdUpdate] = useState('')
   const [linkThumbnail, setLinkThumbnail] = useState(undefined)
@@ -108,11 +111,19 @@ const ProductsList = () => {
       title: 'New Price',
       dataIndex: 'price_new',
       key: 'price_new',
+      render: (price_new) => 
+        <p>
+          {VND.format(price_new)}
+        </p>,
     },
     {
       title: 'Old Price',
       dataIndex: 'price_old',
       key: 'price_old',
+      render: (price_old) => 
+        <p>
+          {VND.format(price_old)}
+        </p>,
     },
     {
       title: 'Quantity',

@@ -2,12 +2,18 @@ import React from 'react'
 import useConvertToVND from '../../../../client/hooks/useConvertToVND'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { adminCancelOrder, changeStatusOrder, getOrderByStatus } from '../../../../redux/slice/admin/orderProcessSlice'
+import { adminCancelOrder, changeStatusOrder, getOrderByID, getOrderByOrderCode, getOrderByStatus } from '../../../../redux/slice/admin/orderProcessSlice'
 import { Space, Table } from 'antd'
 import '../orderProcess.scss'
 import { message } from 'antd'
 import { ConvertToTimeVN } from '../../../utils/ConvertTimeVn'
 import { Image } from 'antd'
+import {BsSearch} from 'react-icons/bs'
+import {AiOutlinePrinter} from 'react-icons/ai'
+import { useState } from 'react'
+import { useRef } from 'react'
+import { useReactToPrint } from 'react-to-print';
+import Logo from '../../../assets/img/logo-admin.jpg'
 
 const Confirmed = () => {
   const {VND} = useConvertToVND()
@@ -15,7 +21,7 @@ const Confirmed = () => {
   useEffect(() => {
       dispatch(getOrderByStatus(2))
   }, [])
-  const {listOrderByStatus} = useSelector((state) => state?.orderProcess)
+  const {listOrderByStatus, listOrderByOrderCode, orderByID} = useSelector((state) => state?.orderProcess)
 
   const handleTransportOrder = (record) => {
       dispatch(changeStatusOrder({
@@ -38,6 +44,21 @@ const Confirmed = () => {
         dispatch(getOrderByStatus(2))
       } else {
         message.error('Hủy đơn hàng thất bại')
+      }
+    })
+  }
+
+  
+  const componentRef = useRef()
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: 'Invoice',
+  })
+
+  const handlePrintInvoice = (record) => {
+    dispatch(getOrderByID(record?.key)).then((res) => {
+      if(res.payload?.status === 200) {
+        handlePrint()
       }
     })
   }
@@ -121,12 +142,22 @@ const Confirmed = () => {
             <Space size="middle">
               <button className='btn-transport' onClick={() => handleTransportOrder(record)}>Vận chuyển</button>
               <button className='btn-cancel' onClick={() => handleCancelOrder(record)}>Hủy</button>
+              <AiOutlinePrinter className='btn-print' onClick={() => handlePrintInvoice(record)}/>
             </Space>
           ),
       },
     ];
+
+    const [search, setSearch] = useState('')
+    const handleSearch = (e) => {
+      setSearch(e.target.value)
+      dispatch(getOrderByOrderCode({
+        status: 2,
+        order_code: e.target.value
+      }))
+    }
   
-    const data = listOrderByStatus.map((item) => ({
+    const data = (search !== '' ? listOrderByOrderCode : listOrderByStatus)?.map((item) => ({
       key: item?.id,
       order_code: item?.order_code,
       name: item?.name,
@@ -139,19 +170,54 @@ const Confirmed = () => {
       created_at: new Date(item?.created_at),
       updated_at: new Date(item?.updated_at)
     }))
+
   return (
     <div className='order-process'>
       <h2>ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN</h2>
       <hr />
+      <div className='search'>
+        <input type="text" onChange={handleSearch}/>
+        <BsSearch/>
+      </div>
       <Table 
           columns={columns}
           dataSource={data}
-          locale={{emptyText: ''}}
           pagination={{
             pageSize: 5,
-            total: listOrderByStatus.length
+            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length
         }}
       />
+      <div className="hidden-for-print" ref={componentRef}>
+        <div className='invoice'>
+          <div className='title-invoice'>
+            <img className='logo-invoice' src={Logo} alt="" />
+            <h2>HÓA ĐƠN BÁN HÀNG</h2>
+          </div>
+          <hr className='hr1'/>
+          <p>Mã hóa đơn: {orderByID?.order_code}</p>
+          <p>Người nhận: {orderByID?.name}</p>
+          <p>Số điện thoại: {orderByID?.phone}</p>
+          <p>Địa chỉ nhận hàng: {orderByID?.address}</p>
+          <p>Thời gian đặt hàng: {ConvertToTimeVN(new Date(orderByID?.created_at))}</p>
+          <div className='order-details'>
+            {orderByID?.order_detail?.map((item) => 
+              <div className='info-product-order'>
+                <img src={item?.product[0].thumbnail} alt="" />
+                <div className='info'>
+                  <p>Tên sản phẩm: {item?.product[0].name}</p>
+                  <p>Giá tiền: {VND.format(item?.price)}</p>
+                  <p>Số lượng: {item?.quantity}</p>
+                </div>
+              </div>
+            )}
+          </div>
+          <hr className='hr2'/>
+          <h4>Tổng tiền: {orderByID?.total_price}</h4>
+          <hr className='hr3'/>
+          <p>Giám đốc</p>
+          <h3>Nguyễn Khương Duy</h3>
+        </div>
+      </div>
     </div>
   )
 }

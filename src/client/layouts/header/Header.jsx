@@ -17,6 +17,8 @@ import useConvertToVND from '../../hooks/useConvertToVND';
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { addProductInCartNotLogin, deleteProductInCartLogged, getCartByUser } from '../../../redux/slice/client/cartSlice';
 import { message } from 'antd';
+import { ConvertToURl } from '../../utils/ConvertToURl';
+import { Menu } from 'antd';
 
 const Header = () => {
   // const role = JSON.parse(localStorage.getItem('role'))
@@ -41,15 +43,14 @@ const Header = () => {
 
   const items =  dataListCategory.map((item) => ({
       key: item.id,
-      label: <Link to={
-          (item?.name === 'Gọng kính' ? '/products/eyeglass-frames'
-        : (item?.name === 'Tròng kính' ? '/products/the-lens' 
-        : (item?.name === 'Gọng kính trẻ em' ? '/products/children-glasses' 
-        : (item?.name === 'Kính râm' && '/products/sunglass')
-      )))
-      }>
+      label: 
+      <Link to={`products/${ConvertToURl(item?.name)}`}>
         {item.name}
-      </Link>
+      </Link>,
+      onClick: () => {
+        sessionStorage.setItem('category_id', item?.id)
+        window.location.reload()
+      }
     }))
   
   const [open, setOpen] = useState(false);
@@ -144,10 +145,10 @@ const Header = () => {
           placement="bottomLeft"
         >
         <li>
-            <NavLink to={'/products'}>
-                SẢN PHẨM 
-                <AiFillCaretDown/>
-            </NavLink>
+          <NavLink to={'/products'}>
+              SẢN PHẨM 
+              <AiFillCaretDown/>
+          </NavLink>
         </li>
         </Dropdown>
         <li>

@@ -2,11 +2,13 @@ import { Table } from 'antd'
 import React from 'react'
 import useConvertToVND from '../../../../client/hooks/useConvertToVND'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrderByStatus } from '../../../../redux/slice/admin/orderProcessSlice'
+import { getOrderByOrderCode, getOrderByStatus } from '../../../../redux/slice/admin/orderProcessSlice'
 import { useEffect } from 'react'
 import '../orderProcess.scss'
 import { ConvertToTimeVN } from '../../../utils/ConvertTimeVn'
 import { Image } from 'antd'
+import {BsSearch} from 'react-icons/bs'
+import { useState } from 'react'
 
 const Successful = () => {
   const {VND} = useConvertToVND()
@@ -14,7 +16,7 @@ const Successful = () => {
   useEffect(() => {
       dispatch(getOrderByStatus(4))
   }, [])
-  const {listOrderByStatus} = useSelector((state) => state?.orderProcess)
+  const {listOrderByStatus, listOrderByOrderCode} = useSelector((state) => state?.orderProcess)
 
   const columns = [
       {
@@ -89,7 +91,17 @@ const Successful = () => {
           ),
       }
     ];
-    const data = listOrderByStatus.map((item) => ({
+
+    const [search, setSearch] = useState('')
+    const handleSearch = (e) => {
+      setSearch(e.target.value)
+      dispatch(getOrderByOrderCode({
+        status: 4,
+        order_code: e.target.value
+      }))
+    }
+
+    const data = (search !== '' ? listOrderByOrderCode : listOrderByStatus)?.map((item) => ({
       key: item?.id,
       order_code: item?.order_code,
       name: item?.name,
@@ -102,17 +114,21 @@ const Successful = () => {
       created_at: new Date(item?.created_at),
       updated_at: new Date(item?.updated_at),
     }))
+
   return (
     <div className='order-process'>
       <h2>ĐƠN HÀNG ĐÃ GIAO THÀNH CÔNG</h2>
       <hr />
+      <div className='search'>
+        <input type="text" onChange={handleSearch}/>
+        <BsSearch/>
+      </div>
       <Table 
           columns={columns}
           dataSource={data}
-          locale={{emptyText: ''}}
           pagination={{
             pageSize: 5,
-            total: listOrderByStatus.length
+            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length
         }}
       />
     </div>
