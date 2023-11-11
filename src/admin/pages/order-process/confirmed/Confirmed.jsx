@@ -54,7 +54,7 @@ const Confirmed = () => {
   const componentRef = useRef()
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: orderByID?.order_code !== undefined ? `HĐ-${orderByID?.order_code}` : 'Hóa đơn',
+    documentTitle: 'Hóa Đơn'
   })
 
   const handlePrintInvoice = (record) => {
@@ -196,7 +196,7 @@ const Confirmed = () => {
             pageSize: size,
             total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length,
             current: currentPage,
-            pageSizeOptions: ['5', '10', '20'],
+            pageSizeOptions: ['5', '10', '15', '20', '25'],
             showSizeChanger: true,
             onShowSizeChange: (currentPage, size) => {
               setSize(size)

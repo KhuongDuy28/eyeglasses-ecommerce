@@ -23,11 +23,48 @@ const { Option } = Select
 
 const AccountsList = () => {
   const dispatch = useDispatch()
+  
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
+  const searchUser = (e) => {
+    setKeySearch(e.target.value)
+    setCurrentPage(1)
+    if(selected === 'fullname') {
+      dispatch(searchUserByKey({
+        name: e.target.value,
+        email: ''
+      }))
+    } else if(selected === 'email') {
+      dispatch(searchUserByKey({
+        name: '',
+        email: e.target.value
+      }))
+    }
+  }
+
   const handleDeleteUser = (record) => {
     dispatch(deleteUser(record.key)).then((res) => {
       if(res.payload.status === 200) {
         message.success('Xóa tài khoản thành công') 
-        dispatch(getAllUser())
+        if(keySearch !== '') {
+          if(selected === 'fullname') {
+            dispatch(searchUserByKey({
+              name: keySearch,
+              email: ''
+            }))
+            dispatch(getAllUser())
+          } else if(selected === 'email') {
+            dispatch(searchUserByKey({
+              name: '',
+              email: keySearch
+            }))
+            dispatch(getAllUser())
+          }
+        } else {
+          dispatch(getAllUser())
+        }
       } else {
         message.error('Xóa tài khoản thất bại')
       }
@@ -126,28 +163,8 @@ const AccountsList = () => {
     setSelected(e)
   }
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const handlePage = (page) => {
-    setCurrentPage(page)
-  }
-  const searchUser = (e) => {
-    setKeySearch(e)
-    setCurrentPage(1)
-    if(selected === 'fullname') {
-      dispatch(searchUserByKey({
-        name: e.target.value,
-        email: ''
-      }))
-    } else if(selected === 'email') {
-      dispatch(searchUserByKey({
-        name: '',
-        email: e.target.value
-      }))
-    }
-  }
-
   const {userByKeySearch} = useSelector((state) => state?.user)
-  console.log(userByKeySearch);
+  // console.log(userByKeySearch);
 
   const dataUserByKeySearch = userByKeySearch.map((item) => ({
     key: item.id,
@@ -187,8 +204,18 @@ const AccountsList = () => {
         </button>
        {
         idUpdate !== '' ?        
-        <UpdateAccount isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} idUpdate={idUpdate} setIdUpdate={setIdUpdate}/>   
-        : <AddAccount isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        <UpdateAccount 
+          isModalOpen={isModalOpen} 
+          setIsModalOpen={setIsModalOpen} 
+          idUpdate={idUpdate} 
+          setIdUpdate={setIdUpdate}
+          keySearch={keySearch}
+          selected={selected}
+        />   
+        : <AddAccount 
+            isModalOpen={isModalOpen} 
+            setIsModalOpen={setIsModalOpen}
+          />
        }
        {
         idChangePass && 

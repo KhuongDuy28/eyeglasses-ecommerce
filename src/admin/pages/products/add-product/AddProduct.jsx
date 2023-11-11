@@ -13,9 +13,12 @@ import { Upload } from 'antd'
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
 import instance from '../../../../service/ConfigAxios'
 import { addCategory, getAllCategoty } from '../../../../redux/slice/admin/categorySlice'
-import { addProduct, getAllProduct, getProductByID, updateProduct } from '../../../../redux/slice/admin/productSlice'
+import { addProduct, getAllProduct, getProductByID, searchProductByName, updateProduct } from '../../../../redux/slice/admin/productSlice'
 import { Select } from 'antd'
 import MenuItem from '@mui/material/MenuItem';
+import dataListColor from '../../../utils/Color'
+import dataListShape from '../../../utils/Shape'
+import dataListMaterial from '../../../utils/Material'
 
 const {Option} = Select
 
@@ -41,6 +44,9 @@ const AddProduct = (props) => {
         props.setLinkThumbnail(undefined)
         setFileUpload(null)
         reset()
+        if(props?.search !== '') {
+          dispatch(searchProductByName(props?.search))
+        }
     };
 
     useEffect(() => {
@@ -49,83 +55,7 @@ const AddProduct = (props) => {
     }, [])
     const dataListCategory = useSelector((state) => state?.category?.listCategory)
     const dataListSupplier = useSelector((state) => state?.supplier?.listSupplier)
-    const dataListMaterial = [
-      {
-        id: 1,
-        name: 'Acetate'
-      },
-      {
-        id: 2,
-        name: 'Kim loại'
-      },
-      {
-        id: 3,
-        name: 'Nhựa'
-      },
-      {
-        id: 4,
-        name: 'Nhựa Dẻo'
-      }
-    ]
-    const dataListShape = [
-      {
-        id: 1,
-        name: 'Browline'
-      },
-      {
-        id: 2,
-        name: 'Hình vuông'
-      },
-      {
-        id: 3,
-        name: 'Mắt mèo'
-      },
-      {
-        id: 4,
-        name: 'Oval'
-      }
-    ]
-    const dataListColor = [
-      {
-        name: 'black'
-      },
-      {
-        name: 'brown'
-      },
-      {
-        name: 'grey'
-      },
-      {
-        name: 'pink'
-      },
-      {
-        name: 'white'
-      },
-      {
-        name: 'blue'
-      },
-      {
-        name: 'red'
-      },
-      {
-        name: 'orange'
-      },
-      {
-        name: 'navy'
-      },
-      {
-        name: 'yellow'
-      },
-      {
-        name: 'aqua'
-      },
-      {
-        name: 'silver'
-      },
-      {
-        name: 'teal'
-      }
-    ]
+
     const {
         register,
         handleSubmit,
@@ -383,8 +313,8 @@ const AddProduct = (props) => {
                       render={({ field }) => (
                         <Select {...field} control={control}>
                         {
-                          dataListColor.map((item, index) => 
-                          <Option key={index} value={item.name}>
+                          dataListColor.map((item) => 
+                          <Option key={item?.id} value={item.name}>
                             <p>{item.name}</p>
                             <div style={{width: 100, height: 20, background: `${item.name}`}}></div>
                           </Option>)

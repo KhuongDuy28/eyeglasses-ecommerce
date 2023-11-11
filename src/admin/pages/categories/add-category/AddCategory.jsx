@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { useDispatch, useSelector } from 'react-redux'
-import { addCategory, getAllCategoty, getCategoryByID, updateCategory } from '../../../../redux/slice/admin/categorySlice'
+import { addCategory, getAllCategoty, getCategoryByID, searchCategoryByName, updateCategory } from '../../../../redux/slice/admin/categorySlice'
 import { message } from 'antd'
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -22,6 +22,9 @@ const AddCategory = (props) => {
         props.setIsModalOpen(false);
         props.setIdUpdate('')
         reset()
+        if(props?.categoryName !== '') {
+            dispatch(searchCategoryByName(props?.categoryName))
+        }
     };
 
     const {

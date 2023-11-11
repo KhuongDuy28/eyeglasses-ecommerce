@@ -17,12 +17,29 @@ import { current } from '@reduxjs/toolkit'
 
 const SuppliersList = () => {
   const dispatch = useDispatch()
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
+  const [supplierName, setSupplierName] = useState('')
+  const searchSupplier = (e) => {
+    setCurrentPage(1)
+    setSupplierName(e.target.value)
+    dispatch(searchSupplierByName(e.target.value))
+  }
+
   const handleDeleleSupplier = (record) => {
     dispatch(deleteSupplier(record.key)).then((res) => {
-      console.log(res);
+      // console.log(res);
       if(res.payload.status === 200) {
         message.success('Xóa nhà cung cấp thành công') 
-        dispatch(getAllSupplier())
+        if(supplierName !== '') {
+          dispatch(searchSupplierByName(supplierName))
+          dispatch(getAllSupplier())
+        } else {
+          dispatch(getAllSupplier())
+        }
       } else {
         message.error('Xóa nhà cung cấp thất bại')
       }
@@ -91,8 +108,8 @@ const SuppliersList = () => {
   useEffect(() => {
     dispatch(getAllSupplier())
   }, [])
-  const data = useSelector((state) => state?.supplier?.listSupplier)
-  const dataListSupplier = data.map((item) => ({
+  const {listSupplier, supplierByNameSearch} = useSelector((state) => state?.supplier)
+  const dataListSupplier = (supplierName !== '' ? supplierByNameSearch : listSupplier)?.map((item) => ({
     key: item?.id,
     name: item?.name,
     email: item?.email,
@@ -101,26 +118,6 @@ const SuppliersList = () => {
     description: item?.description
   }))
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const handlePage = (page) => {
-    setCurrentPage(page)
-  }
-  const [supplierName, setSupplierName] = useState('')
-  const searchSupplier = (e) => {
-    setCurrentPage(1)
-    setSupplierName(e.target.value)
-    dispatch(searchSupplierByName(e.target.value))
-  }
-
-  const supplierByNameSearch = useSelector((state) => state?.supplier?.supplierByNameSearch)
-  const dataSupplierByNameSearch = supplierByNameSearch.map((item) => ({
-    key: item?.id,
-    name: item?.name,
-    email: item?.email,
-    telephone: item?.telephone,
-    address: item?.address,
-    description: item?.description
-  }))
   const [size, setSize] = useState(5)
   const customPaginationText = {
     items_per_page: 'nhà cung cấp',
@@ -138,15 +135,21 @@ const SuppliersList = () => {
           <PlusOutlined />
           <span>Thêm</span>
         </button>
-        <AddSupplier isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setIdUpdate={setIdUpdate} idUpdate={idUpdate}/>
+        <AddSupplier 
+          isModalOpen={isModalOpen} 
+          setIsModalOpen={setIsModalOpen} 
+          setIdUpdate={setIdUpdate} 
+          idUpdate={idUpdate}
+          supplierName={supplierName}
+        />
       </div>
       <div className='table-supplier'>
         <Table 
           columns={columns} 
-          dataSource={supplierName === '' ? dataListSupplier : dataSupplierByNameSearch}
+          dataSource={dataListSupplier}
           pagination={{
             pageSize: size,
-            total: (supplierName === '' ? dataListSupplier.length : dataSupplierByNameSearch.length),
+            total: (supplierName !== '' ? supplierByNameSearch?.length : listSupplier?.length),
             current: currentPage,
             pageSizeOptions: ['5', '10'],
             showSizeChanger: true,

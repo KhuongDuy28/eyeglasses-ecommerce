@@ -38,7 +38,17 @@ const ProductsList = () => {
     setIdUpdate('')
     setIsModalOpen(true);
   };
-  
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
+  const [search, setSearch] = useState('')
+  const handleSearchProduct = (e) => {
+    setSearch(e.target.value)
+    setCurrentPage(1)
+    dispatch(searchProductByName(e.target.value))
+  }
   const [loading, setLoading] = useState(false);
   const [productLoading, setProductLoading] = useState({})
   const changeStatus = (record) => {
@@ -52,6 +62,9 @@ const ProductsList = () => {
         message.success('Thay đổi trạng thái thành công')
         dispatch(getAllProduct())
         setLoading(false)
+        if(search !== '') {
+          dispatch(searchProductByName(search))
+        }
       } else {
         message.error('Thay đổi trạng thái thất bại')
         setLoading(false)
@@ -174,17 +187,6 @@ const ProductsList = () => {
     },
   ];
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const handlePage = (page) => {
-    setCurrentPage(page)
-  }
-  const [search, setSearch] = useState('')
-  const handleSearchProduct = (e) => {
-    setSearch(e.target.value)
-    setCurrentPage(1)
-    dispatch(searchProductByName(e.target.value))
-  }
-
   useEffect(() => {
     dispatch(getAllProduct())
   }, [])
@@ -231,6 +233,7 @@ const ProductsList = () => {
           idUpdate={idUpdate}
           linkThumbnail={linkThumbnail}
           setLinkThumbnail={setLinkThumbnail}
+          search={search}
         />
       </div>
       <div className='table-product'>
@@ -241,7 +244,7 @@ const ProductsList = () => {
             pageSize: size,
             total: (search !== '' ? listProductByName.length : listProduct.length),
             current: currentPage,
-            pageSizeOptions: ['5', '10', '15', '20'],
+            pageSizeOptions: ['5', '10', '15', '20', '25'],
             showSizeChanger: true,
             onShowSizeChange: (currentPage, size) => {
               setSize(size)

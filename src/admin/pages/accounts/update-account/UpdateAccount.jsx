@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import {  getAllUser, getUserByID, updateUser } from '../../../../redux/slice/admin/userSlice';
+import {  getAllUser, getUserByID, searchUserByKey, updateUser } from '../../../../redux/slice/admin/userSlice';
 import { Modal } from 'antd';
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -28,6 +28,19 @@ const UpdateAccount = (props) => {
       props.setIsModalOpen(false);
       props.setIdUpdate('')
       reset()
+      if(props?.keySearch !== '') {
+        if(props.selected === 'fullname') {
+          dispatch(searchUserByKey({
+            name: props?.keySearch,
+            email: ''
+          }))
+        } else if(props?.selected === 'email') {
+          dispatch(searchUserByKey({
+            name: '',
+            email: props?.keySearch
+          }))
+        }
+      }
   };
 
   const dataListRole = [

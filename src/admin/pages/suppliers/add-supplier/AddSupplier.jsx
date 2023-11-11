@@ -7,7 +7,7 @@ import * as yup from "yup"
 import { useDispatch } from 'react-redux'
 import { message } from 'antd'
 import { useEffect } from 'react'
-import { addSupplier, getAllSupplier, getSupplierByID, updateSupplier } from '../../../../redux/slice/admin/supplierSlice'
+import { addSupplier, getAllSupplier, getSupplierByID, searchSupplierByName, updateSupplier } from '../../../../redux/slice/admin/supplierSlice'
 
 const schema = yup
   .object({
@@ -24,6 +24,9 @@ const AddSupplier = (props) => {
         props.setIsModalOpen(false);
         props.setIdUpdate('')
         reset()
+        if(props?.supplierName !== '') {
+          dispatch(searchSupplierByName(props?.supplierName))
+        }
     };
 
     const {

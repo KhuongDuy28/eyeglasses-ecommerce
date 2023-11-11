@@ -8,6 +8,8 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getAllCategotyClient } from '../../../redux/slice/admin/categorySlice';
+import dataListShape from '../../../admin/utils/Shape';
+import dataListMaterial from '../../../admin/utils/Material';
 
 const SortProduct = (props) => {
     const dispatch = useDispatch()
@@ -108,22 +110,29 @@ const SortProduct = (props) => {
         }
     }
 
+    // console.log(dataListShape);
     return (
         <div className='sort'>
             <div className='sort-by-shape'>
                 <p>Hình dáng</p>
-                <Radio value='1' checked={shape === "1"} onClick={getShape} >Browline</Radio>
+                {dataListShape.map((item) => 
+                    <Radio value={item?.id} checked={shape == item?.id} onClick={getShape} >{item?.name}</Radio>
+                )}
+                {/* <Radio value='1' checked={shape === "1"} onClick={getShape} >Browline</Radio>
                 <Radio value='2' checked={shape === "2"} onClick={getShape} >Hình vuông</Radio>
                 <Radio value='3' checked={shape === "3"} onClick={getShape} >Mắt mèo</Radio>
-                <Radio value='4' checked={shape === "4"} onClick={getShape} >Oval</Radio>
+                <Radio value='4' checked={shape === "4"} onClick={getShape} >Oval</Radio> */}
             </div>
 
             <div className='sort-by-material'>
                 <p>Chất liệu</p>
-                <Radio value='1' checked={material === "1"} onClick={getMaterial} >Acetate</Radio>
+                {dataListMaterial.map((item) => 
+                    <Radio value={item?.id} checked={material == item?.id} onClick={getMaterial} >{item?.name}</Radio>
+                )}
+                {/* <Radio value='1' checked={material === "1"} onClick={getMaterial} >Acetate</Radio>
                 <Radio value='2' checked={material === "2"} onClick={getMaterial} >Kim loại</Radio>
                 <Radio value='3' checked={material === "3"} onClick={getMaterial} >Nhựa</Radio>
-                <Radio value='4' checked={material === "4"} onClick={getMaterial} >Nhựa Dẻo</Radio>
+                <Radio value='4' checked={material === "4"} onClick={getMaterial} >Nhựa Dẻo</Radio> */}
             </div>
 
             <div className='sort-by-price'>

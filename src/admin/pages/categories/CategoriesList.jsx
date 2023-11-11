@@ -15,11 +15,28 @@ import AddCategory from './add-category/AddCategory';
 
 const CategoriesList = () => {
   const dispatch = useDispatch()
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
+  const [categoryName, setCategoryName] = useState('')
+  const searchCategory = (e) => {
+    setCurrentPage(1)
+    setCategoryName(e.target.value)
+    dispatch(searchCategoryByName(e.target.value))
+  }
+
   const handleDeleleCategory = (record) => {
     dispatch(deleteCategory(record.key)).then((res) => {
       if(res.payload.status === 200) {
         message.success('Xóa danh mục thành công') 
-        dispatch(getAllCategoty())
+        if(categoryName !== '') {
+          dispatch(searchCategoryByName(categoryName))
+          dispatch(getAllCategoty())
+        } else {
+          dispatch(getAllCategoty())
+        }
       } else {
         message.error('Xóa danh mục thất bại')
       }
@@ -88,17 +105,6 @@ const CategoriesList = () => {
     description: item?.description
   })) 
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const handlePage = (page) => {
-    setCurrentPage(page)
-  }
-  const [categoryName, setCategoryName] = useState('')
-  const searchCategory = (e) => {
-    setCurrentPage(1)
-    setCategoryName(e.target.value)
-    dispatch(searchCategoryByName(e.target.value))
-  }
-
   const categoryByNameSearch = useSelector((state) => state?.category?.categoryByNameSearch)
   const dataCategoryByNameSearch = categoryByNameSearch.map((item) => ({
     key: item.id,
@@ -122,8 +128,13 @@ const CategoriesList = () => {
           <PlusOutlined />
           <span>Thêm</span>
         </button>
-        <AddCategory isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} idUpdate={idUpdate} setIdUpdate={setIdUpdate}/>
-        {/* <AddCategory showModal={showModal} handleCancel={handleCancel} idUpdate={idUpdate}/> */}
+        <AddCategory 
+          isModalOpen={isModalOpen} 
+          setIsModalOpen={setIsModalOpen} 
+          idUpdate={idUpdate} 
+          setIdUpdate={setIdUpdate}
+          categoryName={categoryName}
+        />
       </div>
       <div className='table-category'>
         <Table 

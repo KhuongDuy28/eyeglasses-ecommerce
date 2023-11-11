@@ -138,7 +138,7 @@ const Cancelled = () => {
             pageSize: size,
             total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length,
             current: currentPage,
-            pageSizeOptions: ['5', '10', '20'],
+            pageSizeOptions: ['5', '10', '15', '20', '25'],
             showSizeChanger: true,
             onShowSizeChange: (currentPage, size) => {
               setSize(size)

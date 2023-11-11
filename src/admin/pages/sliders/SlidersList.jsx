@@ -17,11 +17,28 @@ import { Switch } from 'antd'
 
 const SlidersList = () => {
   const dispatch = useDispatch()
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
+  const [sliderName, setSliderName] = useState('')
+  const searchSlider = (e) => {
+    setCurrentPage(1)
+    setSliderName(e.target.value)
+    dispatch(searchSliderByName(e.target.value))
+  }
+
   const handleDeleleSlider = (record) => {
     dispatch(deleteSlider(record.key)).then((res) => {
       if(res.payload.status === 200) {
         message.success('Xóa slider thành công') 
-        dispatch(getAllSlider())
+        if(sliderName !== '') {
+          dispatch(searchSliderByName(sliderName))
+          dispatch(getAllSlider())
+        } else {
+          dispatch(getAllSlider())
+        }
       } else {
         message.error('Xóa slider thất bại')
       }
@@ -46,6 +63,9 @@ const SlidersList = () => {
         message.success('Thay đổi trạng thái thành công')
         dispatch(getAllSlider())
         setLoading(false)
+        if(sliderName !== '') {
+          dispatch(searchSliderByName(sliderName))
+        }
       } else {
         message.error('Thay đổi trạng thái thất bại')
         setLoading(false)
@@ -98,34 +118,18 @@ const SlidersList = () => {
       ),
     },
   ];
-
   useEffect(() => {
     dispatch(getAllSlider())
   }, [])
   const {listSlider, sliderByNameSearch} = useSelector((state) => state?.slider)
-  const dataListSlider = listSlider.map((item) => ({
+  // console.log(sliderByNameSearch);
+  const dataListSlider = (sliderName !== '' ? sliderByNameSearch : listSlider).map((item) => ({
     key: item.id,
     name: item?.name,
     image: item?.image,
     status: item?.status
   })) 
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const handlePage = (page) => {
-    setCurrentPage(page)
-  }
-  const [sliderName, setSliderName] = useState('')
-  const searchSlider = (e) => {
-    setCurrentPage(1)
-    setSliderName(e.target.value)
-    dispatch(searchSliderByName(e.target.value))
-  }
-
-  const dataSliderByNameSearch = sliderByNameSearch.map((item) => ({
-    key: item.id,
-    name: item?.name,
-    image: item?.image
-  }))
   const [size, setSize] = useState(5)
   const customPaginationText = {
     items_per_page: 'slider',
@@ -148,10 +152,10 @@ const SlidersList = () => {
       <div className='table-slider'>
         <Table 
           columns={columns} 
-          dataSource={sliderName === '' ? dataListSlider : dataSliderByNameSearch}
+          dataSource={dataListSlider}
           pagination={{
             pageSize: size,
-            total: (sliderName === '' ? dataListSlider.length : dataSliderByNameSearch.length),
+            total: (sliderName !== '' ? sliderByNameSearch?.length : listSlider?.length),
             current: currentPage,
             pageSizeOptions: ['5', '10'],
             showSizeChanger: true,

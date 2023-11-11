@@ -33,7 +33,7 @@ const Pdf = React.forwardRef((props) => {
               </div>
             )}
           </div>
-          <hr className='hr2'/>
+          {/* <hr className='hr2'/> */}
           <div className='price-qr'>
             <QRCode 
               size={125} 

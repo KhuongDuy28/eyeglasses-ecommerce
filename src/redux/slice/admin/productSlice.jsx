@@ -57,7 +57,7 @@ export const sortProductClient = createAsyncThunk('product/sortProductClient', a
 })
 
 export const searchProductClient = createAsyncThunk('product/searchProductClient', async(data) => {
-    console.log(data);
+    // console.log(data);
     const res = await ProductApi.searchProductClient(data)
     return res
 })
