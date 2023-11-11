@@ -59,31 +59,6 @@ const Home = () => {
     },
   ]
 
-  const [boder, setBoder] = useState('btn-glasses')
-  const onChangeBoder = (e) => {
-    if(e.target.textContent === 'Gọng kính') {
-      setBoder('btn-glasses')
-    }
-    else if(e.target.textContent === 'Kính râm') {
-      setBoder('btn-sunglasses')
-    }
-    else if(e.target.textContent === 'Mắt kính') {
-      setBoder('btn-eyeglasses')
-    }
-  }
-
-  const handleSeeAll = () => {
-    if(boder === 'btn-glasses') {
-      navigate('/products/eyeglass-frames')
-    }
-    else if(boder === 'btn-sunglasses') {
-      navigate('/products/sunglass')
-    }
-    else if(boder === 'btn-eyeglasses') {
-      navigate('/products/the-lens')
-    }
-  }
-
   const [isOpenAnswer1, setIsOpenAnswer1] = useState(false)
   const [isOpenAnswer2, setIsOpenAnswer2] = useState(false)
   const [isOpenAnswer3, setIsOpenAnswer3] = useState(false)
@@ -124,23 +99,6 @@ const Home = () => {
           <div className='title-2'>
             <h2>HÀNG MỚI LÊN KỆ</h2>
           </div>
-          <div className='choose'>
-            <button 
-            className={boder === 'btn-glasses' ? 'btn-glasses clicked' : 'btn-glasses'} 
-            onClick={onChangeBoder}>
-              Gọng kính
-            </button>
-            <button 
-            className={boder === 'btn-sunglasses' ? 'btn-sunglasses clicked' : 'btn-sunglasses'} 
-            onClick={onChangeBoder}>
-              Kính râm
-            </button>
-            <button 
-            className={boder === 'btn-eyeglasses' ? 'btn-eyeglasses clicked' : 'btn-eyeglasses'} 
-            onClick={onChangeBoder}>
-              Mắt kính
-            </button>
-          </div>
         </div>
         <div className='trending-glasses'>
           <div className='trending-products'>
@@ -167,9 +125,6 @@ const Home = () => {
                 </div>
             </Link>
             ))}
-          </div>
-          <div className='all-glasses'>
-            <button className='btn-all-glasses' onClick={handleSeeAll}>Xem tất cả</button>
           </div>
         </div>
       </div>

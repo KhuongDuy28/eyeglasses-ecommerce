@@ -6,6 +6,8 @@
     h1 {
         text-align: center;
         color: #81c8c2;
+        margin: 0;
+        padding: 13.5px 0;
     }
 
     hr {
@@ -30,14 +32,16 @@
                 align-items: center;
                 row-gap: 5px;
                 box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-                padding: 25px 100px;
+                padding: 25px 125px;
+                // width: 100%;
     
                 p {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background: #81c8c2;
-                    color: #fff;
+                    // background: #81c8c2;
+                    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                    color: #898989;
                     height: 50px;
                     width: 150px;
                     border-radius: 9px;
@@ -46,10 +50,9 @@
             }
     
     
-            canvas {
-                width: 300px !important;
-                height: 300px !important;
-            }
+            // canvas {
+            //     font-size: 2.5rem;
+            // }
         }
     }
 

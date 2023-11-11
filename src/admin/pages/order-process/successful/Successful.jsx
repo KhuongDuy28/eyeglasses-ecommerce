@@ -2,13 +2,18 @@ import { Table } from 'antd'
 import React from 'react'
 import useConvertToVND from '../../../../client/hooks/useConvertToVND'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrderByOrderCode, getOrderByStatus } from '../../../../redux/slice/admin/orderProcessSlice'
+import { getOrderByID, getOrderByOrderCode, getOrderByStatus } from '../../../../redux/slice/admin/orderProcessSlice'
 import { useEffect } from 'react'
 import '../orderProcess.scss'
 import { ConvertToTimeVN } from '../../../utils/ConvertTimeVn'
 import { Image } from 'antd'
 import {BsSearch} from 'react-icons/bs'
 import { useState } from 'react'
+import { useRef } from 'react'
+import { useReactToPrint } from 'react-to-print'
+import { Space } from 'antd'
+import { AiOutlinePrinter } from 'react-icons/ai'
+import Pdf from '../pdf/Pdf'
 
 const Successful = () => {
   const {VND} = useConvertToVND()
@@ -16,36 +21,50 @@ const Successful = () => {
   useEffect(() => {
       dispatch(getOrderByStatus(4))
   }, [])
-  const {listOrderByStatus, listOrderByOrderCode} = useSelector((state) => state?.orderProcess)
+  const {listOrderByStatus, listOrderByOrderCode, orderByID} = useSelector((state) => state?.orderProcess)
+
+  const componentRef = useRef()
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: orderByID?.order_code !== undefined ? `HĐ-${orderByID?.order_code}` : 'Hóa đơn',
+  })
+
+  const handlePrintInvoice = (record) => {
+    dispatch(getOrderByID(record?.key)).then((res) => {
+      if(res.payload?.status === 200) {
+        handlePrint()
+      }
+    })
+  }
 
   const columns = [
       {
-          title: 'Order code',
+          title: 'Mã đơn hàng',
           dataIndex: 'order_code',
           key: 'order_code',
           render: (text) => <p>{text}</p>,
       },
           {
-          title: 'Name',
+          title: 'Người nhận',
           dataIndex: 'name',
           key: 'name',
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Phone',
+          title: 'Số điện thoại',
           dataIndex: 'phone',
           key: 'phone',
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Address',
+          title: 'Địa chỉ nhận hàng',
           dataIndex: 'address',
           key: 'address',
           width: 200,
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Product',
+          title: 'Chi tiết đơn hàng',
           dataIndex: 'order_detail',
           key: 'order_detail',
           render: (record) => (
@@ -63,25 +82,25 @@ const Successful = () => {
           )
       },
       {
-          title: 'Price total',
+          title: 'Tổng tiền',
           dataIndex: 'total_price',
           key: 'total_price',
           render: (text) => <p>{VND.format(text)}</p>,
       },
       {
-          title: 'Ordered time',
+          title: 'Thời gian đặt hàng',
           dataIndex: 'created_at',
           key: 'created_at',
           render: (text) => <p>{ConvertToTimeVN(text)}</p>,
       },
       {
-          title: 'Successful time',
+          title: 'Thời gian giao hàng',
           dataIndex: 'updated_at',
           key: 'updated_at',
           render: (text) => <p>{ConvertToTimeVN(text)}</p>,
       },
       {
-          title: 'Status',
+          title: 'Trạng thái',
           dataIndex: 'status',
           key: 'status',
           render: (record) => (
@@ -89,12 +108,26 @@ const Successful = () => {
                   {record === 4 && 'Giao hàng thành công'}
               </p>
           ),
-      }
+      },
+      {
+        title: 'Hành động',
+        key: 'action',
+        render: (_, record) => (
+          <Space size="middle">
+            <AiOutlinePrinter className='btn-print' onClick={() => handlePrintInvoice(record)}/>
+          </Space>
+        ),
+    },
     ];
 
+    const [currentPage, setCurrentPage] = useState(1)
+    const handlePage = (page) => {
+      setCurrentPage(page)
+    }
     const [search, setSearch] = useState('')
     const handleSearch = (e) => {
       setSearch(e.target.value)
+      setCurrentPage(1)
       dispatch(getOrderByOrderCode({
         status: 4,
         order_code: e.target.value
@@ -114,7 +147,10 @@ const Successful = () => {
       created_at: new Date(item?.created_at),
       updated_at: new Date(item?.updated_at),
     }))
-
+    const [size, setSize] = useState(5)
+    const customPaginationText = {
+      items_per_page: 'đơn hàng',
+    };
   return (
     <div className='order-process'>
       <h2>ĐƠN HÀNG ĐÃ GIAO THÀNH CÔNG</h2>
@@ -127,10 +163,21 @@ const Successful = () => {
           columns={columns}
           dataSource={data}
           pagination={{
-            pageSize: 5,
-            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length
+            pageSize: size,
+            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length,
+            current: currentPage,
+            pageSizeOptions: ['5', '10', '20'],
+            showSizeChanger: true,
+            onShowSizeChange: (currentPage, size) => {
+              setSize(size)
+            },
+            locale: {...customPaginationText},
+            onChange: (page) => handlePage(page)
         }}
       />
+
+      <Pdf componentRef={componentRef} orderByID={orderByID}/>
+
     </div>
   )
 }

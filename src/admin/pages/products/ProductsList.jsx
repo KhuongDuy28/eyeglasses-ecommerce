@@ -4,7 +4,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeStatusProduct, getAllProduct, getProductByID } from '../../../redux/slice/admin/productSlice'
+import { changeStatusProduct, getAllProduct, getProductByID, searchProductByName } from '../../../redux/slice/admin/productSlice'
 import { BsFileEarmarkImage, BsSearch } from 'react-icons/bs'
 import {GoCircleSlash} from 'react-icons/go'
 import { PlusOutlined } from '@ant-design/icons'
@@ -17,6 +17,8 @@ import IMGError from '../../assets/img/errorIMG.png'
 import DropdownSelect from '../../components/dropdown-select/DropdownSelect'
 import { message } from 'antd'
 import useConvertToVND from '../../../client/hooks/useConvertToVND'
+import { Switch } from 'antd'
+import { current } from '@reduxjs/toolkit'
 
 const ProductsList = () => {
   const dispatch = useDispatch()
@@ -37,53 +39,47 @@ const ProductsList = () => {
     setIsModalOpen(true);
   };
   
+  const [loading, setLoading] = useState(false);
+  const [productLoading, setProductLoading] = useState({})
   const changeStatus = (record) => {
-    if(record.status === 1) {
-      dispatch(changeStatusProduct({
-        product_id: record.key,
-        status: 2
-      })).then((res) => {
-        if(res.payload?.status === 200) {
-          message.success('Thay đổi trạng thái sản phẩm thành công')
-          dispatch(getAllProduct())
-        } else {
-          message.error('Thay đổi trạng thái sản phẩm thất bại')
-        }
-      })
-    } else if(record.status === 2) {
-      dispatch(changeStatusProduct({
-        product_id: record.key,
-        status: 1
-      })).then((res) => {
-        if(res.payload?.status === 200) {
-          message.success('Thay đổi trạng thái sản phẩm thành công')
-          dispatch(getAllProduct())
-        } else {
-          message.error('Thay đổi trạng thái sản phẩm thất bại')
-        }
-      })
-    }
+    setLoading(true)
+    setProductLoading(listProduct.find((item) => item?.id === record?.key))
+    dispatch(changeStatusProduct({
+      product_id: record?.key,
+      status: record?.status === 1 ? 2 : 1
+    })).then((res) => {
+      if(res.payload?.status === 200) {
+        message.success('Thay đổi trạng thái thành công')
+        dispatch(getAllProduct())
+        setLoading(false)
+      } else {
+        message.error('Thay đổi trạng thái thất bại')
+        setLoading(false)
+      }
+    })
   }
+
+  // console.log(productLoading);
 
   const columns = [
     {
-      title: 'Name',
+      title: 'Tên sản phẩm',
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Category',
+      title: 'Danh mục',
       dataIndex: 'category',
       key: 'category',
     },
     {
-      title: 'Supplier',
+      title: 'Nhà cung cấp',
       dataIndex: 'supplier',
       key: 'supplier',
     },
     {
-      title: 'Image',
+      title: 'Ảnh nổi bật',
       dataIndex: 'thumbnail',
       key: 'thumbnail',
       render: (thumbnail) => (
@@ -91,9 +87,10 @@ const ProductsList = () => {
       )
     },
     {
-      title: 'Details Image',
+      title: 'Ảnh chi tiết sản phẩm',
       dataIndex: 'image_product',
       key: 'image_product',
+      width: 115,
       render: (image_product) => (
         // console.log(image_product)
         image_product.length === 0 ? <p></p>
@@ -101,14 +98,15 @@ const ProductsList = () => {
            <>
             {
               // console.log(item.image)
-              image_product?.length > 0 && <Image key={index} width={30} src={item.image} style={{padding: '2px 0px'}}/>
+              image_product?.length > 0 
+              && <Image className='img-detail' key={index} src={item.image}/>
             }
            </>
         )
       )
     },
     {
-      title: 'New Price',
+      title: 'Giá bán sale',
       dataIndex: 'price_new',
       key: 'price_new',
       render: (price_new) => 
@@ -117,7 +115,7 @@ const ProductsList = () => {
         </p>,
     },
     {
-      title: 'Old Price',
+      title: 'Giá bán gốc',
       dataIndex: 'price_old',
       key: 'price_old',
       render: (price_old) => 
@@ -126,12 +124,12 @@ const ProductsList = () => {
         </p>,
     },
     {
-      title: 'Quantity',
+      title: 'Số lượng',
       dataIndex: 'quantity',
       key: 'quantity',
     },
     {
-      title: 'Color',
+      title: 'Màu sắc',
       dataIndex: 'color',
       key: 'color',
       render: (color) => (
@@ -139,51 +137,60 @@ const ProductsList = () => {
       )
     },
     {
-      title: 'Material',
+      title: 'Chất liệu',
       dataIndex: 'material',
       key: 'material',
     },
     {
-      title: 'Shape',
+      title: 'Hình dáng',
       dataIndex: 'shape',
       key: 'shape',
     },
     {
-      title: 'Description',
+      title: 'Mô tả chi tiết',
       dataIndex: 'description',
       key: 'description',
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (status) => (
-        <p style={{ 
-          textAlign: 'center',
-          padding: '2px 5px',
-          color: `${status === 2 ? '#ff6565' : '#56ee4e'}`
-        }}>
-          {status === 2 ? 'Disable' : 'Active'}
-        </p>
+      render: (status, record) => (
+        <Switch 
+          checked={status === 2 ? false : true} 
+          loading={productLoading?.id === record?.key && loading} 
+          onChange={() => changeStatus(record)} 
+          // checkedChildren="Active"
+          // unCheckedChildren="Disable"
+        />
       )
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
-        <Space size="middle">
           <RxUpdate className='ic-update'onClick={() => handleUpdateProduct(record)}/>
-          <LiaExchangeAltSolid className='ic-change'onClick={() => changeStatus(record)}/>
-        </Space>
       ),
     },
   ];
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
+  const [search, setSearch] = useState('')
+  const handleSearchProduct = (e) => {
+    setSearch(e.target.value)
+    setCurrentPage(1)
+    dispatch(searchProductByName(e.target.value))
+  }
+
   useEffect(() => {
     dispatch(getAllProduct())
   }, [])
-  const data = useSelector((state) => state?.product?.listProduct)
-  const dataListProduct = data.map((item) => ({
+  const {listProduct, listProductByName} = useSelector((state) => state?.product)
+  // console.log(listProductByName);
+  const dataListProduct = (search !== '' ? listProductByName : listProduct)?.map((item) => ({
     key: item?.id,
     name: item?.name,
     category: item?.category?.name,
@@ -200,12 +207,16 @@ const ProductsList = () => {
     description: item?.description
   }))
 
+  const [size, setSize] = useState(5)
+  const customPaginationText = {
+    items_per_page: 'sản phẩm',
+  };
   return (
     <div className='products-list'>
       <h2>DANH SÁCH SẢN PHẨM</h2>
       <hr />
       <div className='search'>
-        <input type="text" />
+        <input type="text" onChange={handleSearchProduct}/>
         <BsSearch/>
       </div>
       <div className='add-product'>
@@ -227,8 +238,16 @@ const ProductsList = () => {
           columns={columns} 
           dataSource={dataListProduct}
           pagination={{
-            pageSize: 5,
-            total: dataListProduct.length
+            pageSize: size,
+            total: (search !== '' ? listProductByName.length : listProduct.length),
+            current: currentPage,
+            pageSizeOptions: ['5', '10', '15', '20'],
+            showSizeChanger: true,
+            onShowSizeChange: (currentPage, size) => {
+              setSize(size)
+            },
+            locale: {...customPaginationText},
+            onChange: (page) => handlePage(page),    
           }}
         />
       </div>

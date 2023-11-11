@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { Image } from 'antd'
 import AddSlider from './add-slider/AddSlider'
 import {LiaExchangeAltSolid} from 'react-icons/lia'
+import { Switch } from 'antd'
 
 const SlidersList = () => {
   const dispatch = useDispatch()
@@ -32,7 +33,11 @@ const SlidersList = () => {
     setIsModalOpen(true);
   };
 
+  const [loading, setLoading] = useState(false);
+  const [sliderLoading, setSliderLoading] = useState({})
   const changeStatus = (record) => {
+    setLoading(true)
+    setSliderLoading(listSlider.find((item) => item?.id === record?.key))
     dispatch(changeStatusSlider({
       slider_id: record?.key,
       status: record?.status === 1 ? 2 : 1
@@ -40,57 +45,56 @@ const SlidersList = () => {
       if(res.payload?.data?.status === 200) {
         message.success('Thay đổi trạng thái thành công')
         dispatch(getAllSlider())
+        setLoading(false)
       } else {
         message.error('Thay đổi trạng thái thất bại')
+        setLoading(false)
       }
     })
   }
-  
+
   const columns = [
     {
-      title: 'Name',
+      title: 'Tên slider',
       dataIndex: 'name',
       key: 'name',
       width: 300,
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Image',
+      title: 'Ảnh',
       dataIndex: 'image',
       key: 'image',
       width: 550,
       render: (image) => <Image style={{width: '500px', height: '170px'}} src={image}/>
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
       width: 100,
-      render: (status) => 
-        <p style={{ 
-          textAlign: 'center',
-          padding: '2px 5px',
-          color: `${status === 1 ? '#ff6565' : '#56ee4e'}`
-        }}>
-          {status === 1 ? 'Disable' : 'Active'}
-        </p>
+      render: (status, record) => 
+        <Switch 
+          checked={status === 1 ? false : true} 
+          loading={sliderLoading?.id === record?.key && loading} 
+          onChange={() => changeStatus(record)} 
+          // checkedChildren="Active"
+          // unCheckedChildren="Disable"
+        />
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
-      width: 50,
+      width: 100,
       render: (_, record) => (
-        <Space size="middle">
-          <Popconfirm 
-            title='Bạn chắc chắn mình muốn xóa?'
-            okText='Xác nhận'
-            cancelText='Hủy'
-            onConfirm={() => handleDeleleSlider(record)}
-            >
-            <GoTrash className='ic-delete'/>
-          </Popconfirm>
-          <LiaExchangeAltSolid className='ic-change'onClick={() => changeStatus(record)}/>
-        </Space>
+        <Popconfirm 
+          title='Bạn chắc chắn mình muốn xóa?'
+          okText='Xác nhận'
+          cancelText='Hủy'
+          onConfirm={() => handleDeleleSlider(record)}
+          >
+          <GoTrash className='ic-delete'/>
+        </Popconfirm>
       ),
     },
   ];
@@ -98,27 +102,34 @@ const SlidersList = () => {
   useEffect(() => {
     dispatch(getAllSlider())
   }, [])
-  const data = useSelector((state) => state?.slider?.listSlider)
-  const dataListSlider = data.map((item) => ({
+  const {listSlider, sliderByNameSearch} = useSelector((state) => state?.slider)
+  const dataListSlider = listSlider.map((item) => ({
     key: item.id,
     name: item?.name,
     image: item?.image,
     status: item?.status
   })) 
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
   const [sliderName, setSliderName] = useState('')
   const searchSlider = (e) => {
+    setCurrentPage(1)
     setSliderName(e.target.value)
     dispatch(searchSliderByName(e.target.value))
   }
 
-  const sliderByNameSearch = useSelector((state) => state?.slider?.sliderByNameSearch)
   const dataSliderByNameSearch = sliderByNameSearch.map((item) => ({
     key: item.id,
     name: item?.name,
     image: item?.image
   }))
-  
+  const [size, setSize] = useState(5)
+  const customPaginationText = {
+    items_per_page: 'slider',
+  };
   return (
     <div className='sliders-list'>
       <h2>DANH SÁCH SLIDER</h2>
@@ -139,8 +150,16 @@ const SlidersList = () => {
           columns={columns} 
           dataSource={sliderName === '' ? dataListSlider : dataSliderByNameSearch}
           pagination={{
-            pageSize: 5,
-            total: (sliderName === '' ? dataListSlider.length : dataSliderByNameSearch.length)
+            pageSize: size,
+            total: (sliderName === '' ? dataListSlider.length : dataSliderByNameSearch.length),
+            current: currentPage,
+            pageSizeOptions: ['5', '10'],
+            showSizeChanger: true,
+            onShowSizeChange: (currentPage, size) => {
+              setSize(size)
+            },
+            locale: {...customPaginationText},
+            onChange: (page) => handlePage(page)
           }}
         />
       </div>

@@ -2,7 +2,7 @@
     h2 {
         color: #81c8c2;
         margin: 0;
-        padding: 26.5px 0;
+        padding: 19px 0;
     }
     
     hr {
@@ -93,14 +93,13 @@
             border-radius: 9px;
             border: solid 1px #4096ff;
             font-size: 12px;
-            width: 150px;
+            width: 100px;
         }
 
         .btn-confirm, .btn-transport, .btn-successful {
             &:hover {
                 color: #fff;
                 background: #4096ff;
-                border-radius: 9px;
             }
         }
 
@@ -117,7 +116,6 @@
         .btn-cancel:hover {
             color: #fff;
             background: #ff4d4f;
-            border-radius: 9px;
         }
 
         .btn-print {
@@ -128,80 +126,11 @@
            border-radius: 9px;
            color: #81c8c2;
         }
-    }
-}
 
-.hidden-for-print {
-    display: none;
-
-    .invoice {
-        display: flex;
-        flex-direction: column;
-        row-gap: 5px;
-        padding: 35px;
-        font-size: 16.5px;
-
-
-       .title-invoice {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0 50px 0;
-            position: relative;
-
-            .logo-invoice {
-                width: 95px;
-                height: 95px;
-                position: absolute;
-            }
-
-            h2 {
-                margin: 0;
-                width: 100%;
-                text-align: center;
-                color: #81c8c2;
-            }
-       }
-
-       .hr1 {
-            border: solid 1px #81c8c2;
-            width: 100%;
-            margin-bottom: 20px;
-       }
-
-        .order-details {
-            display: flex;
-            flex-direction: column;
-
-            .info-product-order {
-                display: flex;
-                align-items: center;
-                column-gap: 20px;
-                padding: 10px 0;
-                margin: 10px 0;
-
-                img {
-                    width: 100px;
-                    height: 100px;
-                }
-
-                .info {
-                    display: flex;
-                    flex-direction: column;
-                    row-gap: 5px;
-                }
-            }
-        }
-        
-        h4 {
-            text-align: right;
-            margin: 0;
+        .btn-print:hover {
+            color: #fff;
+            background: #81c8c2;
         }
     }
 }
-  
-@media print {
-    .hidden-for-print {
-        display: block;
-    }
-}
+

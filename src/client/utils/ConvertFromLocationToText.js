@@ -6,7 +6,7 @@ export function ConvertFromLocationToText(textString) {
         case 'gong-kinh': return 'Gọng kính';
         case 'trong-kinh': return 'Tròng kính';
         case 'kinh-ram': return 'Kính râm';
-        case 'kinh-tre-em': return 'Gọng kính trẻ em';
+        case 'kinh-tre-em': return 'Kính trẻ em';
         case 'gong-kinh-tre-em': return 'Gọng kính trẻ em'
     }
  

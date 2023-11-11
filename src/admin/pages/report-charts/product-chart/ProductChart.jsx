@@ -60,6 +60,11 @@ const ProductChart = () => {
       name: item?.name,
       quantity: item?.total_quantity_sell,
     }))
+
+    const [size, setSize] = useState(5)
+    const customTextPagination = {
+      items_per_page: 'sản phẩm'
+    }
   
   return (
     <div className='product-chart'>
@@ -72,19 +77,25 @@ const ProductChart = () => {
       <div className='export-excel'>
       <ReactHTMLTableToExcel
         id="exportButton"
-        className="exportButton"
+        className="exportButton" 
         table="antdTableExample"
         filename="excelFile"
         sheet="Sheet"
-        buttonText="Export to Excel"
+        buttonText={<SiMicrosoftexcel className='btn-excel'/>}
       />
       </div>
       <Table
         columns={columns}
         dataSource={data}
         pagination={{
-          pageSize: 5,
-          total: data?.length
+          pageSize: size,
+          total: data?.length,
+          pageSizeOptions: ['5', '10', '20'],
+          showSizeChanger: true,
+          onShowSizeChange: (currentPage, size) => {
+            setSize(size)
+          },
+          locale: {...customTextPagination}
         }}
         locale={{emptyText: 'KHÔNG CÓ SẢN PHẨM NÀO TRONG THỜI GIAN NÀY'}}
       />

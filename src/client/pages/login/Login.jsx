@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux'
 import { message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { loginClient } from '../../../redux/slice/client/authClientSlice'
+import { useState } from 'react'
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
 
 const schema = yup
   .object({
@@ -49,6 +51,15 @@ const Login = () => {
     })
   }
 
+  const [eye, setEye] = useState(false)
+    const handleChangeEye = () => {
+        if(eye) {
+            setEye(false)
+        } else {
+            setEye(true)
+        }
+  }
+
   return (
     <div className='login'>
       <div className='logo'>
@@ -69,7 +80,13 @@ const Login = () => {
 
           <div className='password'>
             <h4>Mật khẩu <span>*</span></h4>
-            <input className='input-password' {...register("password")} />
+            <div className='check-pass'>
+              <input type={`${eye ? 'text' : 'password'}`} {...register("password")} />
+                {
+                    eye ? <EyeInvisibleOutlined className='ic-eye' onClick={handleChangeEye}/> 
+                    : <EyeOutlined className='ic-eye' onClick={handleChangeEye}/>
+                }
+              </div>
             <p className='error'>{errors.password?.message}</p>
           </div>
 

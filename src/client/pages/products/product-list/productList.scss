@@ -1,11 +1,53 @@
-.eyeglass-frames {
-    // .title-eyeglass__frames {
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Roboto:wght@300;400;500;700&display=swap');
 
-    // }
+.eyeglass-frames {
+    .title-eyeglass__frames {
+        .title-container {
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+
+            h2 {
+                margin: 0;
+            }
+    
+            .search-product {
+                display: flex;
+                // width: 20%;
+                justify-content: flex-end;
+                position: relative;
+                padding: 10px 0;
+
+                input {
+                    width: 76.8%;
+                    height: 40px;
+                    border: none;
+                    border: solid 1px #dadada;
+                    border-radius: 9px;
+                    outline: none;
+                    padding: 5px 10px;
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 14.5px;
+
+                }
+        
+                .icon-search {
+                    position: absolute;
+                    right: 0;
+                    border: solid 1px #81c8c2;
+                    height: 50px;
+                    padding: 0 10px;
+                    border-radius: 0 9px 9px 0;
+                    color: #fff;
+                    background: #81c8c2;
+                }
+            }
+        }
+    }
 
     .all-eyeglass__frames {
         display: flex;
-        margin-top: 50px;
+        margin-top: 20px;
         justify-content: space-between;
         align-items: flex-start;
 

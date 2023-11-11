@@ -55,14 +55,14 @@ const AccountsList = () => {
   
   const columns = [
     {
-      title: 'Fullname',
+      title: 'Họ tên',
       dataIndex: 'fullname',
       key: 'fullname',
       width: 300,
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Avatar',
+      title: 'Ảnh',
       dataIndex: 'avatar',
       key: 'avatar',
       render: (avatar) => (
@@ -76,19 +76,19 @@ const AccountsList = () => {
       width: 300,
     },
     {
-      title: 'Role',
+      title: 'Vai trò',
       dataIndex: 'role',
       key: 'role',
       render: (role) => (
         <p>
           {role === 1 && 'Admin'}
-          {role === 2 && 'Staff'}
-          {role === 3 && 'Client'}
+          {role === 2 && 'Nhân viên'}
+          {role === 3 && 'Khách hàng'}
         </p>
       )
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       width: 100,
       render: (_, record) => (
@@ -126,8 +126,13 @@ const AccountsList = () => {
     setSelected(e)
   }
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
   const searchUser = (e) => {
     setKeySearch(e)
+    setCurrentPage(1)
     if(selected === 'fullname') {
       dispatch(searchUserByKey({
         name: e.target.value,
@@ -152,6 +157,10 @@ const AccountsList = () => {
     role: item?.role
   }))
 
+  const [size, setSize] = useState(5)
+  const customPaginationText = {
+    items_per_page: 'tài khoản',
+  };
 
   return (
     <div className='accounts-list'>
@@ -192,8 +201,16 @@ const AccountsList = () => {
           columns={columns} 
           dataSource={keySearch === '' ? dataListUser : dataUserByKeySearch}
           pagination={{
-            pageSize: 5,
-            total: (keySearch === '' ? dataListUser.length : dataUserByKeySearch.length)
+            pageSize: size,
+            total: (keySearch === '' ? dataListUser.length : dataUserByKeySearch.length),
+            current: currentPage,
+            pageSizeOptions: ['5', '10'],
+            showSizeChanger: true,
+            onShowSizeChange: (currentPage, size) => {
+              setSize(size)
+            },
+            locale: {...customPaginationText},
+            onChange: (page) => handlePage(page)
           }}
         />
       </div>

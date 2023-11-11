@@ -14,6 +14,8 @@ import { useState } from 'react'
 import { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print';
 import Logo from '../../../assets/img/logo-admin.jpg'
+import { QRCode } from 'antd'
+import Pdf from '../pdf/Pdf'
 
 const Confirmed = () => {
   const {VND} = useConvertToVND()
@@ -52,7 +54,7 @@ const Confirmed = () => {
   const componentRef = useRef()
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: 'Invoice',
+    documentTitle: orderByID?.order_code !== undefined ? `HĐ-${orderByID?.order_code}` : 'Hóa đơn',
   })
 
   const handlePrintInvoice = (record) => {
@@ -65,32 +67,32 @@ const Confirmed = () => {
 
   const columns = [
       {
-          title: 'Order code',
+          title: 'Mã đơn hàng',
           dataIndex: 'order_code',
           key: 'order_code',
           render: (text) => <p>{text}</p>,
       },
           {
-          title: 'Name',
+          title: 'Người nhận',
           dataIndex: 'name',
           key: 'name',
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Phone',
+          title: 'Số điện thoại',
           dataIndex: 'phone',
           key: 'phone',
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Address',
+          title: 'Địa chỉ nhận hàng',
           dataIndex: 'address',
           key: 'address',
           width: 150,
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Product',
+          title: 'Chi tiết đơn hàng',
           dataIndex: 'order_detail',
           key: 'order_detail',
           render: (record) => (
@@ -108,19 +110,19 @@ const Confirmed = () => {
           )
       },
       {
-          title: 'Price total',
+          title: 'Tổng tiền',
           dataIndex: 'total_price',
           key: 'total_price',
           render: (text) => <p>{VND.format(text)}</p>,
       },
       {
-        title: 'Ordered time',
+        title: 'Thời gian đặt hàng',
         dataIndex: 'created_at',
         key: 'created_at',
         render: (text) => <p>{ConvertToTimeVN(text)}</p>,
       },
       {
-        title: 'Confirmed time',
+        title: 'Thời gian xác nhận',
         dataIndex: 'updated_at',
         key: 'updated_at',
         render: (text) => <p>{ConvertToTimeVN(text)}</p>,
@@ -136,7 +138,7 @@ const Confirmed = () => {
           ),
       },
       {
-          title: 'Action',
+          title: 'Hành động',
           key: 'action',
           render: (_, record) => (
             <Space size="middle">
@@ -148,9 +150,14 @@ const Confirmed = () => {
       },
     ];
 
+    const [currentPage, setCurrentPage] = useState(1)
+    const handlePage = (page) => {
+      setCurrentPage(page)
+    }
     const [search, setSearch] = useState('')
     const handleSearch = (e) => {
       setSearch(e.target.value)
+      setCurrentPage(1)
       dispatch(getOrderByOrderCode({
         status: 2,
         order_code: e.target.value
@@ -170,7 +177,10 @@ const Confirmed = () => {
       created_at: new Date(item?.created_at),
       updated_at: new Date(item?.updated_at)
     }))
-
+    const [size, setSize] = useState(5)
+    const customPaginationText = {
+      items_per_page: 'đơn hàng',
+    };
   return (
     <div className='order-process'>
       <h2>ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN</h2>
@@ -183,11 +193,19 @@ const Confirmed = () => {
           columns={columns}
           dataSource={data}
           pagination={{
-            pageSize: 5,
-            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length
+            pageSize: size,
+            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length,
+            current: currentPage,
+            pageSizeOptions: ['5', '10', '20'],
+            showSizeChanger: true,
+            onShowSizeChange: (currentPage, size) => {
+              setSize(size)
+            },
+            locale: {...customPaginationText},
+            onChange: (page) => handlePage(page)
         }}
       />
-      <div className="hidden-for-print" ref={componentRef}>
+      {/* <div className="hidden-for-print" ref={componentRef}>
         <div className='invoice'>
           <div className='title-invoice'>
             <img className='logo-invoice' src={Logo} alt="" />
@@ -212,12 +230,21 @@ const Confirmed = () => {
             )}
           </div>
           <hr className='hr2'/>
-          <h4>Tổng tiền: {orderByID?.total_price}</h4>
-          <hr className='hr3'/>
-          <p>Giám đốc</p>
-          <h3>Nguyễn Khương Duy</h3>
+          <div className='price-qr'>
+            <QRCode 
+              size={125} 
+              value={'http://localhost:5173/'} 
+            />
+            <h4>Tổng tiền: {VND.format(orderByID?.total_price)}</h4>
+          </div>
+          <hr className='hr2'/>
+          <div className='position'>
+            <h3>Giám đốc</h3>
+            <p>Nguyễn Khương Duy</p>
+          </div>
         </div>
-      </div>
+      </div> */}
+      <Pdf componentRef={componentRef} orderByID={orderByID}/>
     </div>
   )
 }

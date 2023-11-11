@@ -46,20 +46,20 @@ const CategoriesList = () => {
   
   const columns = [
     {
-      title: 'Name',
+      title: 'Tên danh mục',
       dataIndex: 'name',
       key: 'name',
       width: 250,
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Description',
+      title: 'Mô tả chi tiết',
       dataIndex: 'description',
       key: 'description',
       width: 900
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       width: 50,
       render: (_, record) => (
@@ -88,8 +88,13 @@ const CategoriesList = () => {
     description: item?.description
   })) 
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
   const [categoryName, setCategoryName] = useState('')
   const searchCategory = (e) => {
+    setCurrentPage(1)
     setCategoryName(e.target.value)
     dispatch(searchCategoryByName(e.target.value))
   }
@@ -100,7 +105,10 @@ const CategoriesList = () => {
     name: item?.name,
     description: item?.description
   }))
-
+  const [size, setSize] = useState(5)
+  const customPaginationText = {
+    items_per_page: 'danh mục',
+  };
   return (
     <div className='categories-list'>
       <h2>DANH SÁCH DANH MỤC</h2>
@@ -122,8 +130,16 @@ const CategoriesList = () => {
           columns={columns} 
           dataSource={categoryName === '' ? dataListCategory : dataCategoryByNameSearch}
           pagination={{
-            pageSize: 5,
-            total: (categoryName === '' ? dataListCategory.length : dataCategoryByNameSearch.length)
+            pageSize: size,
+            total: (categoryName === '' ? dataListCategory.length : dataCategoryByNameSearch.length),
+            current: currentPage,
+            pageSizeOptions: ['5', '10'],
+            showSizeChanger: true,
+            onShowSizeChange: (currentPage, size) => {
+              setSize(size)
+            },
+            locale: {...customPaginationText},
+            onChange: (page) => handlePage(page)
           }}
         />
       </div>

@@ -4,7 +4,7 @@
     h2 {
         color: #81c8c2;
         margin: 0;
-        padding: 26.5px 0;
+        padding: 19px 0;
     }
 
     hr {
@@ -85,50 +85,26 @@
                 }
             }
 
-            .ant-space-item {
-                display: flex;
-                align-items: center;
-
-                svg {
-                    font-size: 1.2rem;
-                    padding: 5px;
-                    border-radius: 5px;
-                }
-
-                .ic-update {
-                    background: #fff;
-                    color: #6f62e1;
-                    border: solid 2px #6f62e1;
-                }
-
-                .ic-update:hover {
-                    background: #6f62e1;
-                    color: #fff;
-                }
-
-                .ic-change {
-                    background: #fff;
-                    color: #faad14;
-                    border:  solid 2px #faad14;
-                }
-
-                .ic-change:hover {
-                    background: #faad14;
-                    color: #fff;
-                }
-
-                .ic-image {
-                    background: #fff;
-                    color: #20B2AA;
-                    border:  solid 2px #20B2AA;
-                }
-
-                .ic-image:hover {
-                    background: #20B2AA;
-                    color: #fff;
-                }
-
+            .img-detail {
+                padding: 2px;
+                width: 40px;
+                height: 40px;
             }
+
+            .ic-update {
+                font-size: 1.2rem;
+                padding: 5px;
+                border-radius: 5px;
+                background: #fff;
+                color: #6f62e1;
+                border: solid 2px #6f62e1;
+            }
+
+            .ic-update:hover {
+                background: #6f62e1;
+                color: #fff;
+            }
+
         }
     }
 }

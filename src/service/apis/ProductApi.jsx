@@ -2,7 +2,7 @@ import instance from "../../service/ConfigAxios"
 
 const ProductApi = {
     getAllProduct() {
-        const url = `/admin/product-admin`
+        const url = `/admin/products-admin`
         return instance.get(url)
     },
 
@@ -35,6 +35,11 @@ const ProductApi = {
         return instance.post(url, data)
     },
 
+    searchProductByName(productName) {
+        const url = `/admin/products-by-name?productName=${productName}`
+        return instance.get(url)
+    },
+
 
     //client
     getAllProductClient() {
@@ -60,7 +65,13 @@ const ProductApi = {
     sortProductClient(data) {
         const url = `/product?category=${data.category}&shape_id=${data.shape_id}&material_id=${data.material_id}&min_price=${data?.min_price}&max_price=${data.max_price}`
         return instance.get(url)
-    }
+    },
+
+    searchProductClient(data) {
+        const url = `/product-by-name?category=${data.category}&shape_id=${data.shape_id}&material_id=${data.material_id}&min_price=${data?.min_price}&max_price=${data.max_price}&productName=${data.productName}`
+        return instance.get(url)
+    },
+    
 }
 
 export default ProductApi

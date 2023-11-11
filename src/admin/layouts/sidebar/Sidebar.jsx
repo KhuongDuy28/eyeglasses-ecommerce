@@ -2,6 +2,7 @@ import React from 'react'
 import './sideBar.scss'
 import {AiFillHome, AiFillCaretDown, AiFillCaretUp, AiFillCheckCircle} from 'react-icons/ai'
 import {BiSolidCategory, BiLogoProductHunt, BiSolidFactory, BiSolidPieChartAlt2, BiSolidErrorCircle, BiSolidSlideshow} from 'react-icons/bi'
+import {RiBillFill} from 'react-icons/ri'
 import {BsFillBagCheckFill, BsHourglassTop} from 'react-icons/bs'
 import {FaCoins} from 'react-icons/fa'
 import {RiFilePaperFill} from 'react-icons/ri'
@@ -138,7 +139,7 @@ const Sidebar = () => {
 
         <div className='role'>
           <div className='dropdown' onClick={handleDisplayOrder}>
-            <RiFilePaperFill className='ic'/> 
+            <RiBillFill className='ic'/> 
             <h3>
               XỬ LÝ ĐƠN HÀNG 
               {displayOrder === 'block' ? <AiFillCaretUp className='ic-up'/> : <AiFillCaretDown className='ic-down'/>}

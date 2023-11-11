@@ -10,6 +10,9 @@ const PaginationProducts = (props) => {
             total={props.total}
             pageSize={props.pageSize} 
             onChange={props.handlePageChange}
+            // showSizeChanger={true}
+            // pageSizeOptions={props.pageSizeOptions}
+            // onShowSizeChange={props.onShowSizeChange}
             />
         </div>
     )

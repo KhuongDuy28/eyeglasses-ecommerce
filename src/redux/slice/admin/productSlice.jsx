@@ -26,6 +26,11 @@ export const changeStatusProduct = createAsyncThunk('product/changeStatusProduct
     return res
 })
 
+export const searchProductByName = createAsyncThunk('product/searchProductByName', async(productName) => {
+    const res = await ProductApi.searchProductByName(productName)
+    return res
+})
+
 export const getAllProductByCategory = createAsyncThunk('product/getAllProductByCategory', async(id) => {
     const listProductByCategory = await ProductApi.getAllProductByCategory(id)
     return listProductByCategory
@@ -51,6 +56,12 @@ export const sortProductClient = createAsyncThunk('product/sortProductClient', a
     return res
 })
 
+export const searchProductClient = createAsyncThunk('product/searchProductClient', async(data) => {
+    console.log(data);
+    const res = await ProductApi.searchProductClient(data)
+    return res
+})
+
 const productSlice = createSlice({
     name: 'product',
     initialState: {
@@ -58,12 +69,14 @@ const productSlice = createSlice({
         //admin
         listProduct: [],
         listProductByCategory: [],
+        listProductByName: [],
         productByID: {},
         //client
         productDetailsClientByID: {},
         listProductSale: [],
         listProductClient: [],
-        listSortProductClient: []
+        listSortProductClient: [],
+        listProductByNameClient: [],
     },
     extraReducers: {
         // All Product
@@ -100,6 +113,18 @@ const productSlice = createSlice({
         [getAllProductByCategory.fulfilled]: (state, action) => {
             state.loading = false
             state.listProductByCategory = action?.payload?.data?.data
+        },
+
+
+        [searchProductByName.pending]: (state) => {
+            state.loading = true
+        },
+        [searchProductByName.rejected]: (state) => {
+            state.loading = false
+        },
+        [searchProductByName.fulfilled]: (state, action) => {
+            state.loading = false
+            state.listProductByName = action?.payload?.data?.data
         },
         
 
@@ -146,9 +171,21 @@ const productSlice = createSlice({
             state.loading = false
         },
         [sortProductClient.fulfilled]: (state, action) => {
-            console.log(action?.payload?.data?.data);
+            // console.log(action?.payload?.data?.data);
             state.loading = false
             state.listSortProductClient = action?.payload?.data?.data
+        },
+
+
+        [searchProductClient.pending]: (state) => {
+            state.loading = true
+        },
+        [searchProductClient.rejected]: (state) => {
+            state.loading = false
+        },
+        [searchProductClient.fulfilled]: (state, action) => {
+            state.loading = false
+            state.listProductByNameClient = action?.payload?.data?.data
         },
 
     }

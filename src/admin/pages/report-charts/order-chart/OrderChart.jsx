@@ -70,7 +70,7 @@ const OrderChart = () => {
         {
           data?.length !== 0
           ? <BarChart
-          width={888}
+          width={950}
           height={400}
           data={data}
           margin={{

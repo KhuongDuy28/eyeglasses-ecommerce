@@ -55,6 +55,25 @@
                     padding: 0 15px;
                 }
 
+                
+                .check-pass {
+                    width: 100%;
+                    position: relative;
+                    display: flex;
+
+                    input {
+                        width: 100%;
+                    }
+
+                    .ic-eye {
+                        position: absolute;
+                        right: 10px;
+                        top: 33%;
+                        color: #adadad;
+                    }
+
+                }
+
                 .error {
                     color: #ff2c2c;
                     font-size: 13px;

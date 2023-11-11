@@ -20,32 +20,32 @@ const Cancelled = () => {
 
   const columns = [
       {
-          title: 'Order code',
+          title: 'Mã đơn hàng',
           dataIndex: 'order_code',
           key: 'order_code',
           render: (text) => <p>{text}</p>,
       },
           {
-          title: 'Name',
+          title: 'Người nhận',
           dataIndex: 'name',
           key: 'name',
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Phone',
+          title: 'Số điện thoại',
           dataIndex: 'phone',
           key: 'phone',
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Address',
+          title: 'Địa chỉ nhận hàng',
           dataIndex: 'address',
           key: 'address',
           width: 150,
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Product',
+          title: 'Chi tiết đơn hàng',
           dataIndex: 'order_detail',
           key: 'order_detail',
           render: (record) => (
@@ -63,25 +63,25 @@ const Cancelled = () => {
           )
       },
       {
-          title: 'Price total',
+          title: 'Tổng tiền',
           dataIndex: 'total_price',
           key: 'total_price',
           render: (text) => <p>{VND.format(text)}</p>,
       },
       {
-          title: 'Ordered time',
+          title: 'Thời gian đặt hàng',
           dataIndex: 'created_at',
           key: 'created_at',
           render: (text) => <p>{ConvertToTimeVN(text)}</p>,
       },
       {
-        title: 'Cancelled time',
+        title: 'Thời gian hủy đơn hàng',
         dataIndex: 'updated_at',
         key: 'updated_at',
         render: (text) => <p>{ConvertToTimeVN(text)}</p>,
       },
       {
-          title: 'Status',
+          title: 'Trạng thái',
           dataIndex: 'status',
           key: 'status',
           render: (record) => (
@@ -92,9 +92,14 @@ const Cancelled = () => {
       }
     ];
 
+    const [currentPage, setCurrentPage] = useState(1)
+    const handlePage = (page) => {
+      setCurrentPage(page)
+    }
     const [search, setSearch] = useState('')
     const handleSearch = (e) => {
       setSearch(e.target.value)
+      setCurrentPage(1)
       dispatch(getOrderByOrderCode({
         status: 5,
         order_code: e.target.value
@@ -114,7 +119,10 @@ const Cancelled = () => {
       created_at: new Date(item?.created_at),
       updated_at: new Date(item?.updated_at),
     }))
-
+    const [size, setSize] = useState(5)
+    const customPaginationText = {
+      items_per_page: 'đơn hàng',
+    };
   return (
     <div className='order-process'>
       <h2>ĐƠN HÀNG ĐÃ HỦY</h2>
@@ -127,8 +135,16 @@ const Cancelled = () => {
           columns={columns}
           dataSource={data}
           pagination={{
-            pageSize: 5,
-            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length
+            pageSize: size,
+            total: search !== '' ? listOrderByOrderCode.length : listOrderByStatus.length,
+            current: currentPage,
+            pageSizeOptions: ['5', '10', '20'],
+            showSizeChanger: true,
+            onShowSizeChange: (currentPage, size) => {
+              setSize(size)
+            },
+            locale: {...customPaginationText},
+            onChange: (page) => handlePage(page)
         }}
       />
     </div>

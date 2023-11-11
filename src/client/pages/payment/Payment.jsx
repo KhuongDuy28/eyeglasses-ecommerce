@@ -11,6 +11,7 @@ import { getCartByUser } from '../../../redux/slice/client/cartSlice'
 import useConvertToVND from '../../hooks/useConvertToVND'
 import { orderClient } from '../../../redux/slice/client/orderSlice'
 import { message } from 'antd'
+import { Navigate } from 'react-router-dom'
 
 const {Option} = Select
 
@@ -25,6 +26,10 @@ const schema = yup
   }).required()
 
 const Payment = () => {
+  const user_id = JSON.parse(localStorage.getItem('user_id'))
+  return user_id ? <PaymentContainer /> : <Navigate to="/login" />
+}
+const PaymentContainer = () => {
   const {VND} = useConvertToVND()
   const dispatch = useDispatch()
   useEffect(() => {
@@ -131,7 +136,7 @@ const Payment = () => {
   return (
     <div className='payment'>
       <h2>THANH TOÁN</h2>
-       <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
 
           <div className='top'>
             <div className='info-payment'>

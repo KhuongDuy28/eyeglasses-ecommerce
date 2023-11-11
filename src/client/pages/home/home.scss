@@ -74,18 +74,18 @@
 
     .glasses-trend {
         margin-top: 80px;
-        background-size: cover;
         background: #c2c2c2;
-        // background-image: url('../../assets/img/background.jpg');
-        // height: 450px;
-        // background-image: url('../../assets/img/background1.png');
+        background-image: url('../../assets/img/background.jpg');
+        background-size: cover;
+        // background-position: center; /* Canh ảnh nền giữa trang */
+        background-repeat: no-repeat; /* Ngăn lặp lại ảnh nền */
 
         .title-1, h2, button {
             color: #fff;
         }
 
         .title-1 {
-            padding: 100px 110px 0 110px;
+            padding: 50px 110px 0 110px;
         }
 
         .hot-trend {
@@ -98,30 +98,13 @@
                 h2 {
                     margin: 0;
                     font-size: 2.3rem;
-                }
-            }
-
-            .choose {
-                display: flex;
-                gap: 20px;
-
-                .btn-glasses, .btn-sunglasses, .btn-eyeglasses {
-                    padding: 8px 16px;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    border: none;
-                    background-color: rgba(0, 0, 0, 0);
-                    width: 120px;
-                }
-
-                .clicked {
-                    border: solid 2px #fff;
+                    border-bottom: solid 2.5px #fff;
                 }
             }
         }
 
         .trending-glasses {
-            padding: 50px 110px;
+            padding: 50px 110px 80px 110px;
 
             .trending-products {
                 display: flex;
@@ -190,30 +173,6 @@
                             }
                         }
                     }
-                }
-            }
-    
-            .all-glasses{
-                display: flex;
-                justify-content: center;
-                margin-top: 50px;
-                height: 50px;
-    
-                .btn-all-glasses {
-                    background: #000;
-                    border: none;
-                    padding: 14px 27px;
-                    text-align: center;
-                    border-radius: 8px;
-                    font-size: 15px;
-                    font-weight: 700;
-                    height: 45px;
-                }
-    
-                .btn-all-glasses:hover {
-                    border: solid 2px #000;
-                    background: #fff;
-                    color: #000;
                 }
             }
         }

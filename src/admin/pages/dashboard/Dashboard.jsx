@@ -24,7 +24,7 @@ const Dashboard = () => {
     labels: dataTotalProduct.map((item) => item?.name),
     datasets: [{
         data: dataTotalProduct.map((item) => item?.total_product),
-        backgroundColor: ['#ff4d4f', '#9932cc', '#52c41a', '#faad14']
+        backgroundColor: ['#D3D3D3', '#D8BFD8', '#98FB98', '#FFDEAD']
     }]
   };  
 
@@ -36,7 +36,7 @@ const Dashboard = () => {
     )),
     datasets: [{
         data: dataTotalAccount.map((item) => item?.total_user),
-        backgroundColor: ['#deb887', '#ffb6c1', '#1677ff']
+        backgroundColor: ['#FFDEAD', '#FFE4E1', '#ADD8E6']
     }]
   }; 
   
@@ -50,27 +50,11 @@ const Dashboard = () => {
           <div className='total-product'>
             <p>Tổng số sản phẩm: {totalProduct}</p>
             <Pie data={dataProduct} />
-            {/* {dataTotalProduct?.map((item, index) => 
-              <p key={index} className='product__by__category'>{item?.name}: {item?.total_product}</p>
-            )} */}
           </div>
     
           <div className='total-user'>
             <p>Tổng số tài khoản: {totalAccount}</p>
             <Pie data={dataAccount} />
-            {/* {dataTotalAccount?.map((item) => 
-              <p className='product__by__category'>
-                {
-                  item?.role === 1 && 'Quản trị viên'
-                } 
-                {
-                  item?.role === 2 && 'Khách hàng'
-                }
-                {
-                  item?.role === 3 && 'Nhân viên'
-                }
-                : {item?.total_user}</p>
-            )} */}
           </div>
         </div>
       </div>

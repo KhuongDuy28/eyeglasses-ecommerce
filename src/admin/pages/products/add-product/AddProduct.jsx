@@ -164,7 +164,7 @@ const AddProduct = (props) => {
     useEffect(() => {
         if(props?.idUpdate !== '') {
             dispatch(getProductByID(props?.idUpdate)).then((res) => {
-              console.log(res.payload.data.data);
+              // console.log(res.payload.data.data);
                 reset({
                   name: res.payload.data.data.name,
                   category_id: res.payload.data.data.category_id,
@@ -302,14 +302,6 @@ const AddProduct = (props) => {
                   <div className='center'>
                   <div className='category'>
                     <h4>Danh mục</h4>
-                    {/* <select {...register("category_id")} defaultValue={''}>
-                      <option value={''} disabled>-- Lựa chọn --</option>
-                      {dataListCategory.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.name}
-                        </option>
-                      ))}
-                    </select> */}
                     <Controller
                       name="category_id"
                       control={control}
@@ -403,35 +395,9 @@ const AddProduct = (props) => {
                     <p>{errors.color?.message}</p>
                   </div>
 
-                  {/* <div className='status'>
-                    <h4>Trạng thái</h4>
-                    <Controller
-                      name="status"
-                      control={control}
-                      render={({ field }) => (
-                        <Select {...field} control={control}>
-                          {
-                            dataListStatus.map((item) => (
-                            <Option key={item.id} value={item.id}>
-                              {item.name}
-                            </Option>
-                            ))
-                          }
-                      </Select> 
-                      )}/>   
-                    <p>{errors.status?.message}</p>
-                  </div> */}
-
                   <div className='thumb'>
                     <h4>Ảnh</h4>
                     <label htmlFor="thumbnail" className='upload-file'>
-                      {/* {
-                        fileUpload ? <img src={URL.createObjectURL(fileUpload)} alt='avatar' /> : <PlusOutlined/>
-                        // : `${props.linkThumbnail !== '' ? <img src={props.linkThumbnail} alt='avatar'/> :  <PlusOutlined/>}`
-                        // props.idUpdate === '' 
-                        // ? `${fileUpload ? <img src={URL.createObjectURL(fileUpload)} alt='avatar' /> : <PlusOutlined/>}`
-                        // : `${<img src={URL.createObjectURL(getValues('thumbnail'))} alt='avatar' />}`
-                      } */}
                       { fileUpload ? <img src={URL.createObjectURL(fileUpload)} alt='avatar' /> :
                         (props.linkThumbnail !== undefined ? <img src={props.linkThumbnail} alt='avatar'/> :  <PlusOutlined/>)
                       }

@@ -3,12 +3,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 
     h2 {
         color: #81c8c2;
         margin: 0;
-        padding: 26.5px 0;
+        width: 100%;
+        padding: 19px 0;
     }
 
     hr {
@@ -37,10 +37,20 @@
         justify-content: end;
 
         .exportButton {
-            padding: 10px;
-            border: solid 1px #81c8c2;
-            color: #81c8c2;
-            border-radius: 9px;
+            padding: 0;
+
+            .btn-excel {
+                font-size: 1.5rem;
+                padding: 7.5px;
+                border: solid 1px #81c8c2;
+                color: #81c8c2;
+                border-radius: 9px;
+            }
+
+            .btn-excel:hover {
+                color: #fff;
+                background: #81c8c2;
+            }
         }
     }
 
@@ -51,9 +61,9 @@
         table {
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
-            p {
-                font-weight: 500;
-            }
+            // p {
+            //     font-weight: 500;
+            // }
         }
     } 
 }

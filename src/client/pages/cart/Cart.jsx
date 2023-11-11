@@ -14,8 +14,14 @@ import Amex from '../../assets/img/amex.jpg'
 import Discover from '../../assets/img/discover.jpg'
 import Mastercard from '../../assets/img/mastercard.jpg'
 import { message } from 'antd'
+import { Navigate } from 'react-router-dom'
 
 const Cart = () => {
+    const user_id = JSON.parse(localStorage.getItem('user_id'))
+    return user_id ? <CartContainer/> : <Navigate to={'/login'}/>
+}
+
+const CartContainer = () => {
     const {VND} = useConvertToVND()
     const navigate = useNavigate()
     const dispatch = useDispatch()

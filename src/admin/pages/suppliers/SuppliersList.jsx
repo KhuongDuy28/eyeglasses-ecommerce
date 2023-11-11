@@ -13,6 +13,7 @@ import { RxUpdate } from 'react-icons/rx'
 import { Popconfirm } from 'antd'
 import { GoTrash } from 'react-icons/go'
 import { message } from 'antd'
+import { current } from '@reduxjs/toolkit'
 
 const SuppliersList = () => {
   const dispatch = useDispatch()
@@ -42,7 +43,7 @@ const SuppliersList = () => {
   
   const columns = [
     {
-      title: 'Name',
+      title: 'Tên nhà cung cấp',
       dataIndex: 'name',
       key: 'name',
       width: 150,
@@ -54,22 +55,22 @@ const SuppliersList = () => {
       key: 'email',
     },
     {
-      title: 'Telephone',
+      title: 'Số điện thoại',
       dataIndex: 'telephone',
       key: 'telephone',
     },
     {
-      title: 'Address',
+      title: 'Địa chỉ',
       dataIndex: 'address',
       key: 'address',
     },
     {
-      title: 'Description',
+      title: 'Mô tả chi tiết',
       dataIndex: 'description',
       key: 'description',
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
@@ -100,8 +101,13 @@ const SuppliersList = () => {
     description: item?.description
   }))
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
   const [supplierName, setSupplierName] = useState('')
   const searchSupplier = (e) => {
+    setCurrentPage(1)
     setSupplierName(e.target.value)
     dispatch(searchSupplierByName(e.target.value))
   }
@@ -115,7 +121,10 @@ const SuppliersList = () => {
     address: item?.address,
     description: item?.description
   }))
-  
+  const [size, setSize] = useState(5)
+  const customPaginationText = {
+    items_per_page: 'nhà cung cấp',
+  };
   return (
     <div className='suppliers-list'>
       <h2>DANH SÁCH NHÀ CUNG CẤP</h2>
@@ -136,8 +145,16 @@ const SuppliersList = () => {
           columns={columns} 
           dataSource={supplierName === '' ? dataListSupplier : dataSupplierByNameSearch}
           pagination={{
-            pageSize: 5,
-            total: (supplierName === '' ? dataListSupplier.length : dataSupplierByNameSearch.length) 
+            pageSize: size,
+            total: (supplierName === '' ? dataListSupplier.length : dataSupplierByNameSearch.length),
+            current: currentPage,
+            pageSizeOptions: ['5', '10'],
+            showSizeChanger: true,
+            onShowSizeChange: (currentPage, size) => {
+              setSize(size)
+            },
+            locale: {...customPaginationText},
+            onChange: (page) => handlePage(page)
           }}
         />
       </div>
