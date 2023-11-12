@@ -46,6 +46,11 @@ export const getProductsSale = createAsyncThunk('product/getProductsSale', async
     return res
 })
 
+export const get10ProductNew = createAsyncThunk('product/get10ProductNew', async() => {
+    const res = await ProductApi.get10ProductNew()
+    return res
+})
+
 export const getAllProductClient = createAsyncThunk('product/getAllProductClient', async() => {
     const res = await ProductApi.getAllProductClient()
     return res
@@ -74,6 +79,7 @@ const productSlice = createSlice({
         //client
         productDetailsClientByID: {},
         listProductSale: [],
+        list10ProductNew: [],
         listProductClient: [],
         listSortProductClient: [],
         listProductByNameClient: [],
@@ -149,6 +155,18 @@ const productSlice = createSlice({
         [getProductsSale.fulfilled]: (state, action) => {
             state.loading = false
             state.listProductSale = action?.payload?.data?.data
+        },
+
+
+        [get10ProductNew.pending]: (state) => {
+            state.loading = true
+        },
+        [get10ProductNew.rejected]: (state) => {
+            state.loading = false
+        },
+        [get10ProductNew.fulfilled]: (state, action) => {
+            state.loading = false
+            state.list10ProductNew = action?.payload?.data?.data
         },
 
         

@@ -4,7 +4,7 @@ const colorNames = [
     'White', 'Cyan', 'Magenta', 'Lime', 'Indigo',
     'Teal', 'Maroon', 'Navy', 'Olive', 'Aqua',
     'Coral', 'Gold', 'Violet', 'Silver', 'Beige',
-    'Turquoise', 'Mint', 'Salmon', 'SteelBlue', 'SlateGray'
+    'Turquoise', 'Salmon', 'SteelBlue', 'SlateGray'
 ];
   
 const dataListColor = colorNames.map((color, index) => ({ 

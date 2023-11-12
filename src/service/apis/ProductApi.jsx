@@ -62,6 +62,11 @@ const ProductApi = {
         return instance.get(url)
     },
 
+    get10ProductNew() {
+        const url = `/product/10-product`
+        return instance.get(url)
+    },
+
     sortProductClient(data) {
         const url = `/product?category=${data.category}&shape_id=${data.shape_id}&material_id=${data.material_id}&min_price=${data?.min_price}&max_price=${data.max_price}`
         return instance.get(url)

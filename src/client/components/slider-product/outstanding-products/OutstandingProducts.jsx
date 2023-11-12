@@ -15,7 +15,6 @@ const OutstandingProducts = () => {
       dispatch(getProductsSale())
     }, [])
     const {listProductSale} = useSelector((state) => state?.product)
-    const data = listProductSale?.filter((item) => item?.category_id === 1)
 
     return (
         <Slider 
@@ -30,7 +29,7 @@ const OutstandingProducts = () => {
         prevArrow={<MdSkipPrevious/>}
         nextArrow={<MdSkipNext/>}
         >
-        {data.map((item) => (
+        {listProductSale.map((item) => (
         <Link to={`/products/details-product/${item?.id}`} className='element' key={item?.id}>
             <p className='sale'>SALE</p>
             <img src={item?.thumbnail} />

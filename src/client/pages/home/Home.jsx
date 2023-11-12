@@ -20,7 +20,7 @@ import {HiMinusSm} from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import {getAllProductClient, getProductsSale } from '../../../redux/slice/admin/productSlice'
+import {get10ProductNew, getAllProductClient, getProductsSale } from '../../../redux/slice/admin/productSlice'
 import { Link } from 'react-router-dom'
 
 const Home = () => {
@@ -29,12 +29,9 @@ const Home = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getProductsSale())
-    dispatch(getAllProductClient())
+    dispatch(get10ProductNew())
   }, [])
-  const {listProductSale, listProductClient} = useSelector((state) => state?.product)
-  const dataGlassesSale = listProductSale?.filter((item) => item?.category_id === 1)
-  const dataGlassesNew = listProductClient?.filter((item) => item?.category_id === 1)
-  const data10GlassesNew = dataGlassesNew?.slice(0, 10)
+  const {listProductSale, list10ProductNew} = useSelector((state) => state?.product)
 
   const dataSampleGlasses = [
     {
@@ -88,7 +85,7 @@ const Home = () => {
           </div>
           <div className='products-sale'>
             <SliderSaleProducts 
-              data={dataGlassesSale}
+              data={listProductSale}
             />
           </div>
       </div>
@@ -102,7 +99,7 @@ const Home = () => {
         </div>
         <div className='trending-glasses'>
           <div className='trending-products'>
-            {data10GlassesNew.map((item) => (
+            {list10ProductNew.map((item) => (
               <Link to={`/products/details-product/${item?.id}`} className='element' key={item?.id}>
                 {
                   item?.price_new === null 

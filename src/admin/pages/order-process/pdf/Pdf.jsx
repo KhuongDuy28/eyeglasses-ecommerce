@@ -33,10 +33,10 @@ const Pdf = React.forwardRef((props, ref) => {
               </div>
             )}
           </div>
-          {/* <hr className='hr2'/> */}
+          <hr className='hr2'/>
           <div className='price-qr'>
             <QRCode 
-              size={125} 
+              size={95} 
               value={'http://localhost:5173/'} 
             />
             <h4>Tổng tiền: {VND.format(props?.orderByID?.total_price)}</h4>

@@ -6,17 +6,16 @@ import './newProducts.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllProductClient } from '../../../../redux/slice/admin/productSlice';
+import { get10ProductNew, getAllProductClient } from '../../../../redux/slice/admin/productSlice';
 
 const NewProducts = () => {
     const {VND} = useConvertToVND()
     const dispatch = useDispatch()
     useEffect(() => {
-      dispatch(getAllProductClient())
+      dispatch(get10ProductNew())
     }, [])
-    const {listProductClient} = useSelector((state) => state?.product)
-    const dataGlassesNew = listProductClient?.filter((item) => item?.category_id === 1)
-    const data10GlassesNew = dataGlassesNew?.slice(0, 10)
+    const {list10ProductNew} = useSelector((state) => state?.product)
+
 
     return (
         <Slider 
@@ -31,7 +30,7 @@ const NewProducts = () => {
             prevArrow={<MdSkipPrevious/>}
             nextArrow={<MdSkipNext/>}
             >
-             {data10GlassesNew.map((item) => (
+             {list10ProductNew.map((item) => (
               <Link to={`/products/details-product/${item?.id}`} className='element' key={item?.id}>
                 {
                   item?.price_new === null 

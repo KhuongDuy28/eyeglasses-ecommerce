@@ -42,6 +42,12 @@
         font-size: 12.5px;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
+
+        .ant-space {
+            display: flex;
+            flex-direction: column;
+        }
+
         .status {
             font-weight: 500;
         }
@@ -73,7 +79,7 @@
             border-radius: 9px;
             border: solid 1px #4096ff;
             font-size: 12px;
-            width: 70px;
+            width: 100px;
         }
 
         .btn-transport {
@@ -83,7 +89,7 @@
             border-radius: 9px;
             border: solid 1px #4096ff;
             font-size: 12px;
-            width: 85px;
+            width: 100px;
         }
 
         .btn-successful {
@@ -110,7 +116,7 @@
             border-radius: 9px;
             border: solid 1px #ff4d4f;
             font-size: 12px;
-            width: 40px;
+            width: 100px;
         }
         
         .btn-cancel:hover {
@@ -121,7 +127,8 @@
         .btn-print {
            display: flex;
            font-size: 1.65rem;
-           padding: 5px;
+           width: 100px;
+           padding: 5px 0;
            border: solid 1px #81c8c2;
            border-radius: 9px;
            color: #81c8c2;
