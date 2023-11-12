@@ -147,7 +147,10 @@ const SlidersList = () => {
           <PlusOutlined />
           <span>Thêm</span>
         </button>
-        <AddSlider isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+        <AddSlider 
+          isModalOpen={isModalOpen} 
+          setIsModalOpen={setIsModalOpen}
+        />
       </div>
       <div className='table-slider'>
         <Table 

@@ -2,7 +2,8 @@ import React from 'react'
 import './sideBar.scss'
 import {AiFillHome, AiFillCaretDown, AiFillCaretUp, AiFillCheckCircle} from 'react-icons/ai'
 import {BiSolidCategory, BiLogoProductHunt, BiSolidFactory, BiSolidPieChartAlt2, BiSolidErrorCircle, BiSolidSlideshow} from 'react-icons/bi'
-import {RiBillFill} from 'react-icons/ri'
+import {RiBillFill, RiShapeFill} from 'react-icons/ri'
+import {IoShapes} from 'react-icons/io5'
 import {BsFillBagCheckFill, BsHourglassTop} from 'react-icons/bs'
 import {FaCoins} from 'react-icons/fa'
 import {RiFilePaperFill} from 'react-icons/ri'
@@ -132,6 +133,18 @@ const Sidebar = () => {
                 className='nav__element'>
                 <BiSolidSlideshow/> 
                 <span>Slider</span>
+              </NavLink>
+              <NavLink 
+                to={'/admin/management/material'} 
+                className='nav__element'>
+                <RiShapeFill/> 
+                <span>Chất liệu</span>
+              </NavLink>
+              <NavLink 
+                to={'/admin/management/shape'} 
+                className='nav__element'>
+                <IoShapes/> 
+                <span>Hình dáng</span>
               </NavLink>
             </div>
           </div>

@@ -17,8 +17,8 @@ import { addProduct, getAllProduct, getProductByID, searchProductByName, updateP
 import { Select } from 'antd'
 import MenuItem from '@mui/material/MenuItem';
 import dataListColor from '../../../utils/Color'
-import dataListShape from '../../../utils/Shape'
-import dataListMaterial from '../../../utils/Material'
+import { getAllMaterial } from '../../../../redux/slice/admin/materialSlice'
+import { getAllShape } from '../../../../redux/slice/admin/shapeSlice'
 
 const {Option} = Select
 
@@ -52,9 +52,13 @@ const AddProduct = (props) => {
     useEffect(() => {
       dispatch(getAllCategoty())
       dispatch(getAllSupplier())
+      dispatch(getAllMaterial())
+      dispatch(getAllShape())
     }, [])
     const dataListCategory = useSelector((state) => state?.category?.listCategory)
     const dataListSupplier = useSelector((state) => state?.supplier?.listSupplier)
+    const dataListMaterial = useSelector((state) => state?.material?.listMaterial)
+    const dataListShape = useSelector((state) => state?.shape?.listShape)
 
     const {
         register,

@@ -192,7 +192,7 @@ const Transported = () => {
         }}
       />
 
-      <Pdf componentRef={componentRef} orderByID={orderByID}/>
+      <Pdf ref={componentRef} orderByID={orderByID}/>
 
     </div>
   )

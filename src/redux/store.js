@@ -13,6 +13,8 @@ import orderSlice from "./slice/client/orderSlice";
 import orderProcessSlice from "./slice/admin/orderProcessSlice";
 import reportSlice from "./slice/admin/reportSlice";
 import favoritesProductSlice from "./slice/client/favoritesProductSlice";
+import shapeSlice from "./slice/admin/shapeSlice";
+import materialSlice from "./slice/admin/materialSlice";
 
 const Store = configureStore({
     reducer: {
@@ -25,6 +27,8 @@ const Store = configureStore({
         slider: sliderSlice.reducer,
         orderProcess: orderProcessSlice.reducer,
         report: reportSlice.reducer,
+        shape: shapeSlice.reducer,
+        material: materialSlice.reducer,
 
         // CLIENT
         authClient: authClientSlice.reducer,

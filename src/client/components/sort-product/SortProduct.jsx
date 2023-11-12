@@ -8,11 +8,17 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getAllCategotyClient } from '../../../redux/slice/admin/categorySlice';
-import dataListShape from '../../../admin/utils/Shape';
-import dataListMaterial from '../../../admin/utils/Material';
+import { getAllMaterialClient } from '../../../redux/slice/admin/materialSlice';
+import { getAllShapeClient } from '../../../redux/slice/admin/shapeSlice';
 
 const SortProduct = (props) => {
     const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getAllMaterialClient())
+        dispatch(getAllShapeClient())
+    }, [])
+    const {listMaterialClient} = useSelector((state) => state?.material)
+    const {listShapeClient} = useSelector((state) => state?.shape)
     // const location = useLocation()
     // const arrLocation = location.pathname.split('/')
     // const lastLocation = arrLocation[arrLocation.length - 1]
@@ -115,7 +121,7 @@ const SortProduct = (props) => {
         <div className='sort'>
             <div className='sort-by-shape'>
                 <p>Hình dáng</p>
-                {dataListShape.map((item) => 
+                {listShapeClient.map((item) => 
                     <Radio value={item?.id} checked={shape == item?.id} onClick={getShape} >{item?.name}</Radio>
                 )}
                 {/* <Radio value='1' checked={shape === "1"} onClick={getShape} >Browline</Radio>
@@ -126,7 +132,7 @@ const SortProduct = (props) => {
 
             <div className='sort-by-material'>
                 <p>Chất liệu</p>
-                {dataListMaterial.map((item) => 
+                {listMaterialClient.map((item) => 
                     <Radio value={item?.id} checked={material == item?.id} onClick={getMaterial} >{item?.name}</Radio>
                 )}
                 {/* <Radio value='1' checked={material === "1"} onClick={getMaterial} >Acetate</Radio>

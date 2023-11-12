@@ -27,6 +27,9 @@ import Confirmed from "../admin/pages/order-process/confirmed/Confirmed";
 import Transported from "../admin/pages/order-process/transported/Transported";
 import Successful from "../admin/pages/order-process/successful/Successful";
 import Cancelled from "../admin/pages/order-process/cancelled/Cancelled";
+import MaterialsList from "../admin/pages/materials/MaterialsList";
+import ShapesList from "../admin/pages/shapes/ShapesList";
+import NotFound from "../not-found/NotFound";
 
 const Routers = createBrowserRouter([
     {
@@ -124,6 +127,14 @@ const Routers = createBrowserRouter([
                 element: <SlidersList/>
             },
             {
+                path: '/admin/management/shape',
+                element: <ShapesList/>
+            },
+            {
+                path: '/admin/management/material',
+                element: <MaterialsList/>
+            },
+            {
                 path: '/admin/statistical/sales',
                 element: <SalesChart/>
             },
@@ -160,6 +171,10 @@ const Routers = createBrowserRouter([
     {
         path: '/login-admin',
         element: <LoginAdmin/>
+    },
+    {
+        path: '*',
+        element: <NotFound/>
     }
 ])
 

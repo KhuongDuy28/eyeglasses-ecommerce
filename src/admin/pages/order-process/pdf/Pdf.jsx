@@ -5,11 +5,11 @@ import { QRCode } from 'antd'
 import { ConvertToTimeVN } from '../../../utils/ConvertTimeVn'
 import useConvertToVND from '../../../../client/hooks/useConvertToVND'
 
-const Pdf = React.forwardRef((props) => {
+const Pdf = React.forwardRef((props, ref) => {
   // console.log(props);
   const {VND} = useConvertToVND()
   return (
-    <div className="hidden-for-print" ref={props?.componentRef}>
+    <div className="hidden-for-print" ref={ref}>
         <div className='invoice'>
           <div className='title-invoice'>
             <img className='logo-invoice' src={Logo} alt="" />

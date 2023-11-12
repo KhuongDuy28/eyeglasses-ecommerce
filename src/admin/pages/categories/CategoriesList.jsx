@@ -98,19 +98,13 @@ const CategoriesList = () => {
   useEffect(() => {
     dispatch(getAllCategoty())
   }, [])
-  const data = useSelector((state) => state?.category?.listCategory)
-  const dataListCategory = data.map((item) => ({
+  const {listCategory, categoryByNameSearch} = useSelector((state) => state?.category)
+  const dataListCategory = (categoryName !== '' ? categoryByNameSearch : listCategory)?.map((item) => ({
     key: item.id,
     name: item?.name,
     description: item?.description
   })) 
 
-  const categoryByNameSearch = useSelector((state) => state?.category?.categoryByNameSearch)
-  const dataCategoryByNameSearch = categoryByNameSearch.map((item) => ({
-    key: item.id,
-    name: item?.name,
-    description: item?.description
-  }))
   const [size, setSize] = useState(5)
   const customPaginationText = {
     items_per_page: 'danh mục',
@@ -139,10 +133,10 @@ const CategoriesList = () => {
       <div className='table-category'>
         <Table 
           columns={columns} 
-          dataSource={categoryName === '' ? dataListCategory : dataCategoryByNameSearch}
+          dataSource={dataListCategory}
           pagination={{
             pageSize: size,
-            total: (categoryName === '' ? dataListCategory.length : dataCategoryByNameSearch.length),
+            total: (categoryName !== '' ? categoryByNameSearch.length : listCategory.length),
             current: currentPage,
             pageSizeOptions: ['5', '10'],
             showSizeChanger: true,
