@@ -12,8 +12,10 @@ import { Space } from 'antd'
 import { Popconfirm } from 'antd'
 import {RxUpdate} from 'react-icons/rx'
 import {GoTrash} from 'react-icons/go'
-import DefaultAvatar from '../../assets/img/account.png'
-import UpdateAccount from './update-account/updateAccount'
+import User1 from '../../assets/img/user-1.png'
+import User2 from '../../assets/img/user-2.png'
+import User3 from '../../assets/img/user-3.png'
+import UpdateAccount from './update-account/UpdateAccount'
 import { Select } from 'antd'
 import {AiOutlineFilter} from 'react-icons/ai'
 import {RiLockPasswordLine} from 'react-icons/ri'
@@ -95,33 +97,33 @@ const AccountsList = () => {
       title: 'Họ tên',
       dataIndex: 'fullname',
       key: 'fullname',
-      width: 300,
+      width: 350,
       render: (text) => <a>{text}</a>,
     },
-    {
-      title: 'Ảnh',
-      dataIndex: 'avatar',
-      key: 'avatar',
-      render: (avatar) => (
-        avatar ? <img style={{ width: 40}} src={avatar} /> : <img style={{ width: 40}} src={DefaultAvatar} />
-      )
-    },
+    // {
+    //   title: 'Ảnh',
+    //   dataIndex: 'avatar',
+    //   key: 'avatar',
+    //   render: (avatar) => (
+    //     avatar ? <img style={{ width: 40}} src={avatar} /> : <img style={{ width: 40}} src={DefaultAvatar} />
+    //   )
+    // },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      width: 300,
+      width: 350,
     },
     {
       title: 'Vai trò',
       dataIndex: 'role',
       key: 'role',
       render: (role) => (
-        <p>
-          {role === 1 && 'Admin'}
-          {role === 2 && 'Nhân viên'}
-          {role === 3 && 'Khách hàng'}
-        </p>
+        <>
+          {role === 1 && <div className='role'><img style={{ width: 40}} src={User1} /> Quản lý </div>}
+          {role === 2 && <div className='role'><img style={{ width: 40}} src={User2} /> Nhân viên </div>}
+          {role === 3 && <div className='role'><img style={{ width: 40}} src={User3} /> Khách hàng </div>}
+        </>
       )
     },
     {

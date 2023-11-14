@@ -30,13 +30,13 @@ const Dashboard = () => {
 
   const dataAccount = {
     labels: dataTotalAccount.map((item) => (
-        item?.role === 1 ? 'Quản trị viên' 
+        item?.role === 1 ? 'Quản lý' 
         : (item?.role === 2 ? 'Nhân viên' 
         : (item?.role === 3 && 'Khách hàng'))
     )),
     datasets: [{
         data: dataTotalAccount.map((item) => item?.total_user),
-        backgroundColor: ['#FFDEAD', '#FFE4E1', '#ADD8E6']
+        backgroundColor: ['#FFDEAD', '#EECFCC', '#ADD8E6']
     }]
   }; 
   

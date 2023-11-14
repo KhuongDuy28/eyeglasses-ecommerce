@@ -50,7 +50,7 @@ const Sidebar = () => {
           <img src={Logo} alt="" />
         </NavLink>
         <h2>
-          {role === 1 ? 'ADMIN' : 'STAFF'}
+          {role === 1 ? 'QUẢN LÝ' : 'NHÂN VIÊN'}
         </h2>
       </div>
 

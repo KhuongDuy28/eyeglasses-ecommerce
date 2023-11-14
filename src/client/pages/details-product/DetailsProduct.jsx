@@ -27,16 +27,21 @@ const DetailsProduct = () => {
     dispatch(getProductDetailsClientByID(id))
   }, [id])
   const dataProductDetails = useSelector((state) => state?.product?.productDetailsClientByID)
-  // console.log(dataProductDetails);
+  console.log(dataProductDetails);
 
   const [active, setActive] = useState(0)
   const [mainPicture, setMainPicture] = useState(undefined)
   const handleCheckImage = (index) => {
     setActive(index)
-    setMainPicture(dataProductDetails?.image_product[index]?.image)
+    if((dataProductDetails?.image_product).length > 0) {
+      setMainPicture(dataProductDetails?.image_product[index]?.image)
+    }
+    else {
+      setMainPicture(dataProductDetails?.thumbnail)
+    }
   }
 
-  // console.log(mainPicture, dataProductDetails?.image_product?.[0].image);
+  console.log(mainPicture);
   const [quantityProduct, setQuantityProduct] = useState(1)
   const changeQuantityProduct = (e) => {
     setQuantityProduct(e.target.value)
@@ -124,14 +129,16 @@ const DetailsProduct = () => {
         <div className='details-picture'>
           <Image
             width={505}
-            src={mainPicture ===  undefined ? dataProductDetails?.image_product?.[0].image : mainPicture}
+            src={mainPicture ===  undefined ? dataProductDetails?.thumbnail : mainPicture}
           />
           <div className='extra-picture'>
             {
-              (dataProductDetails?.image_product)?.map((item, index) => (
+              (dataProductDetails?.image_product)?.length > 0 
+              ? (dataProductDetails?.image_product)?.map((item, index) => (
                 <img className={active == index ? 'active' : ''} 
                 src={item.image} key={item?.id} onClick={() => handleCheckImage(index)} width={115}/>
               ))
+              : <></>
             }
           </div>
         </div>

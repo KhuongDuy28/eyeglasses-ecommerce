@@ -12,6 +12,7 @@ import useConvertToVND from '../../hooks/useConvertToVND'
 import { orderClient } from '../../../redux/slice/client/orderSlice'
 import { message } from 'antd'
 import { Navigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const {Option} = Select
 
@@ -55,22 +56,29 @@ const PaymentContainer = () => {
     resolver: yupResolver(schema)
   })
 
+  const [idTinh, setIdTinh] = useState()
   const selectTinhThanhpho = (matp) => {
-    setValue('tinh', matp); // Đặt giá trị trong React Hook Form
     dispatch(getAllQuanByTinh(matp))
+    setValue('tinh', matp); // Đặt giá trị trong React Hook Form
+    setIdTinh((listTinh?.find((item) => item?.matp === matp))?.id)
   }
 
+  const [idQuan, setIdQuan] = useState()
   const selectQuanHuyen = (maqh) => {
-    setValue('quan', maqh);
     dispatch(getAllXaByQuan(maqh))
+    setValue('quan', maqh);
+    setIdQuan((listQuanByTinh?.find((item) => item?.maqh === maqh))?.id)
   }
 
   const onSubmit = (data) => {
+    // console.log(data);
     const dataOrder = {
       name: data.name,
       phone: data.phone,
-      tinh: data.tinh,
-      quan: data.quan,
+      tinh: idTinh,
+      quan: idQuan,
+      // tinh: data.tinh,
+      // quan: data?.quan,
       xa: data.xa,
       duong: data.address,
       note: data.note
@@ -87,6 +95,7 @@ const PaymentContainer = () => {
           quan: '',
           xa: '',
           address: '',
+          note: ''
         })
       } else {
         message.error('Đặt hàng thất bại')

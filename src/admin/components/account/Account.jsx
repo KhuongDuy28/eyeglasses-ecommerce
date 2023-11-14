@@ -1,6 +1,7 @@
 import React from 'react'
 import './account.scss'
-import logoAccount from '../../assets/img/account1.jpg'
+import logoAccount1 from '../../assets/img/user-1.png'
+import logoAccount2 from '../../assets/img/user-2.png'
 import {BsSun} from 'react-icons/bs'
 import {IoMdNotificationsOutline, IoMdLogOut, IoMdSettings} from 'react-icons/io'
 import { Dropdown } from 'antd'
@@ -21,11 +22,12 @@ const Account = () => {
     setIsOpen(data)
   }
 
+  const role = JSON.parse(localStorage.getItem('role'))
   return (
     <div className='admin-account'>
       <IoMdNotificationsOutline/>
       <BsSun/>
-      <img src={logoAccount} onClick={openDropdownAccount}/>
+      <img src={role === 1 ? logoAccount1 : logoAccount2} onClick={openDropdownAccount}/>
       <DropdownCustom isOpen={isOpen} getDataDropdownCustom={getDataDropdownCustom}/>
     </div>
   )

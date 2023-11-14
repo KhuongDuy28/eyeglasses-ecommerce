@@ -120,6 +120,14 @@
                 }
             }
 
+            .role {
+                width: 150px;
+                display: flex;
+                align-items: center;
+                column-gap: 20px;
+                text-align: start;
+            }
+
             .ant-space-item {
                 display: flex;
                 align-items: center;

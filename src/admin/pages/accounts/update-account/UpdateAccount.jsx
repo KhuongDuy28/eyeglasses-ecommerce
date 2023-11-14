@@ -46,15 +46,15 @@ const UpdateAccount = (props) => {
   const dataListRole = [
     {
       id: 1,
-      name: 'Admin'
+      name: 'Quản lý'
     },
     {
       id: 2,
-      name: 'Staff'
+      name: 'Nhân viên'
     },
     {
       id: 3,
-      name: 'Client'
+      name: 'Khách hàng'
     }
   ]
 
@@ -76,7 +76,7 @@ const UpdateAccount = (props) => {
 
   useEffect(() => {
       dispatch(getUserByID(props?.idUpdate)).then((res) => {
-        console.log(res);
+        // console.log(res);
           reset({
             fullname: res.payload.data.data.fullname,
             email: res.payload.data.data.email,
@@ -85,11 +85,11 @@ const UpdateAccount = (props) => {
       })  
   }, [props?.idUpdate])
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const onFileChange = (e) => {
-    setValue('avatar', e.target.files[0]);
-    setSelectedFile(e.target.files[0]);
-  };
+  // const [selectedFile, setSelectedFile] = useState(null);
+  // const onFileChange = (e) => {
+  //   setValue('avatar', e.target.files[0]);
+  //   setSelectedFile(e.target.files[0]);
+  // };
 
   const onSubmit = (data) => {
       const dataUpdate = {
@@ -124,7 +124,7 @@ const UpdateAccount = (props) => {
         onCancel={handleCancel}
         footer={null}>
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className='avatar'>
+            {/* <div className='avatar'>
             <label htmlFor="avatar" className='custom-file-upload'>
             {
             selectedFile ? 
@@ -146,7 +146,7 @@ const UpdateAccount = (props) => {
                   />
                 )}
               />
-            </div>
+            </div> */}
 
             <div className='info-account'>
               <div className='fullname'>

@@ -35,15 +35,15 @@ const AddAccount = (props) => {
   const dataListRole = [
     {
       id: 1,
-      name: 'Admin'
+      name: 'Quản lý'
     },
     {
       id: 2,
-      name: 'Staff'
+      name: 'Nhân viên'
     },
     {
       id: 3,
-      name: 'Client'
+      name: 'Khách hàng'
     }
   ]
 
@@ -64,29 +64,11 @@ const AddAccount = (props) => {
       }
   })
 
-  // useEffect(() => {
-  //     if(props?.idUpdate !== '') {
-  //         dispatch(getUserByID(props?.idUpdate)).then((res) => {
-  //             reset({
-  //               fullname: res.payload.data.data.fullname,
-  //               email: res.payload.data.data.email,
-  //               role: res.payload.data.data.role,
-  //             })
-  //         })
-  //     } else {
-  //         reset({
-  //           fullname: '',
-  //           email: '',
-  //           password: '',
-  //           role: ''
-  //         })
-  //     }
-  // }, [props?.idUpdate])
-  const [selectedFile, setSelectedFile] = useState(null);
-  const onFileChange = (e) => {
-    setValue('avatar', e.target.files[0]);
-    setSelectedFile(e.target.files[0]);
-  };
+  // const [selectedFile, setSelectedFile] = useState(null);
+  // const onFileChange = (e) => {
+  //   setValue('avatar', e.target.files[0]);
+  //   setSelectedFile(e.target.files[0]);
+  // };
 
   const onSubmit = (data) => {
     // if(props.idUpdate === '') {
@@ -102,27 +84,6 @@ const AddAccount = (props) => {
                 message.error('Thêm tài khoản thất bại')
             }
         })
-    // } else if(props.idUpdate !== '') {
-    //     const dataUpdate = {
-    //       fullname: data.fullname,
-    //       email: data.email,
-    //       role: data.role
-    //     }
-    //     dispatch(updateUser({
-    //         id: props?.idUpdate,
-    //         dataUpdate: dataUpdate
-    //     })).then((res) => {
-    //         if(res.payload?.status === 200) {
-    //             handleCancel()
-    //             message.success('Cập nhật tài khoản thành công')
-    //             dispatch(getAllUser())
-    //         } else if(res.payload === undefined) {
-    //           message.warning('Địa chỉ Email đã được đăng ký')
-    //         } else {
-    //           message.error('Cập nhật tài khoản thất bại')
-    //         }
-    //     })
-    // }
   }
 
 
@@ -136,7 +97,7 @@ const AddAccount = (props) => {
         onCancel={handleCancel}
         footer={null}>
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className='avatar'>
+            {/* <div className='avatar'>
             <label htmlFor="avatar" className='custom-file-upload'>
             {
             selectedFile ? 
@@ -158,7 +119,7 @@ const AddAccount = (props) => {
                   />
                 )}
               />
-            </div>
+            </div> */}
 
             <div className='info-account'>
               <div className='fullname'>

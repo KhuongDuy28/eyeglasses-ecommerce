@@ -72,7 +72,13 @@ const Confirmed = () => {
           key: 'order_code',
           render: (text) => <p>{text}</p>,
       },
-          {
+      {
+          title: 'Tài khoản đặt hàng',
+          dataIndex: 'user',
+          key: 'user',
+          render: (text) => <p>{text}</p>,
+      },
+      {
           title: 'Người nhận',
           dataIndex: 'name',
           key: 'name',
@@ -167,6 +173,7 @@ const Confirmed = () => {
     const data = (search !== '' ? listOrderByOrderCode : listOrderByStatus)?.map((item) => ({
       key: item?.id,
       order_code: item?.order_code,
+      user: item?.user?.email,
       name: item?.name,
       phone: item?.phone,
       order_detail: item?.order_detail,

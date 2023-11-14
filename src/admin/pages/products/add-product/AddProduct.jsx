@@ -170,22 +170,27 @@ const AddProduct = (props) => {
         // console.log(dataUpdateProduct.image_product);
         if(props.idUpdate === '') {
             dispatch(addProduct(dataAddProduct)).then((res) => {
+              // console.log(res);
               if(res.payload?.status === 200) {
                 message.success('Thêm sản phẩm thành công')
                 handleCancel()
                 reset()
                 dispatch(getAllProduct())
+              } else if(res.payload?.status === undefined) {
+                message.error('Giá bán Sale không thể lớn hơn giá Giá bán Gốc')
               } else {
                 message.error('Thêm sản phẩm thất bại')
               }
             })
         } else if(props.idUpdate !== '') {
             dispatch(updateProduct(dataUpdateProduct)).then((res) => {
-              console.log(res);
+              // console.log(res);
               if(res.payload?.status === 200) {
                   handleCancel()
                   message.success('Cập nhật sản phẩm thành công')
                   dispatch(getAllProduct())
+              } else if(res.payload?.status === undefined) {
+                  message.error('Giá bán Sale không thể lớn hơn giá Giá bán Gốc')
               } else {
                   message.error('Cập nhật sản phẩm thất bại')
               }

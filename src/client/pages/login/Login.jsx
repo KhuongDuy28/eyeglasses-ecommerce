@@ -45,6 +45,7 @@ const Login = () => {
               }
           } else {
               message.error('Đăng nhập thất bại')
+              localStorage.clear()
           }
       }
         
