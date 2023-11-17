@@ -29,6 +29,13 @@ const CartApi = {
         })
     },
 
+    addMultipleProductOfCart(data) {
+        data.map((product) => {
+            const url = `/cart`
+            return instance.post(url, product)
+        })
+    },
+
 }
 
 export default CartApi

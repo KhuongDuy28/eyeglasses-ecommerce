@@ -1,7 +1,7 @@
 .your-products {
     display: flex;
     flex-direction: column;
-    width: 75%;
+    width: 70%;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     padding: 25px;
 
@@ -21,8 +21,18 @@
     }
 
     table {
-        font-size: 15px;
         font-weight: 500;
+
+        .ant-table-thead {
+            font-size: 18px;
+
+
+            .ant-table-cell {
+                text-align: center;
+                color: #81c8c2;
+            }
+
+        }
 
         .info {
             display: flex;
@@ -34,11 +44,6 @@
                 width: 100px;
             }
 
-            p {
-                font-size: 16px;
-                font-weight: 600;
-                color: #81c8c2;
-            }
         }
     }
 }
@@ -53,7 +58,7 @@
     align-items: center ;
 
     .btn-delete__multiple {
-        padding: 15px 20px;
+        padding: 12.5px 37.5px;
         color: #fff;
         background: #000;
         border: none;

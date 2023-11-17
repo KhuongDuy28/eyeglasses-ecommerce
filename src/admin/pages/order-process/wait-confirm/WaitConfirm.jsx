@@ -54,9 +54,12 @@ const WaitConfirm = () => {
         },
         {
           title: 'Tài khoản đặt hàng',
-          dataIndex: 'user',
-          key: 'user',
-          render: (text) => <p>{text}</p>,
+          dataIndex: 'email',
+          key: 'email',
+          render: (email) => 
+            <p style={{color: `${!email ? '#ff6565' : '#000'}`}}>
+              {!email ? 'Tài khoản này đã bị xóa' : email}
+            </p>,
         },
         {
             title: 'Người nhận',
@@ -142,11 +145,11 @@ const WaitConfirm = () => {
           order_code: e.target.value
         }))
       }
-    
+      // console.log(listOrderByStatus);
       const data = (search !== '' ? listOrderByOrderCode : listOrderByStatus)?.map((item) => ({
         key: item?.id,
         order_code: item?.order_code,
-        user: item?.user?.email,
+        email: item?.user?.email,
         name: item?.name,
         phone: item?.phone,
         order_detail: item?.order_detail,

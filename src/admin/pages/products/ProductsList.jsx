@@ -79,20 +79,27 @@ const ProductsList = () => {
       title: 'Tên sản phẩm',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => <a>{text}</a>,
+      render: (text) => <p>{text}</p>,
     },
     {
       title: 'Danh mục',
       dataIndex: 'category',
       key: 'category',
+      render: (category) =>
+        <p style={{color: `${!category ? '#ff6565' : '#000'}`}}>
+          {!category ? 'Danh mục này đã bị xóa !' : category}
+        </p>,
     },
     {
       title: 'Nhà cung cấp',
       dataIndex: 'supplier',
-      key: 'supplier',
+      render: (supplier) => 
+        <p style={{color: `${!supplier ? '#ff6565' : '#000'}`}}>
+          {!supplier ? 'Nhà cung cấp này đã bị xóa !' : supplier}
+        </p>,
     },
     {
-      title: 'Ảnh nổi bật',
+      title: 'Ảnh đại diện',
       dataIndex: 'thumbnail',
       key: 'thumbnail',
       render: (thumbnail) => (
@@ -100,14 +107,14 @@ const ProductsList = () => {
       )
     },
     {
-      title: 'Ảnh chi tiết sản phẩm',
+      title: 'Ảnh chi tiết',
       dataIndex: 'image_product',
       key: 'image_product',
       width: 115,
       render: (image_product) => (
         // console.log(image_product)
-        image_product.length === 0 ? <p></p>
-        : image_product.map((item, index) => 
+        image_product?.length <= 1 ? <></>
+        : image_product?.map((item, index) => 
            <>
             {
               // console.log(item.image)
@@ -119,21 +126,21 @@ const ProductsList = () => {
       )
     },
     {
-      title: 'Giá bán sale',
-      dataIndex: 'price_new',
-      key: 'price_new',
-      render: (price_new) => 
-        <p>
-          {VND.format(price_new)}
-        </p>,
-    },
-    {
       title: 'Giá bán gốc',
       dataIndex: 'price_old',
       key: 'price_old',
       render: (price_old) => 
         <p>
           {VND.format(price_old)}
+        </p>,
+    },
+    {
+      title: 'Giá bán sale',
+      dataIndex: 'price_new',
+      key: 'price_new',
+      render: (price_new) => 
+        <p>
+          {VND.format(price_new)}
         </p>,
     },
     {
@@ -153,11 +160,19 @@ const ProductsList = () => {
       title: 'Chất liệu',
       dataIndex: 'material',
       key: 'material',
+      render: (material) =>
+        <p style={{color: `${(material?.deleted_at) ? '#ff6565' : '#000'}`}}>
+          {(material?.deleted_at) ? 'Chất liệu này đã bị xóa !' : material?.name}
+        </p>,
     },
     {
       title: 'Hình dáng',
       dataIndex: 'shape',
       key: 'shape',
+      render: (shape) =>
+      <p style={{color: `${(shape?.deleted_at) ? '#ff6565' : '#000'}`}}>
+        {(shape?.deleted_at) ? 'Hình dáng này đã bị xóa !' : shape?.name}
+      </p>,
     },
     {
       title: 'Mô tả chi tiết',
@@ -191,7 +206,7 @@ const ProductsList = () => {
     dispatch(getAllProduct())
   }, [])
   const {listProduct, listProductByName} = useSelector((state) => state?.product)
-  // console.log(listProductByName);
+  // console.log(listProduct);
   const dataListProduct = (search !== '' ? listProductByName : listProduct)?.map((item) => ({
     key: item?.id,
     name: item?.name,
@@ -203,8 +218,8 @@ const ProductsList = () => {
     price_old: item?.price_old,
     quantity: item?.quantity,
     color: item?.color,
-    material: item?.material?.name,
-    shape: item?.shape?.name,
+    material: item?.material,
+    shape: item?.shape,
     status: item?.status,
     description: item?.description
   }))

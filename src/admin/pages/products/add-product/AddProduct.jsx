@@ -10,7 +10,7 @@ import { useEffect } from 'react'
 import { addSupplier, getAllSupplier, getSupplierByID, updateSupplier } from '../../../../redux/slice/admin/supplierSlice'
 import { useState } from 'react'
 import { Upload } from 'antd'
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
+import { CameraOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
 import instance from '../../../../service/ConfigAxios'
 import { addCategory, getAllCategoty } from '../../../../redux/slice/admin/categorySlice'
 import { addProduct, getAllProduct, getProductByID, searchProductByName, updateProduct } from '../../../../redux/slice/admin/productSlice'
@@ -100,19 +100,19 @@ const AddProduct = (props) => {
             dispatch(getProductByID(props?.idUpdate)).then((res) => {
               // console.log(res.payload.data.data);
                 reset({
-                  name: res.payload.data.data.name,
-                  category_id: res.payload.data.data.category_id,
-                  supplier_id: res.payload.data.data.supplier_id,
-                  price_new: res.payload.data.data.price_new,
-                  price_old: res.payload.data.data.price_old,
-                  quantity: res.payload.data.data.quantity,
-                  color: res.payload.data.data.color,
-                  material_id: res.payload.data.data.material_id,
-                  shape_id: res.payload.data.data.shape_id,
-                  status: res.payload.data.data.status,
-                  thumbnail: res.payload.data.data.thumbnail,
-                  image_product: res.payload.data.data.image_product,
-                  description: res.payload.data.data.description
+                  name: res.payload?.data?.data?.name,
+                  category_id: res.payload?.data?.data?.category_id,
+                  supplier_id: (res.payload?.data?.data?.supplier) ? (res.payload?.data?.data?.supplier_id) : '',
+                  price_new: res.payload?.data?.data?.price_new,
+                  price_old: res.payload?.data?.data?.price_old,
+                  quantity: res.payload?.data?.data?.quantity,
+                  color: res.payload?.data?.data?.color,
+                  material_id: !(res.payload?.data?.data?.material?.deleted_at) ? (res.payload?.data?.data?.material_id) : '',
+                  shape_id: !(res.payload?.data?.data?.shape?.deleted_at) ? (res.payload?.data?.data?.shape_id) : '',
+                  status: res.payload?.data?.data?.status,
+                  thumbnail: res.payload?.data?.data?.thumbnail,
+                  image_product: res.payload?.data?.data?.image_product,
+                  description: res.payload?.data?.data?.description
                 })
             })
         } else {
@@ -177,20 +177,20 @@ const AddProduct = (props) => {
                 reset()
                 dispatch(getAllProduct())
               } else if(res.payload?.status === undefined) {
-                message.error('Giá bán Sale không thể lớn hơn giá Giá bán Gốc')
+                message.error('Giá bán sale không thể lớn hơn giá Giá bán gốc')
               } else {
                 message.error('Thêm sản phẩm thất bại')
               }
             })
         } else if(props.idUpdate !== '') {
             dispatch(updateProduct(dataUpdateProduct)).then((res) => {
-              // console.log(res);
+              console.log(res);
               if(res.payload?.status === 200) {
                   handleCancel()
                   message.success('Cập nhật sản phẩm thành công')
                   dispatch(getAllProduct())
               } else if(res.payload?.status === undefined) {
-                  message.error('Giá bán Sale không thể lớn hơn giá Giá bán Gốc')
+                  message.error('Giá bán sale không thể lớn hơn giá Giá bán gốc')
               } else {
                   message.error('Cập nhật sản phẩm thất bại')
               }
@@ -220,13 +220,13 @@ const AddProduct = (props) => {
                     </div>
 
                     <div className='price-old'>
-                      <h4>Giá cũ</h4>
+                      <h4>Giá bán gốc</h4>
                       <input type='number' {...register("price_old")} />
                       <p>{errors.price_old?.message}</p>
                     </div>
 
                     <div className='price-new'>
-                      <h4>Giá mới</h4>
+                      <h4>Giá bán sale</h4>
                       <input type='number' {...register("price_new")} />
                     </div>
 
@@ -338,7 +338,7 @@ const AddProduct = (props) => {
                     <h4>Ảnh</h4>
                     <label htmlFor="thumbnail" className='upload-file'>
                       { fileUpload ? <img src={URL.createObjectURL(fileUpload)} alt='avatar' /> :
-                        (props.linkThumbnail !== undefined ? <img src={props.linkThumbnail} alt='avatar'/> :  <PlusOutlined/>)
+                        (props.linkThumbnail !== undefined ? <img src={props.linkThumbnail} alt='avatar'/> : <CameraOutlined />)
                       }
                     </label>
                     <Controller

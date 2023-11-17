@@ -27,6 +27,12 @@ export const updateQuantity = createAsyncThunk('cart/updateQuantity', async(data
     return res
 })
 
+export const addMultipleProductOfCart = createAsyncThunk('cart/addMultipleProductOfCart', (data) => {
+    // console.log(data);
+    const res = CartApi.addMultipleProductOfCart(data)
+    return res
+})
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {

@@ -70,7 +70,7 @@ const CategoriesList = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Mô tả chi tiết',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
       width: 900
@@ -78,7 +78,7 @@ const CategoriesList = () => {
     {
       title: 'Hành động',
       key: 'action',
-      width: 50,
+      width: 135,
       render: (_, record) => (
         <Space size="middle">
           <RxUpdate className='ic-update'onClick={() => handleUpdateCategory(record)}/>

@@ -19,7 +19,7 @@ const YourProducts = () => {
 
   const columns = [
     {
-      title: 'Sản phẩm',
+      title: 'DANH SÁCH',
       dataIndex: 'product',
       render: (product) => (
         <div className='info'>
@@ -56,7 +56,7 @@ const YourProducts = () => {
 }
 
   const buttonDetete = () => (
-    <button className='btn-delete__multiple' onClick={handleDeleteMultiple}>Xóa sản phẩm</button>
+    <button className='btn-delete__multiple' onClick={handleDeleteMultiple}>Xóa</button>
   )
 
   return (

@@ -13,7 +13,9 @@ const Dashboard = () => {
     dispatch(getTotalAccount())
   }, [])
   const {dataTotalProduct, dataTotalAccount} = useSelector((state) => state?.report)
-  const totalProduct = dataTotalProduct?.reduce((total, item) => {
+
+  const dataTotalProductReality = dataTotalProduct.filter((item) => item?.name !== null)
+  const totalProduct = dataTotalProductReality?.reduce((total, item) => {
     return total = total + item?.total_product
   }, 0)
   const totalAccount = dataTotalAccount?.reduce((total, item) => {
@@ -21,21 +23,21 @@ const Dashboard = () => {
   }, 0)
 
   const dataProduct = {
-    labels: dataTotalProduct.map((item) => item?.name),
+    labels: dataTotalProductReality?.map((item) => item?.name),
     datasets: [{
-        data: dataTotalProduct.map((item) => item?.total_product),
+        data: dataTotalProductReality?.map((item) => item?.total_product),
         backgroundColor: ['#D3D3D3', '#D8BFD8', '#98FB98', '#FFDEAD']
     }]
   };  
 
   const dataAccount = {
-    labels: dataTotalAccount.map((item) => (
+    labels: dataTotalAccount?.map((item) => (
         item?.role === 1 ? 'Quản lý' 
         : (item?.role === 2 ? 'Nhân viên' 
         : (item?.role === 3 && 'Khách hàng'))
     )),
     datasets: [{
-        data: dataTotalAccount.map((item) => item?.total_user),
+        data: dataTotalAccount?.map((item) => item?.total_user),
         backgroundColor: ['#FFDEAD', '#EECFCC', '#ADD8E6']
     }]
   }; 

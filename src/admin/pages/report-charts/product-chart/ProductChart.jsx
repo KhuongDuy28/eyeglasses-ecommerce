@@ -54,7 +54,7 @@ const ProductChart = () => {
     }
   ];
 
-  // console.log(mergedArray);
+  console.log(mergedArray);
     const data = mergedArray?.map((item, index) => ({
       key: index,
       name: item?.name,

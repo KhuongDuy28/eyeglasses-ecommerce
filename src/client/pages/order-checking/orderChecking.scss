@@ -29,25 +29,22 @@
             }
         }
     
-    
-        .status-container {
-            display: flex;
-            // flex-direction: column;
-            // row-gap: 20px;
-            justify-content: space-between;
-            align-items: center;
 
-            .status {
-                font-weight: 500;
-            }
+        .status {
+            font-weight: 500;
+        }
+
+        .action-container {
+            display: flex;
 
             .btn-cancel {
                 color: #ff4d4f;
                 background: #fff;
-                padding: 10px 5px;
+                padding: 12.5px 2.5px;
                 border-radius: 9px;
                 border: solid 1px #ff4d4f;
                 font-size: 12px;
+                width: 100px;
             }
             
             .btn-cancel:hover {
@@ -56,10 +53,29 @@
                 border-radius: 9px;
             }
             
-            .cancelled {
+            .cancelled, .repurchase {
                 display: none;
             }
+    
+            .btn-buy {
+                color: #81c8c2;
+                background: #fff;
+                padding: 12.5px 2.5px;
+                border-radius: 9px;
+                border: solid 1px #81c8c2;
+                font-size: 12px;
+                width: 100px;
+            }
+    
+            .btn-buy:hover {
+                color: #fff;
+                background: #81c8c2;
+                border-radius: 9px;
+            }
         }
+
+       
+        
     }
 }
 

@@ -8,6 +8,8 @@ import useConvertToVND from '../../hooks/useConvertToVND'
 import { useState } from 'react'
 import { message } from 'antd'
 import { Image } from 'antd'
+import { Space } from 'antd'
+import { addMultipleProductOfCart, addProductInCartLogged, getCartByUser } from '../../../redux/slice/client/cartSlice'
 
 const OrderChecking = () => {
   const {VND} = useConvertToVND()
@@ -25,6 +27,20 @@ const OrderChecking = () => {
       } else {
         message.error('Hủy đơn hàng thất bại')
       }
+    })
+  }
+
+
+  const handleBuy = (record) => {
+    const dataAddCart = record?.order_detail?.map((item) => ({
+      product_id: item?.product_id,
+      quantity: 1
+    }))
+    dispatch(addMultipleProductOfCart(dataAddCart)).then((res) => {
+      // console.log(res);
+      if(res.meta?.requestStatus === "fulfilled") {
+        dispatch(getCartByUser())
+      } 
     })
   }
 
@@ -80,10 +96,9 @@ const OrderChecking = () => {
     {
       title: 'Trạng thái',
       dataIndex: 'status',
-      width: 250,
+      width: 150,
       key: 'status',
-      render: (status, record) => (
-        <div className='status-container'>
+      render: (status) => (
             <p className='status' 
               style={{
                 color: (status === 4 ? '#52c41a' 
@@ -92,22 +107,26 @@ const OrderChecking = () => {
               {status === 1 && 'Chờ xác nhận'}
               {status === 2 && 'Đang chuẩn bị hàng'}
               {status === 3 && 'Đang được vận chuyển'}
-              {status === 4 && 'Đã giao thành công'}
+              {status === 4 && 'Đơn hàng đã giao thành công'}
               {status === 5 && 'Đơn hàng đã hủy'}
             </p>
-            <button className={`btn-cancel ${record?.status === 1 ? '' : 'cancelled'}`} 
-            onClick={() => handleCancelOrder(record)}>
-              Hủy đơn hàng
-            </button>
-        </div>
       ),
     },
-    // {
-    //   key: 'action',
-    //   render: (_, record) => (
-        
-    //   ),
-    // },
+    {
+      key: 'action',
+      render: (_, record) => (
+       <div className='action-container'>
+         <button className={`btn-cancel ${record?.status === 1 ? '' : 'cancelled'}`} 
+         onClick={() => handleCancelOrder(record)}>
+            Hủy đơn hàng
+        </button>
+        <button className={`btn-buy ${record?.status === 4 || record?.status === 5  ? '' : 'repurchase'}`} 
+        onClick={() => handleBuy(record)}>
+          Mua lại
+        </button>
+       </div>
+      ),
+    },
   ];
 
   console.log(listOrder);

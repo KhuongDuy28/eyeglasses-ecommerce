@@ -7,7 +7,7 @@ import * as yup from "yup"
 import { message } from 'antd'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { PlusOutlined } from '@ant-design/icons'
+import { CameraOutlined, PlusOutlined } from '@ant-design/icons'
 import { addSupplier } from '../../../../redux/slice/admin/supplierSlice'
 import { addSlider, getAllSlider } from '../../../../redux/slice/admin/sliderSlice'
 
@@ -21,9 +21,16 @@ const schema = yup
 const AddSlider = (props) => {
     const dispatch = useDispatch()
 
+    const [fileUpload, setFileUpload] = useState(null)
+    const handleFileUpload = (e) => {
+      setValue('image', e.target.files[0])
+      setFileUpload(e.target.files[0])
+    }
+
     const handleCancel = () => {
         props.setIsModalOpen(false);
         reset()
+        setFileUpload(undefined)
     };
 
     const {
@@ -38,12 +45,6 @@ const AddSlider = (props) => {
             image: undefined
         }
     })
-
-    const [fileUpload, setFileUpload] = useState(null)
-    const handleFileUpload = (e) => {
-      setValue('image', e.target.files[0])
-      setFileUpload(e.target.files[0])
-    }
 
     const onSubmit = (data) => {
         // console.log(data);
@@ -87,7 +88,7 @@ const AddSlider = (props) => {
                     <label htmlFor="image" className='upload-file'>
                       {
                         fileUpload ? <img src={URL.createObjectURL(fileUpload)} alt='avatar' />
-                        : <PlusOutlined/>
+                        : <CameraOutlined />
                       }
                     </label>
                     <Controller
