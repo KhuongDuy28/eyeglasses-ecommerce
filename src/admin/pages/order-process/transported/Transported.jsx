@@ -200,6 +200,7 @@ const Transported = () => {
             locale: {...customPaginationText},
             onChange: (page) => handlePage(page)
         }}
+        locale={{emptyText: 'HIỆN TẠI KHÔNG CÓ ĐƠN HÀNG NÀO'}}
       />
 
       <Pdf ref={componentRef} orderByID={orderByID}/>

@@ -78,4 +78,14 @@ tspan {
     font-weight: 500;
 }
 
+// Trong file SCSS của bạn
+.ant-picker {
+    border: solid 1px #dadada !important; // Tắt border
+    box-shadow: none !important; // Tắt đổ bóng
+  
+    &.ant-picker-focused {
+        border: solid 1px #dadada !important;
+    }
+}
+
 

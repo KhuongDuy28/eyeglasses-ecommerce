@@ -141,11 +141,15 @@ const CartContainer = () => {
     };
 
     const handleDelete = () => {
+        if(arrDeleteCart.length === 0) {
+            return message.warning('Bạn chưa chọn sản phẩm để thực hiện xóa')
+        };
         dispatch(deleteMultipleProductOfCart(arrDeleteCart)).then((res) => {
             // console.log(res);
             if(res?.meta?.requestStatus === 'fulfilled') {
                 message.success('Bạn đã xóa sản phẩm khỏi Giỏ hàng')
                 dispatch(getCartByUser())
+                setDataRequest([])
             } else {
                 message.error('Thất bại')
             }

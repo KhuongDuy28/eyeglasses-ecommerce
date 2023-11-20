@@ -40,7 +40,8 @@ const SortProduct = (props) => {
                 shape_id: '',
                 min_price: minPrice,
                 max_price: maxPrice,
-                productName: props.search
+                productName: props.search,
+                orderBy: props.orderBy
             }))
         } else {
             setShape(e.target.value)
@@ -51,7 +52,8 @@ const SortProduct = (props) => {
                 shape_id: e.target.value,
                 min_price: minPrice,
                 max_price: maxPrice,
-                productName: props.search
+                productName: props.search,
+                orderBy: props.orderBy
             }))
         }
     };
@@ -67,7 +69,8 @@ const SortProduct = (props) => {
                 shape_id: shape,
                 min_price: minPrice,
                 max_price: maxPrice,
-                productName: props.search
+                productName: props.search,
+                orderBy: props.orderBy
             }))
         }
         else {
@@ -79,7 +82,8 @@ const SortProduct = (props) => {
                 shape_id: shape,
                 min_price: minPrice,
                 max_price: maxPrice,
-                productName: props.search
+                productName: props.search,
+                orderBy: props.orderBy
             }))
         }
     }
@@ -98,7 +102,8 @@ const SortProduct = (props) => {
                 shape_id: shape,
                 min_price: '',
                 max_price: '',
-                productName: props.search
+                productName: props.search,
+                orderBy: props.orderBy
             })) 
         } else {
             setMinPrice(((e.target.value).split('-'))[0])
@@ -111,7 +116,8 @@ const SortProduct = (props) => {
                 shape_id: shape,
                 min_price: ((e.target.value).split('-'))[0],
                 max_price: ((e.target.value).split('-'))[1],
-                productName: props.search
+                productName: props.search,
+                orderBy: props.orderBy
             }))  
         }
     }

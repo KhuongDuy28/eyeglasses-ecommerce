@@ -192,7 +192,7 @@ const AccountsList = () => {
             style={{ width: 120, marginLeft: '8px' }}
             onChange={changeSelectSearch}
           >
-            <Option value="fullname">Fullname</Option>
+            <Option value="fullname">Họ tên</Option>
             <Option value="email">Email</Option>
           </Select>
         </div>

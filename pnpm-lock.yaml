@@ -44,12 +44,12 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-export-table-to-excel:
+    specifier: ^1.0.6
+    version: 1.0.6
   react-hook-form:
     specifier: ^7.46.1
     version: 7.46.1(react@18.2.0)
-  react-html-table-to-excel:
-    specifier: ^2.0.0
-    version: 2.0.0(react@18.2.0)
   react-icons:
     specifier: ^4.10.1
     version: 4.10.1(react@18.2.0)
@@ -3323,21 +3323,16 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-export-table-to-excel@1.0.6:
+    resolution: {integrity: sha512-2NKyor1rFFEqYDXQq5tPoVNwwdv5kT8DWc65wAmDa9Hi0441qHj0tOxegWhpW0vlCM2TypIsw+ghzIr900U4RA==}
+    dev: false
+
   /react-hook-form@7.46.1(react@18.2.0):
     resolution: {integrity: sha512-0GfI31LRTBd5tqbXMGXT1Rdsv3rnvy0FjEk8Gn9/4tp6+s77T7DPZuGEpBRXOauL+NhyGT5iaXzdIM2R6F/E+w==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
-      react: 18.2.0
-    dev: false
-
-  /react-html-table-to-excel@2.0.0(react@18.2.0):
-    resolution: {integrity: sha512-afvcCtQWZPfen3D+UFu9YMHleQqpVm3manmiWaxr0wv76hx+BkQ0/nkOI1UyQs29pzAUWtZDiD9Eu/MqsDOEJw==}
-    peerDependencies:
-      react: ^15.x.x
-    dependencies:
-      prop-types: 15.8.1
       react: 18.2.0
     dev: false
 

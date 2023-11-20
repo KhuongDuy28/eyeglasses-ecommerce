@@ -31,28 +31,25 @@
         }
     }
 
-    .export-excel {
+   .export-excel {
         width: 100%;
         display: flex;
         justify-content: end;
 
-        .exportButton {
-            padding: 0;
-
-            .btn-excel {
-                font-size: 1.5rem;
-                padding: 7.5px;
-                border: solid 1px #81c8c2;
-                color: #81c8c2;
-                border-radius: 9px;
-            }
-
-            .btn-excel:hover {
-                color: #fff;
-                background: #81c8c2;
-            }
+        .btn-excel {
+                padding: 10px;
+                border: solid 1px #999999;
+                color: #999999;
+                border-radius: 9px;  
+                font-size: 1.25rem;
         }
-    }
+
+        .btn-excel:hover {
+            color: #fff;
+            background: #81c8c2;
+            border: solid 1px #81c8c2;
+        }
+   }
 
     .ant-table-wrapper {
         width: 100%;
@@ -61,11 +58,23 @@
         table {
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
-            // p {
-            //     font-weight: 500;
-            // }
+            .ant-table-placeholder {
+                font-size: 20px;
+                font-weight: 500;
+            }
         }
     } 
+}
+
+
+// Trong file SCSS của bạn
+.ant-picker {
+    border: solid 1px #dadada !important; // Tắt border
+    box-shadow: none !important; // Tắt đổ bóng
+  
+    &.ant-picker-focused {
+        border: solid 1px #dadada !important;
+    }
 }
 
 

@@ -214,6 +214,7 @@ const Confirmed = () => {
             locale: {...customPaginationText},
             onChange: (page) => handlePage(page)
         }}
+        locale={{emptyText: 'HIỆN TẠI KHỐNG CÓ ĐƠN HÀNG NÀO'}}
       />
       {/* <div className="hidden-for-print" ref={componentRef}>
         <div className='invoice'>

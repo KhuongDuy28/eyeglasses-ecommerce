@@ -10,10 +10,12 @@ import { message } from 'antd'
 import { Image } from 'antd'
 import { Space } from 'antd'
 import { addMultipleProductOfCart, addProductInCartLogged, getCartByUser } from '../../../redux/slice/client/cartSlice'
+import { useNavigate } from 'react-router-dom'
 
 const OrderChecking = () => {
   const {VND} = useConvertToVND()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   useEffect(() => {
     dispatch(orderHistory())
   }, [])
@@ -34,12 +36,15 @@ const OrderChecking = () => {
   const handleBuy = (record) => {
     const dataAddCart = record?.order_detail?.map((item) => ({
       product_id: item?.product_id,
-      quantity: 1
+      quantity: parseInt(item?.quantity)
     }))
     dispatch(addMultipleProductOfCart(dataAddCart)).then((res) => {
       // console.log(res);
       if(res.meta?.requestStatus === "fulfilled") {
         dispatch(getCartByUser())
+        setTimeout(() => {
+          navigate('/cart')
+        }, 1000)
       } 
     })
   }
@@ -129,7 +134,7 @@ const OrderChecking = () => {
     },
   ];
 
-  console.log(listOrder);
+  // console.log(listOrder);
 
   const data = listOrder.map((item) => ({
     key: item?.id,

@@ -16,7 +16,6 @@ const YourProducts = () => {
   }, [])
   const {listFavoritesProduct} = useSelector((state) => state?.favoritesProduct)
 
-
   const columns = [
     {
       title: 'DANH SÁCH',
@@ -44,11 +43,15 @@ const YourProducts = () => {
   };
 
   const handleDeleteMultiple = () => {
+    if(dataRequest.length === 0) {
+      return message.warning('Bạn chưa chọn sản phẩm để thực hiện xóa')
+    };
     dispatch(deleteMultipleFavoritesProduct(dataRequest)).then((res) => {
         // console.log(res);
         if(res?.meta?.requestStatus === 'fulfilled') {
             message.success('Bạn đã xóa sản phẩm khỏi danh sách Yêu thích')
             dispatch(getListFavoritesProduct())
+            setDataRequest([])
         } else {
             message.error('Thất bại')
         }
@@ -70,7 +73,7 @@ const YourProducts = () => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        locale={{emptyText: 'Bạn chưa thêm sản phẩm nào vào danh sách Yêu thích'}}
+        locale={{emptyText: 'BẠN CHƯA CÓ SẢN PHẨM NÀO TRONG DANH SÁCH YÊU THÍCH'}}
         columns={columns}
         dataSource={data}
         pagination={{

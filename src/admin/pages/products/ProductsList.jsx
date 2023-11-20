@@ -113,7 +113,7 @@ const ProductsList = () => {
       width: 115,
       render: (image_product) => (
         // console.log(image_product)
-        image_product?.length <= 1 ? <></>
+        image_product?.length === 0 ? <></>
         : image_product?.map((item, index) => 
            <>
             {
@@ -129,6 +129,15 @@ const ProductsList = () => {
       title: 'Giá bán gốc',
       dataIndex: 'price_old',
       key: 'price_old',
+      sorter: {
+        compare: (a, z) => a.price_old - z.price_old,
+        // multiple: 1,
+      },
+      // onHeaderCell: (column) => ({
+      //   onClick: () => {
+      //     console.log('Clicked on column:', column);
+      //   },
+      // }),
       render: (price_old) => 
         <p>
           {VND.format(price_old)}
@@ -138,6 +147,15 @@ const ProductsList = () => {
       title: 'Giá bán sale',
       dataIndex: 'price_new',
       key: 'price_new',
+      sorter: {
+        compare: (a, z) => a.price_new - z.price_new,
+        // multiple: 1,
+      },
+      // onHeaderCell: (column) => ({
+      //   onClick: () => {
+      //     console.log('Clicked on column:', column);
+      //   },
+      // }),
       render: (price_new) => 
         <p>
           {VND.format(price_new)}
@@ -147,6 +165,10 @@ const ProductsList = () => {
       title: 'Số lượng',
       dataIndex: 'quantity',
       key: 'quantity',
+      sorter: {
+        compare: (a, z) => a.quantity - z.quantity,
+        // multiple: 1,
+      },
     },
     {
       title: 'Màu sắc',

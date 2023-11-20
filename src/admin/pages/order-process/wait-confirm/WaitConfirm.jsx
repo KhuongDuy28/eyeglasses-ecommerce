@@ -186,6 +186,7 @@ const WaitConfirm = () => {
                     locale: {...customPaginationText},
                     onChange: (page) => handlePage(page)
                 }}
+                locale={{emptyText: 'HIỆN TẠI KHÔNG CÓ ĐƠN HÀNG NÀO'}}
             />
         </div>
     )

@@ -1,4 +1,4 @@
-import { HeartFilled, HeartOutlined, UserOutlined } from '@ant-design/icons'
+import { HeartFilled, HeartOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar } from 'antd'
 import React from 'react'
 import './accountInformation.scss'
@@ -51,7 +51,7 @@ const AccountInformation = (props) => {
             <AiFillHeart />Sản phẩm yêu thích
           </button>
           <button className={`change-info-account ${props.pageAccount === 2 ? 'active' : ''} `} onClick={openChangeProfile}>
-            <BiSolidUserCircle/>Thông đổi mật khẩu
+            <LockOutlined />Thay đổi mật khẩu
           </button>
           <button className='log-out' onClick={handleLogOut}><RiLogoutBoxRFill/>Đăng xuất</button>
         </div>

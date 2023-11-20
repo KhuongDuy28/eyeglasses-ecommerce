@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { searchProductClient, sortProductClient } from '../../../../redux/slice/admin/productSlice'
 import { getCategoryByIDClient } from '../../../../redux/slice/admin/categorySlice'
-import { BsSearch } from 'react-icons/bs'
+import { BsBarChartSteps, BsSearch } from 'react-icons/bs'
+import { Select } from 'antd'
 
 const ProductList = ({dataProducts}) => {
   const dispatch = useDispatch()
@@ -20,7 +21,7 @@ const ProductList = ({dataProducts}) => {
     dispatch(sortProductClient())
   }, [])
   const {listSortProductClient, listProductByNameClient} = useSelector((state) => state?.product)
-  console.log(listProductByNameClient);
+  // console.log(listProductByNameClient);
 
   const category_id = JSON.parse(sessionStorage.getItem('category_id'))
   useEffect(() => {
@@ -44,7 +45,7 @@ const ProductList = ({dataProducts}) => {
   const handleSearch = (e) => {
     setSearch(e.target.value)
     setCurrentPage(1)
-    if(shape !== undefined || material !== undefined || min_price !== undefined || max_price !== undefined) {
+    // if(shape !== undefined || material !== undefined || min_price !== undefined || max_price !== undefined) {
       dispatch(searchProductClient({
         category: category_id,
         productName: e.target.value,
@@ -53,16 +54,30 @@ const ProductList = ({dataProducts}) => {
         min_price: (min_price !== undefined ? min_price : ''),
         max_price: (max_price !== undefined ? max_price : '')
       }))
-    } else {
-      dispatch(searchProductClient({
-        category: category_id,
-        productName: e.target.value,
-        shape_id: '',
-        material_id: '',
-        min_price: '',
-        max_price: ''
-      }))
-    }
+    // } else {
+    //   dispatch(searchProductClient({
+    //     category: category_id,
+    //     productName: e.target.value,
+    //     shape_id: '',
+    //     material_id: '',
+    //     min_price: '',
+    //     max_price: ''
+    //   }))
+    // }
+  }
+  const [orderBy, setOrderBy] = useState('')
+  const changeOrderBy = (value) => {
+    setCurrentPage(1)
+    setOrderBy(value)
+    dispatch(searchProductClient({
+      category: category_id,
+      productName: search,
+      shape_id: (shape !== undefined ? shape : ''),
+      material_id: (material !== undefined ? material : ''),
+      min_price: (min_price !== undefined ? min_price : ''),
+      max_price: (max_price !== undefined ? max_price : ''),
+      orderBy: value
+    }))
   }
 
   // const [pageSize, setPageSize] = useState(8); // Số lượng mục trên mỗi trang
@@ -70,8 +85,7 @@ const ProductList = ({dataProducts}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const startIdx = (currentPage - 1) * pageSize;
   const endIdx = currentPage * pageSize;
-  const currentPageData = (
-    (shape !== undefined || material !== undefined || min_price !== undefined || max_price !== undefined || search !== '') 
+  const currentPageData = (((shape || material|| min_price || max_price) !== undefined || (search || orderBy) !== '')
     ?  listProductByNameClient : dataProducts).slice(startIdx, endIdx);
 
   const handlePageChange = (page) => {
@@ -79,17 +93,27 @@ const ProductList = ({dataProducts}) => {
     window.scrollTo(0, 500);
   };
 
-  // console.log(shape, material, price);
+  // console.log(shape, material, max_price, min_price);
   
   return (
     <div className='eyeglass-frames'>
       <div className='title-eyeglass__frames'>
         <div className='title-container'>
           <h2>{categoryByIDClient?.name}</h2>
-          <p>{categoryByIDClient?.description}</p>
-          <div className='search-product'>
-            <input placeholder='Nhập tên sản phẩm bạn muốn tìm kiếm' onChange={handleSearch}/>
-            <BsSearch className='icon-search'/>
+          <div className='desc-search'>
+            <p>{categoryByIDClient?.description}</p>
+            <div className='search-product'>
+              <input placeholder='Nhập tên sản phẩm bạn muốn tìm kiếm' onChange={handleSearch}/>
+              <BsSearch className='icon-search'/>
+              <Select suffixIcon={<BsBarChartSteps />} 
+                className='select-orderby' 
+                placeholder='-- Sắp xếp theo giá --' 
+                onChange={changeOrderBy}
+              >
+                <Select.Option value='asc'>Tăng dần</Select.Option>
+                <Select.Option value='desc'>Giảm dần</Select.Option>
+              </Select>
+            </div>
           </div>
         </div>
         <div>
@@ -102,6 +126,7 @@ const ProductList = ({dataProducts}) => {
                 onGetMaxPrice={onGetMaxPrice}
                 setCurrentPage={setCurrentPage} 
                 search={search}
+                orderBy={orderBy}
               />
             </div>
             <div className='eyeglass__frames-by-pagination'>
@@ -109,7 +134,8 @@ const ProductList = ({dataProducts}) => {
               <PaginationProducts 
                 currentPage={currentPage} // Trang hiện tại
                 total={
-                  ((shape !== undefined || material !== undefined || min_price !== undefined || max_price !== undefined || search !== '') ? listProductByNameClient : dataProducts).length
+                  (((shape || material|| min_price || max_price) !== undefined || (search || orderBy) !== '') 
+                  ? listProductByNameClient : dataProducts).length
                 } // Tổng số trang
                 pageSize={pageSize} // Số lượng mục trên mỗi trang
                 handlePageChange={handlePageChange} 

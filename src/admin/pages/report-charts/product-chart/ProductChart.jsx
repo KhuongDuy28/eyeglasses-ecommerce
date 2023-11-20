@@ -5,9 +5,10 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getReport } from '../../../../redux/slice/admin/reportSlice'
 import { Bar, BarChart, CartesianGrid, Legend, Rectangle, Tooltip, XAxis, YAxis } from 'recharts'
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { DatePicker, Table } from 'antd'
 import {SiMicrosoftexcel} from 'react-icons/si'
+import { useDownloadExcel } from 'react-export-table-to-excel';
+import { useRef } from 'react'
 
 const ProductChart = () => {
   const dispatch = useDispatch()
@@ -54,7 +55,7 @@ const ProductChart = () => {
     }
   ];
 
-  console.log(mergedArray);
+  // console.log(mergedArray);
     const data = mergedArray?.map((item, index) => ({
       key: index,
       name: item?.name,
@@ -65,6 +66,14 @@ const ProductChart = () => {
     const customTextPagination = {
       items_per_page: 'sản phẩm'
     }
+
+    const tableRef = useRef(null);
+
+    const { onDownload } = useDownloadExcel({
+        currentTableRef: tableRef.current,
+        filename: 'Báo cáo thống kê số lượng sản phẩm bán ra',
+        sheet: 'Users'
+    })
   
   return (
     <div className='product-chart'>
@@ -74,7 +83,7 @@ const ProductChart = () => {
         <DatePicker onChange={onChangeStartTime} placeholder='Start time'/>
         <DatePicker onChange={onChangeEndTime} placeholder='End time'/>
       </div>
-      <div className='export-excel'>
+      {/* <div className='export-excel'>
       <ReactHTMLTableToExcel
         id="exportButton"
         className="exportButton" 
@@ -83,7 +92,11 @@ const ProductChart = () => {
         sheet="Sheet"
         buttonText={<SiMicrosoftexcel className='btn-excel'/>}
       />
+      </div> */}
+      <div className='export-excel'>
+          <SiMicrosoftexcel className='btn-excel' onClick={onDownload}/>
       </div>
+
       <Table
         columns={columns}
         dataSource={data}
@@ -97,10 +110,11 @@ const ProductChart = () => {
           },
           locale: {...customTextPagination}
         }}
-        locale={{emptyText: 'KHÔNG CÓ SẢN PHẨM NÀO TRONG THỜI GIAN NÀY'}}
+        locale={{emptyText: 'KHÔNG CÓ SẢN PHẨM NÀO ĐƯỢC BÁN RA TRONG THỜI GIAN NÀY'}}
       />
+
       <div style={{ display: 'none' }}>
-        <table id="antdTableExample">
+        <table ref={tableRef}>
           <thead>
             <tr>
               <th>Tên sản phẩm</th>
@@ -108,7 +122,7 @@ const ProductChart = () => {
             </tr>
           </thead>
           <tbody>
-           {data?.map((item, index) =>               
+            {data?.map((item, index) =>               
               <tr key={index}>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>

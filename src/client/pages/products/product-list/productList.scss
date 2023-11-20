@@ -10,44 +10,68 @@
             h2 {
                 margin: 0;
             }
-    
-            .search-product {
+
+            .desc-search {
                 display: flex;
-                // width: 20%;
-                justify-content: flex-end;
-                position: relative;
-                padding: 10px 0;
+                justify-content: space-between;
 
-                input {
-                    width: 76.8%;
-                    height: 40px;
-                    border: none;
-                    border: solid 1px #dadada;
-                    border-radius: 9px;
-                    outline: none;
-                    padding: 5px 10px;
-                    font-family: 'Montserrat', sans-serif;
-                    font-size: 14.5px;
-
+                p {
+                    width: 18%;
                 }
-        
-                .icon-search {
-                    position: absolute;
-                    right: 0;
-                    border: solid 1px #81c8c2;
-                    height: 50px;
-                    padding: 0 10px;
-                    border-radius: 0 9px 9px 0;
-                    color: #fff;
-                    background: #81c8c2;
+
+                .search-product {
+                    display: flex;
+                    width: 76.8%;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    position: relative;
+                    row-gap: 20px;
+    
+                    input {
+                        width: 100%;
+                        height: 40px;
+                        border: none;
+                        border: solid 1px #dadada;
+                        border-radius: 9px;
+                        outline: none;
+                        padding: 5px 10px;
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 14.5px;
+    
+                    }
+            
+                    .icon-search {
+                        position: absolute;
+                        right: 0;
+                        border: solid 1px #81c8c2;
+                        height: 50px;
+                        padding: 0 10px;
+                        border-radius: 0 9px 9px 0;
+                        color: #fff;
+                        background: #81c8c2;
+                    }
+    
+                    .select-orderby {
+                        width: 22.5%;
+                        display: flex;
+                        justify-content: flex-end;
+    
+                        .ant-select-selector {
+                            width: 100%;
+                            height: 40px;
+                        }
+                        
+                    }
+
                 }
             }
+
         }
     }
 
     .all-eyeglass__frames {
         display: flex;
-        margin-top: 20px;
+        margin-top: 90px;
         justify-content: space-between;
         align-items: flex-start;
 
@@ -64,4 +88,30 @@
     }
 
 }
+
+
+// Trong file SCSS của bạn
+.ant-select {
+    .ant-select-selector {
+      border: solid 1px #dadada !important; // Tắt border
+      box-shadow: none !important; // Tắt đổ bóng
+    }
+  
+    &:focus,
+    &:hover {
+      .ant-select-selector {
+        outline: none; // Tắt outline khi focus hoặc hover
+      }
+    }
+  
+    &.ant-select-focused {
+      .ant-select-selector {
+        border: solid 1px #dadada !important; // Tắt border khi focus
+      }
+    }
+  }
+  
+
+
+
 

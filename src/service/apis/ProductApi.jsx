@@ -73,7 +73,8 @@ const ProductApi = {
     },
 
     searchProductClient(data) {
-        const url = `/product-by-name?category=${data.category}&shape_id=${data.shape_id}&material_id=${data.material_id}&min_price=${data?.min_price}&max_price=${data.max_price}&productName=${data.productName}`
+        // console.log(data);
+        const url = `/product-by-name?category=${data.category}&shape_id=${data.shape_id}&material_id=${data.material_id}&min_price=${data?.min_price}&max_price=${data.max_price}&productName=${data.productName}&orderBy=${data?.orderBy}`
         return instance.get(url)
     },
     

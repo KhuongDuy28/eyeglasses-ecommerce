@@ -30,7 +30,7 @@ const SalesChart = () => {
     const totalPrice = (dataReport?.total_sum_money)?.reduce((total, item) => {
         return total + item?.total_price
     }, 0) 
-    console.log(totalPrice);
+    // console.log(totalPrice);
     return (
         <div className='sales-chart'>
             <h2>DOANH SỐ BÁN HÀNG</h2>

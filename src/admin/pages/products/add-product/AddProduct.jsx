@@ -198,6 +198,8 @@ const AddProduct = (props) => {
         }
     }
 
+    const filterOption = (input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
     return (
         <>
           <Modal 
@@ -245,10 +247,10 @@ const AddProduct = (props) => {
                       name="category_id"
                       control={control}
                       render={({ field }) => (
-                        <Select {...field} control={control}>
+                        <Select {...field} control={control} showSearch filterOption={filterOption}>
                         {
                           dataListCategory.map((item) => (
-                          <Option key={item.id} value={item.id}>
+                          <Option key={item.id} value={item.id} label={item?.name}>
                             {item.name}
                           </Option>
                         ))}
@@ -263,10 +265,10 @@ const AddProduct = (props) => {
                       name="supplier_id"
                       control={control}
                       render={({ field }) => (
-                        <Select {...field} control={control}>
+                        <Select {...field} control={control} showSearch filterOption={filterOption}>
                         {
                           dataListSupplier.map((item) => (
-                          <Option key={item.id} value={item.id}>
+                          <Option key={item.id} value={item.id} label={item?.name}>
                             {item.name}
                           </Option>
                         ))}
@@ -281,10 +283,10 @@ const AddProduct = (props) => {
                       name="material_id"
                       control={control}
                       render={({ field }) => (
-                        <Select {...field} control={control}>
+                        <Select {...field} control={control} showSearch filterOption={filterOption}>
                         {
                           dataListMaterial.map((item) => (
-                          <Option key={item.id} value={item.id}>
+                          <Option key={item.id} value={item.id} label={item?.name}>
                             {item.name}
                           </Option>
                         ))}
@@ -299,10 +301,10 @@ const AddProduct = (props) => {
                       name="shape_id"
                       control={control}
                       render={({ field }) => (
-                        <Select {...field} control={control}>
+                        <Select {...field} control={control} showSearch filterOption={filterOption}>
                         {
                           dataListShape.map((item) => (
-                          <Option key={item.id} value={item.id}>
+                          <Option key={item.id} value={item.id} label={item?.name}>
                             {item.name}
                           </Option>
                         ))}
@@ -320,10 +322,10 @@ const AddProduct = (props) => {
                       name="color"
                       control={control}
                       render={({ field }) => (
-                        <Select {...field} control={control}>
+                        <Select {...field} control={control} showSearch filterOption={filterOption}>
                         {
                           dataListColor.map((item) => 
-                          <Option key={item?.id} value={item.name}>
+                          <Option key={item?.id} value={item.name} label={item?.name}>
                             <p>{item.name}</p>
                             <div style={{width: 100, height: 20, background: `${item.name}`}}></div>
                           </Option>)
