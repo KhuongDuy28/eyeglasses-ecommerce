@@ -93,11 +93,8 @@ const Header = () => {
   }
 
   const goToOrderChecking = () => {
-    if(user_id) {
-      navigate('/order-checking')
-    } else {
+    if(!user_id) {
       message.warning('Bạn cần phải Đăng nhập')
-      navigate('/login')
     }
   }
 
@@ -157,9 +154,9 @@ const Header = () => {
           </NavLink>
         </li>
         <li>
-          <p onClick={goToOrderChecking}>
+          <NavLink to={`${user_id ? '/order-checking' : '/login'}`} onClick={goToOrderChecking}>
             ORDER CHECKING
-          </p>
+          </NavLink>
         </li>
         <li>
           <NavLink to={'/store'} >

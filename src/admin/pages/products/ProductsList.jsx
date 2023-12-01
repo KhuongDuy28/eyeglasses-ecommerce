@@ -19,6 +19,11 @@ import { message } from 'antd'
 import useConvertToVND from '../../../client/hooks/useConvertToVND'
 import { Switch } from 'antd'
 import { current } from '@reduxjs/toolkit'
+import { getAllCategoty } from '../../../redux/slice/admin/categorySlice'
+import { getAllSupplier } from '../../../redux/slice/admin/supplierSlice'
+import { getAllMaterial } from '../../../redux/slice/admin/materialSlice'
+import { getAllShape } from '../../../redux/slice/admin/shapeSlice'
+import dataListColor from '../../utils/Color'
 
 const ProductsList = () => {
   const dispatch = useDispatch()
@@ -73,7 +78,28 @@ const ProductsList = () => {
   }
 
   // console.log(productLoading);
-
+  useEffect(() => {
+    dispatch(getAllCategoty())
+    dispatch(getAllSupplier())
+    dispatch(getAllMaterial())
+    dispatch(getAllShape())
+  }, [])
+  const {listCategory} = useSelector((state) => state?.category)
+  const {listSupplier} = useSelector((state) => state?.supplier)
+  const {listMaterial} = useSelector((state) => state?.material)
+  const {listShape} = useSelector((state) => state?.shape)
+  const [_, setFilteredInfo] = useState({});
+  const handleChange = (pagination, filters, sorter) => {
+    setFilteredInfo(filters);
+  };
+  const customLocale = {
+    // filterTitle: 'Lọc',
+    filterConfirm: 'Đồng ý',
+    filterReset: 'Đặt lại',
+    emptyText: 'KHÔNG CÓ SẢN PHẨM NÀO',
+    cancelSort: 'Hủy sắp xếp',
+  };
+  
   const columns = [
     {
       title: 'Tên sản phẩm',
@@ -86,17 +112,28 @@ const ProductsList = () => {
       dataIndex: 'category',
       key: 'category',
       render: (category) =>
-        <p style={{color: `${!category ? '#ff6565' : '#000'}`}}>
-          {!category ? 'Danh mục này đã bị xóa !' : category}
-        </p>,
+      <p style={{color: `${!category ? '#ff6565' : '#000'}`}}>
+        {!category ? 'Danh mục này đã bị xóa !' : category}
+      </p>,
+      filters: listCategory?.map((item) => ({
+        text: item?.name,
+        value: item?.name
+      })),
+      onFilter: (value, record) => record.category === value,
     },
     {
       title: 'Nhà cung cấp',
       dataIndex: 'supplier',
+      width: 110,
       render: (supplier) => 
-        <p style={{color: `${!supplier ? '#ff6565' : '#000'}`}}>
-          {!supplier ? 'Nhà cung cấp này đã bị xóa !' : supplier}
-        </p>,
+      <p style={{color: `${!supplier ? '#ff6565' : '#000'}`}}>
+        {!supplier ? 'Nhà cung cấp này đã bị xóa !' : supplier}
+      </p>,
+      filters: listSupplier?.map((item) => ({
+        text: item?.name,
+        value: item?.name
+      })),
+      onFilter: (value, record) => record.supplier === value,
     },
     {
       title: 'Ảnh đại diện',
@@ -110,7 +147,7 @@ const ProductsList = () => {
       title: 'Ảnh chi tiết',
       dataIndex: 'image_product',
       key: 'image_product',
-      width: 115,
+      width: 105,
       render: (image_product) => (
         // console.log(image_product)
         image_product?.length === 0 ? <></>
@@ -131,35 +168,24 @@ const ProductsList = () => {
       key: 'price_old',
       sorter: {
         compare: (a, z) => a.price_old - z.price_old,
-        // multiple: 1,
       },
-      // onHeaderCell: (column) => ({
-      //   onClick: () => {
-      //     console.log('Clicked on column:', column);
-      //   },
-      // }),
       render: (price_old) => 
-        <p>
-          {VND.format(price_old)}
-        </p>,
+      <p>
+        {VND.format(price_old)}
+      </p>,
     },
     {
       title: 'Giá bán sale',
       dataIndex: 'price_new',
       key: 'price_new',
+      width: 105,
       sorter: {
         compare: (a, z) => a.price_new - z.price_new,
-        // multiple: 1,
       },
-      // onHeaderCell: (column) => ({
-      //   onClick: () => {
-      //     console.log('Clicked on column:', column);
-      //   },
-      // }),
       render: (price_new) => 
-        <p>
-          {VND.format(price_new)}
-        </p>,
+      <p>
+        {VND.format(price_new)}
+      </p>,
     },
     {
       title: 'Số lượng',
@@ -167,7 +193,6 @@ const ProductsList = () => {
       key: 'quantity',
       sorter: {
         compare: (a, z) => a.quantity - z.quantity,
-        // multiple: 1,
       },
     },
     {
@@ -176,16 +201,26 @@ const ProductsList = () => {
       key: 'color',
       render: (color) => (
         <p style={{background: `${color}`, width: 30, height: 20}}></p>
-      )
+      ),
+      filters: dataListColor?.map((item) => ({
+        text: item?.name,
+        value: item?.name
+      })),
+      onFilter: (value, record) => record.color === value,
     },
     {
       title: 'Chất liệu',
       dataIndex: 'material',
       key: 'material',
       render: (material) =>
-        <p style={{color: `${(material?.deleted_at) ? '#ff6565' : '#000'}`}}>
-          {(material?.deleted_at) ? 'Chất liệu này đã bị xóa !' : material?.name}
-        </p>,
+      <p style={{color: `${(material?.deleted_at) ? '#ff6565' : '#000'}`}}>
+        {(material?.deleted_at) ? 'Chất liệu này đã bị xóa !' : material?.name}
+      </p>,
+      filters: listMaterial?.map((item) => ({
+        text: item?.name,
+        value: item?.name
+      })),
+      onFilter: (value, record) => record.material.name === value,
     },
     {
       title: 'Hình dáng',
@@ -195,9 +230,14 @@ const ProductsList = () => {
       <p style={{color: `${(shape?.deleted_at) ? '#ff6565' : '#000'}`}}>
         {(shape?.deleted_at) ? 'Hình dáng này đã bị xóa !' : shape?.name}
       </p>,
+      filters: listShape?.map((item) => ({
+        text: item?.name,
+        value: item?.name
+      })),
+      onFilter: (value, record) => record.shape.name === value,
     },
     {
-      title: 'Mô tả chi tiết',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
     },
@@ -213,7 +253,18 @@ const ProductsList = () => {
           // checkedChildren="Active"
           // unCheckedChildren="Disable"
         />
-      )
+      ),
+      filters: [
+        {
+          text: 'Active',
+          value: 1
+        },
+        {
+          text: 'Disable',
+          value: 2
+        }
+      ],
+      onFilter: (value, record) => record.status === value,
     },
     {
       title: 'Hành động',
@@ -279,7 +330,7 @@ const ProductsList = () => {
           dataSource={dataListProduct}
           pagination={{
             pageSize: size,
-            total: (search !== '' ? listProductByName.length : listProduct.length),
+            // total: (search !== '' ? listProductByName.length : listProduct.length),
             current: currentPage,
             pageSizeOptions: ['5', '10', '15', '20', '25'],
             showSizeChanger: true,
@@ -289,6 +340,8 @@ const ProductsList = () => {
             locale: {...customPaginationText},
             onChange: (page) => handlePage(page),    
           }}
+          locale={customLocale}
+          onChange={handleChange}
         />
       </div>
     </div>

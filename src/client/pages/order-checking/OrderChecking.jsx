@@ -11,6 +11,7 @@ import { Image } from 'antd'
 import { Space } from 'antd'
 import { addMultipleProductOfCart, addProductInCartLogged, getCartByUser } from '../../../redux/slice/client/cartSlice'
 import { useNavigate } from 'react-router-dom'
+import { Modal } from 'antd'
 
 const OrderChecking = () => {
   const {VND} = useConvertToVND()
@@ -20,6 +21,7 @@ const OrderChecking = () => {
     dispatch(orderHistory())
   }, [])
   const {listOrder} = useSelector((state) => state?.order)
+  // console.log(listOrder);
 
   const handleCancelOrder = (record) => {
     dispatch(cancelOrder(record?.key)).then((res) => {
@@ -32,11 +34,15 @@ const OrderChecking = () => {
     })
   }
 
-
-  const handleBuy = (record) => {
-    const dataAddCart = record?.order_detail?.map((item) => ({
+  const [dataExists, setDataExists] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    const dataAddCart = dataExists?.map((item) => ({
       product_id: item?.product_id,
-      quantity: parseInt(item?.quantity)
+      quantity: 1
     }))
     dispatch(addMultipleProductOfCart(dataAddCart)).then((res) => {
       // console.log(res);
@@ -46,7 +52,34 @@ const OrderChecking = () => {
           navigate('/cart')
         }, 1000)
       } 
+      setIsModalOpen(false);
     })
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const handleBuy = (record) => {
+    if(record?.order_detail?.every((item) => item?.product[0]?.status === 2 || item?.product[0]?.quantity === 0)) {
+      return message.error('Sản phẩm đang có tình trạng Hết Hàng hoặc Không Còn Tồn Tại trong hệ thống cửa hàng ANNA')
+    } else if(record?.order_detail?.some((item) => item?.product[0]?.status === 2 || item?.product[0]?.quantity === 0)) {
+      showModal()
+      setDataExists(record?.order_detail?.filter((item) => item?.product[0]?.status === 1 && item?.product[0]?.quantity > 0))
+    } else {
+      const dataBuy = record?.order_detail?.filter((item) => item?.product[0]?.status === 1)
+      const dataAddCart = dataBuy?.map((item) => ({
+        product_id: item?.product_id,
+        quantity: 1
+      }))
+      dispatch(addMultipleProductOfCart(dataAddCart)).then((res) => {
+        // console.log(res);
+        if(res.meta?.requestStatus === "fulfilled") {
+          dispatch(getCartByUser())
+          setTimeout(() => {
+            navigate('/cart')
+          }, 1000)
+        } 
+      })
+    }
   }
 
   const columns = [
@@ -134,7 +167,7 @@ const OrderChecking = () => {
     },
   ];
 
-  // console.log(listOrder);
+  // console.log(dataExists);
 
   const data = listOrder.map((item) => ({
     key: item?.id,
@@ -160,6 +193,32 @@ const OrderChecking = () => {
           total: listOrder.length
         }}
       />
+      <Modal 
+        title='Thêm vào giỏ hàng'
+        open={isModalOpen} 
+        onOk={handleOk} 
+        onCancel={handleCancel} 
+        closeIcon={null}
+        footer={[
+          <button className='btn-oke' key="ok" type="primary" onClick={handleOk}>
+            Đã hiểu
+          </button>,
+        ]}>
+        <div className='modal-content'>
+          {dataExists?.map((item) => 
+            <div className='modal-element'>
+              <Image src={item?.product[0]?.thumbnail}/>
+              <div className='element-content'>
+                <p>Tên sản phẩm: {item?.product[0]?.name}</p>
+                <p>Số lượng: 1</p>
+                <p>Giá tiền: {VND.format(item?.price)}</p>
+                <p className='status'>{item?.product[0]?.status}</p>
+              </div>
+            </div>
+          )}
+          <p className='note'>Sản phẩm đang có tình trạng <span>Hết Hàng</span> hoặc <span>Không Còn Tồn Tại</span> trong hệ thống cửa hàng ANNA đã bị loại bỏ!</p>
+        </div>
+      </Modal>
     </div>
   )
 }

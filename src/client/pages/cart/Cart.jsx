@@ -3,7 +3,7 @@ import './cart.scss'
 import { Table } from 'antd'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteMultipleProductOfCart, deleteProductInCartLogged, getCartByUser, updateQuantity} from '../../../redux/slice/client/cartSlice'
+import { addProductInCartLogged, deleteMultipleProductOfCart, deleteProductInCartLogged, getCartByUser, updateQuantity} from '../../../redux/slice/client/cartSlice'
 import useConvertToVND from '../../hooks/useConvertToVND'
 import { useState } from 'react'
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
@@ -15,6 +15,7 @@ import Discover from '../../assets/img/discover.jpg'
 import Mastercard from '../../assets/img/mastercard.jpg'
 import { message } from 'antd'
 import { Navigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Cart = () => {
     const user_id = JSON.parse(localStorage.getItem('user_id'))
@@ -66,8 +67,11 @@ const CartContainer = () => {
                 quantity: record?.quantity + 1
             }
         })).then((res) => {
-            if(res.payload.status === 200) {
+            console.log(res);
+            if(res.payload?.data?.status === 200) {
                 dispatch(getCartByUser())
+            } else if(res.payload?.data?.status === 400 || res.payload === undefined) {
+                message.error('Hiện tại sản phẩm này không đủ số lượng bạn muốn mua')
             }
         })
     }
@@ -80,11 +84,11 @@ const CartContainer = () => {
           dataIndex: 'info',
           key: 'info',
           width: 400,
-          render: (record) => (
-            <div className='info'>
-                <img src={record.image} alt="" />
-                <p>{record.name}</p>
-            </div>
+          render: (info, record) => (
+            <Link className='info' to={`/products/details-product/${record?.product_id}`}>
+                <img src={info.image} alt="" />
+                <p>{info.name}</p>
+            </Link>
           )
         },
         {
@@ -116,9 +120,10 @@ const CartContainer = () => {
           render: (text) => <p>{VND.format(text)}</p>,
         }
       ];
-    
+    // console.log(listCartLogged);
     const dataCartLogged = listCartLogged.map((item) => ({
         key: item?.id,
+        product_id: item?.product_id,
         info: {
             image: item?.product[0]?.thumbnail,
             name: item?.product[0]?.name,

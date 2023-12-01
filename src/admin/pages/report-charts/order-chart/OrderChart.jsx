@@ -65,7 +65,7 @@ const OrderChart = () => {
       <div className='chart-container'>
         <div className='date'>
           <DatePicker onChange={onChangeStartTime} placeholder='Start time'/>
-          <DatePicker onChange={onChangeEndTime} placeholder='End time'/>
+          <DatePicker onChange={onChangeEndTime} placeholder='End time'disabled={startTime !== '' ? false : true}/>
         </div>
         {
           data?.length !== 0

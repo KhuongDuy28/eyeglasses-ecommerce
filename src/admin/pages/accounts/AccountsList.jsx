@@ -20,15 +20,26 @@ import { Select } from 'antd'
 import {AiOutlineFilter} from 'react-icons/ai'
 import {RiLockPasswordLine} from 'react-icons/ri'
 import ChangePassword from './change-password/ChangePassword'
+import dataListRole from '../../utils/Role'
 
 const { Option } = Select
 
 const AccountsList = () => {
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getAllUser())
+  }, [])
+  const {listUser, userByKeySearch} = useSelector((state) => state?.user)
   
   const [currentPage, setCurrentPage] = useState(1)
   const handlePage = (page) => {
     setCurrentPage(page)
+  }
+
+  const [selected, setSelected] = useState('fullname')
+  const [keySearch, setKeySearch] = useState('')
+  const changeSelectSearch = (value) => {
+    setSelected(value)
   }
   const searchUser = (e) => {
     setKeySearch(e.target.value)
@@ -91,6 +102,18 @@ const AccountsList = () => {
     setIdChangePass(record?.key)
     setIsModalOpenChangePass(true)
   }
+
+  const [_, setFilteredInfo] = useState({});
+  const handleChange = (pagination, filters, sorter) => {
+    setFilteredInfo(filters);
+  };
+  const customLocale = {
+    // filterTitle: 'Lọc',
+    filterConfirm: 'Đồng ý',
+    filterReset: 'Đặt lại',
+    emptyText: 'KHÔNG CÓ TÀI KHOẢN NÀO',
+    cancelSort: 'Hủy sắp xếp',
+  };
   
   const columns = [
     {
@@ -124,7 +147,12 @@ const AccountsList = () => {
           {role === 2 && <div className='role'><img style={{ width: 40}} src={User2} /> Nhân viên </div>}
           {role === 3 && <div className='role'><img style={{ width: 40}} src={User3} /> Khách hàng </div>}
         </>
-      )
+      ),
+      filters: dataListRole?.map((item) => ({
+        text: item?.name,
+        value: item?.id
+      })),
+      onFilter: (value, record) => record.role === value,
     },
     {
       title: 'Hành động',
@@ -147,34 +175,25 @@ const AccountsList = () => {
     },
   ];
 
-  useEffect(() => {
-    dispatch(getAllUser())
-  }, [])
-  const data = useSelector((state) => state?.user?.listUser)
-  const dataListUser = data.map((item) => ({
+
+  // const {} = useSelector((state) => state?.user)
+  // console.log(userByKeySearch);
+
+  // const dataUserByKeySearch = userByKeySearch?.map((item) => ({
+  //   key: item.id,
+  //   fullname: item?.fullname,
+  //   avatar: item?.avatar,
+  //   email: item?.email,
+  //   role: item?.role
+  // }))
+
+  const dataListUser = (keySearch !== '' ? userByKeySearch : listUser)?.map((item) => ({
     key: item.id,
     fullname: item?.fullname,
-    avatar: item?.avatar,
+    // avatar: item?.avatar,
     email: item?.email,
     role: item?.role
   })) 
-
-  const [selected, setSelected] = useState('fullname')
-  const [keySearch, setKeySearch] = useState('')
-  const changeSelectSearch = (e) => {
-    setSelected(e)
-  }
-
-  const {userByKeySearch} = useSelector((state) => state?.user)
-  // console.log(userByKeySearch);
-
-  const dataUserByKeySearch = userByKeySearch.map((item) => ({
-    key: item.id,
-    fullname: item?.fullname,
-    avatar: item?.avatar,
-    email: item?.email,
-    role: item?.role
-  }))
 
   const [size, setSize] = useState(5)
   const customPaginationText = {
@@ -228,12 +247,12 @@ const AccountsList = () => {
       <div className='table-account'>
         <Table 
           columns={columns} 
-          dataSource={keySearch === '' ? dataListUser : dataUserByKeySearch}
+          dataSource={dataListUser}
           pagination={{
             pageSize: size,
-            total: (keySearch === '' ? dataListUser.length : dataUserByKeySearch.length),
+            // total: (keySearch !== '' ? userByKeySearch.length : listUser.length),
             current: currentPage,
-            pageSizeOptions: ['5', '10'],
+            pageSizeOptions: ['5', '10', '15', '20'],
             showSizeChanger: true,
             onShowSizeChange: (currentPage, size) => {
               setSize(size)
@@ -241,6 +260,8 @@ const AccountsList = () => {
             locale: {...customPaginationText},
             onChange: (page) => handlePage(page)
           }}
+          locale={customLocale}
+          onChange={handleChange}
         />
       </div>
     </div>

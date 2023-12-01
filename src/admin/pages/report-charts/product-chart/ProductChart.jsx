@@ -71,8 +71,8 @@ const ProductChart = () => {
 
     const { onDownload } = useDownloadExcel({
         currentTableRef: tableRef.current,
-        filename: 'Báo cáo thống kê số lượng sản phẩm bán ra',
-        sheet: 'Users'
+        filename: 'Thống kê số lượng sản phẩm bán ra',
+        sheet: 'Kết quả thống kê'
     })
   
   return (
@@ -81,18 +81,8 @@ const ProductChart = () => {
       <hr />
       <div className='date'>
         <DatePicker onChange={onChangeStartTime} placeholder='Start time'/>
-        <DatePicker onChange={onChangeEndTime} placeholder='End time'/>
+        <DatePicker onChange={onChangeEndTime} placeholder='End time' disabled={startTime !== '' ? false : true}/>
       </div>
-      {/* <div className='export-excel'>
-      <ReactHTMLTableToExcel
-        id="exportButton"
-        className="exportButton" 
-        table="antdTableExample"
-        filename="excelFile"
-        sheet="Sheet"
-        buttonText={<SiMicrosoftexcel className='btn-excel'/>}
-      />
-      </div> */}
       <div className='export-excel'>
           <SiMicrosoftexcel className='btn-excel' onClick={onDownload}/>
       </div>
@@ -117,15 +107,28 @@ const ProductChart = () => {
         <table ref={tableRef}>
           <thead>
             <tr>
-              <th>Tên sản phẩm</th>
-              <th>Số lượng bán</th>
+              <th colspan="2" style={{textAlign: 'center'}}>
+               {
+                (startTime  === '' && endTime  === '') ? 'THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN RA HÔM NAY' : ''
+               }
+               {
+                (startTime !== '' && endTime === '') ? `THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN RA TRONG KHOẢNG THỜI GIAN TỪ ${startTime.split('-').reverse().join('-')} ĐẾN NAY` : ''
+               }
+               {
+                (startTime && endTime) !== '' ? `THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN RA TRONG KHOẢNG THỜI GIAN TỪ ${startTime.split('-').reverse().join('-')} ĐẾN ${endTime.split('-').reverse().join('-')}` : ''
+               }
+              </th>
+            </tr>
+            <tr>
+              <th style={{textAlign: 'center'}}>Tên sản phẩm</th>
+              <th style={{textAlign: 'center'}}>Số lượng bán</th>
             </tr>
           </thead>
           <tbody>
             {data?.map((item, index) =>               
               <tr key={index}>
-                <td>{item.name}</td>
-                <td>{item.quantity}</td>
+                <td style={{textAlign: 'center'}}>{item.name}</td>
+                <td style={{textAlign: 'center'}}>{item.quantity}</td>
               </tr>)}
           </tbody>
         </table>

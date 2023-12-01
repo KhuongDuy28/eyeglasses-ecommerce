@@ -90,6 +90,15 @@
                 width: 100%;
                 padding: 10px 40px;
                 box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+                display: flex;
+                flex-direction: column;
+                row-gap: 25px;
+
+                .title-order {
+                    text-align: center;
+                    font-size: 26px;
+                    font-weight: 600;
+                }
                 
                 table {
                     font-family: 'Montserrat', sans-serif;
@@ -115,10 +124,30 @@
                     }
                 }
 
-                .total-price {
+                .transport-fee {
                     display: flex;
                     flex-direction: column;
-                    align-items: flex-end;
+                    row-gap: 10px;
+
+                    p {
+                        font-size: 14.5px;
+                        font-weight: 500;
+                    }
+                }
+
+                hr {
+                    border: solid 1px #ececec;
+                    width: 100%;
+                    margin: 0;
+                }
+
+                .total-price {
+                    
+                    h3 {
+                        text-align: end;
+                        margin: 0;
+                        font-weight: 600;
+                    }
                 }
             } 
         }
@@ -126,7 +155,7 @@
         .btn-payment {
             display: flex;
             justify-content: center;
-            padding: 50px 0 0 0;
+            padding: 15px 0 35px 0;
             
             button {
                 border: solid 2px #81c8c2;

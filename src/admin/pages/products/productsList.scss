@@ -85,10 +85,16 @@
                 }
             }
 
+            .ant-table-placeholder {
+                font-size: 15px;
+                font-weight: 500;
+            }
+  
+
             .img-detail {
                 padding: 2px;
-                width: 40px;
-                height: 40px;
+                width: 35px;
+                height: 35px;
             }
 
             .ic-update {
@@ -108,3 +114,35 @@
         }
     }
 }
+
+.ant-table-filter-dropdown {
+    width: 160.5px;
+    
+    ul {
+        width: 100%;
+
+        li {
+            width: 100%;
+
+            span {
+                font-size: 12px;
+                box-sizing: border-box;
+            }
+        }
+    }
+  
+}
+
+
+  
+
+  
+
+ // Tùy chỉnh padding của ant-table-cell
+//  .ant-table {
+//     td, th {
+//         &.ant-table-cell {
+//             padding: 6px !important; // Đặt giá trị padding mong muốn, ví dụ 4px
+//         }
+//     }
+// }

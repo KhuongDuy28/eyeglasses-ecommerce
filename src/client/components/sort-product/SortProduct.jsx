@@ -128,7 +128,9 @@ const SortProduct = (props) => {
             <div className='sort-by-shape'>
                 <p>Hình dáng</p>
                 {listShapeClient.map((item) => 
-                    <Radio value={item?.id} checked={shape == item?.id} onClick={getShape} >{item?.name}</Radio>
+                    <Radio key={item?.id} value={item?.id} checked={shape == item?.id} onClick={getShape} >
+                        {item?.name}
+                    </Radio>
                 )}
                 {/* <Radio value='1' checked={shape === "1"} onClick={getShape} >Browline</Radio>
                 <Radio value='2' checked={shape === "2"} onClick={getShape} >Hình vuông</Radio>
@@ -139,7 +141,9 @@ const SortProduct = (props) => {
             <div className='sort-by-material'>
                 <p>Chất liệu</p>
                 {listMaterialClient.map((item) => 
-                    <Radio value={item?.id} checked={material == item?.id} onClick={getMaterial} >{item?.name}</Radio>
+                    <Radio key={item?.id} value={item?.id} checked={material == item?.id} onClick={getMaterial} >
+                        {item?.name}
+                    </Radio>
                 )}
                 {/* <Radio value='1' checked={material === "1"} onClick={getMaterial} >Acetate</Radio>
                 <Radio value='2' checked={material === "2"} onClick={getMaterial} >Kim loại</Radio>

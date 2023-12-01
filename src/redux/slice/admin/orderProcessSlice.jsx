@@ -26,13 +26,19 @@ export const getOrderByID = createAsyncThunk('orderProcess/getOrderByID', async(
     return res
 })
 
+export const getOrderWaitConfirm = createAsyncThunk('orderProcess/getOrderWaitConfirm', async() => {
+    const res = await OrderProcessApi.getOrderWaitConfirm()
+    return res
+})
+
 const orderProcessSlice = createSlice({
     name: 'orderProcess',
     initialState: {
         loading: false,
         listOrderByStatus: [],
         listOrderByOrderCode: [],
-        orderByID: {}
+        orderByID: {},
+        listOrderWaitConfirm: [],
     }, 
     extraReducers: {
         [getOrderByStatus.pending]: (state) => {
@@ -68,7 +74,19 @@ const orderProcessSlice = createSlice({
         [getOrderByID.fulfilled]: (state, action) => {
             state.loading = false
             state.orderByID = action?.payload?.data?.data
-        }
+        },
+
+
+        [getOrderWaitConfirm.pending]: (state) => {
+            state.loading = true
+        },
+        [getOrderWaitConfirm.rejected]: (state) => {
+            state.loading = false
+        },
+        [getOrderWaitConfirm.fulfilled]: (state, action) => {
+            state.loading = false
+            state.listOrderWaitConfirm = action?.payload?.data?.data
+        },
     }
 })
 

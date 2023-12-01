@@ -83,6 +83,7 @@ const productSlice = createSlice({
         listProductClient: [],
         listSortProductClient: [],
         listProductByNameClient: [],
+        loadingDetailsProduct: false,
     },
     extraReducers: {
         // All Product
@@ -135,13 +136,13 @@ const productSlice = createSlice({
         
 
         [getProductDetailsClientByID.pending]: (state) => {
-            state.loading = true
+            state.loadingDetailsProduct = true
         },
         [getProductDetailsClientByID.rejected]: (state) => {
-            state.loading = false
+            state.loadingDetailsProduct = false
         },
         [getProductDetailsClientByID.fulfilled]: (state, action) => {
-            state.loading = false
+            state.loadingDetailsProduct = false
             state.productDetailsClientByID = action?.payload?.data?.data
         },
 

@@ -39,16 +39,16 @@ const Confirmed = () => {
         })
   }
 
-  const handleCancelOrder = (record) => {
-    dispatch(adminCancelOrder(record?.key)).then((res) => {
-      if(res.payload?.status === 200) {
-        message.success('Hủy đơn hàng thành công')
-        dispatch(getOrderByStatus(2))
-      } else {
-        message.error('Hủy đơn hàng thất bại')
-      }
-    })
-  }
+  // const handleCancelOrder = (record) => {
+  //   dispatch(adminCancelOrder(record?.key)).then((res) => {
+  //     if(res.payload?.status === 200) {
+  //       message.success('Hủy đơn hàng thành công')
+  //       dispatch(getOrderByStatus(2))
+  //     } else {
+  //       message.error('Hủy đơn hàng thất bại')
+  //     }
+  //   })
+  // }
 
   
   const componentRef = useRef()
@@ -152,7 +152,7 @@ const Confirmed = () => {
           render: (_, record) => (
             <Space size="middle">
               <button className='btn-transport' onClick={() => handleTransportOrder(record)}>Vận chuyển</button>
-              <button className='btn-cancel' onClick={() => handleCancelOrder(record)}>Hủy</button>
+              {/* <button className='btn-cancel' onClick={() => handleCancelOrder(record)}>Hủy</button> */}
               <AiOutlinePrinter className='btn-print' onClick={() => handlePrintInvoice(record)}/>
             </Space>
           ),

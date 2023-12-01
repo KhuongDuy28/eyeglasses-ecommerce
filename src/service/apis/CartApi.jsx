@@ -3,6 +3,7 @@ import instance from "../ConfigAxios"
 
 const CartApi = {
     addProductInCartLogged(data) {
+        // console.log(data);
         const url = `/cart`
         return instance.post(url, data)
     },
@@ -18,6 +19,7 @@ const CartApi = {
     },
 
     updateQuantity(data) {
+        // console.log(data.dataUpdate);
         const url = `/cart/${data.id}`
         return instance.patch(url, data.dataUpdate)
     },

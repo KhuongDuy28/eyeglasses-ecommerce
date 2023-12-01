@@ -13,13 +13,17 @@ import { orderClient } from '../../../redux/slice/client/orderSlice'
 import { message } from 'antd'
 import { Navigate } from 'react-router-dom'
 import { useState } from 'react'
+import useUnidecode from '../../hooks/useUnidecode'
 
 const {Option} = Select
+
 
 const schema = yup
   .object({
     name: yup.string().required('Bạn cần nhập Họ tên'),
-    phone: yup.string().required('Bạn cần nhập Số điện thoại'),
+    phone: yup.string().required('Bạn cần nhập Số điện thoại')
+    .min(10, 'Số điện thoại phải có đủ 10 ký tự')
+    .max(10, 'Số điện thoại không được nhiều hơn 10 ký tự'),
     tinh: yup.mixed().required('Bạn cần chọn Tỉnh/Thành phố'),
     quan: yup.mixed().required('Bạn cần chọn Quận/Huyện'),
     xa: yup.mixed().required('Bạn cần chọn Xã/Phường'),
@@ -70,6 +74,51 @@ const PaymentContainer = () => {
     setIdQuan((listQuanByTinh?.find((item) => item?.maqh === maqh))?.id)
   }
 
+  const columns = [
+    {
+      title: 'Sản phẩm',
+      dataIndex: 'info',
+      key: 'info',
+      width: 400,
+      render: (record) => (
+        <div className='info'>
+          <img src={record.image} alt="" />
+          <div className='text'>
+            <p>{record.name}</p>
+            <p>x</p>
+            <p>{record.quantity}</p>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Thành tiền',
+      dataIndex: 'money',
+      key: 'money',
+      render: (text) => <p>{VND.format(text)}</p>,
+    }
+  ];
+
+  const data = listCartLogged?.map((item) => ({
+    key: item?.id,
+    info: {
+      image: item?.product[0]?.thumbnail,
+      name: item?.product[0]?.name,
+      quantity: item?.quantity,
+    },
+    money: item?.quantity * (item?.product[0]?.price_new === null ? item?.product[0]?.price_old : item?.product[0]?.price_new) 
+  }))
+
+  const totalPrice = data?.reduce((total, item) => {
+    return total = total + item.money
+  }, 0)
+
+
+  const {searchUnidecode} = useUnidecode()
+  const filterOption = (text, option) => {
+    return searchUnidecode(text, option);
+  };
+
   const onSubmit = (data) => {
     // console.log(data);
     const dataOrder = {
@@ -103,50 +152,12 @@ const PaymentContainer = () => {
     })
   }
 
-  const columns = [
-    {
-      title: 'Sản phẩm',
-      dataIndex: 'info',
-      key: 'info',
-      width: 400,
-      render: (record) => (
-        <div className='info'>
-          <img src={record.image} alt="" />
-          <div className='text'>
-            <p>{record.name}</p>
-            <p>x</p>
-            <p>{record.quantity}</p>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: 'Thành tiền',
-      dataIndex: 'money',
-      key: 'money',
-      render: (text) => <a>{VND.format(text)}</a>,
-    }
-  ];
-
-  const data = listCartLogged.map((item) => ({
-    key: item?.id,
-    info: {
-      image: item?.product[0]?.thumbnail,
-      name: item?.product[0]?.name,
-      quantity: item?.quantity,
-    },
-    money: item?.quantity * (item?.product[0]?.price_new === null ? item?.product[0]?.price_old : item?.product[0]?.price_new) 
-  }))
-
-  const totalPrice = data?.reduce((total, item) => {
-    return total = total + item.money
-  }, 0)
+  const transportFee = totalPrice >= 2000000 ? 0 : 40000
 
   return (
     <div className='payment'>
       <h2>THANH TOÁN</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className='top'>
             <div className='info-payment'>
               <div className='fullname'>
@@ -171,10 +182,12 @@ const PaymentContainer = () => {
                       control={control}
                       placeholder='Chọn tỉnh/thành phố'
                       onChange={selectTinhThanhpho}
+                      showSearch
+                      filterOption={filterOption}
                       >
                     {
                       listTinh.map((item) => (
-                      <Option key={item.id} value={item.matp}>
+                      <Option key={item.id} value={item.matp} label={item.name}>
                         {item.name}
                       </Option>
                     ))}
@@ -193,10 +206,12 @@ const PaymentContainer = () => {
                       control={control}                        
                       placeholder='Chọn quận/huyện'
                       onChange={selectQuanHuyen} 
+                      showSearch
+                      filterOption={filterOption}
                     >
                     {
                       listQuanByTinh.map((item) => (
-                      <Option key={item.id} value={item.maqh}>
+                      <Option key={item.id} value={item.maqh} label={item.name}>
                         {item.name}
                       </Option>
                     ))}
@@ -211,10 +226,15 @@ const PaymentContainer = () => {
                   name="xa"
                   control={control}
                   render={({ field }) => (
-                    <Select {...field} control={control} placeholder='Chọn xã/phường'>
+                    <Select {...field} 
+                      control={control} 
+                      placeholder='Chọn xã/phường'
+                      showSearch
+                      filterOption={filterOption}
+                    >
                     {
                       listXaByQuan.map((item) => (
-                      <Option key={item.id} value={item.id}>
+                      <Option key={item.id} value={item.id} label={item.name}>
                         {item.name}
                       </Option>
                     ))}
@@ -237,23 +257,32 @@ const PaymentContainer = () => {
             </div>
 
             <div className='info-cart'>
+              <h3 className='title-order'>ĐƠN HÀNG CỦA BẠN</h3>
               <Table 
                 columns={columns} 
                 dataSource={data} 
                 pagination={false} 
                 locale={{emptyText: 'Bạn chưa có sản phẩm nào để có thể Đặt hàng'}}
               />
+              <div className='transport-fee'>
+                <p>Thanh toán khi nhận hàng</p>
+                <p>Phí vận chuyển: { totalPrice === 0 ? (VND.format(0)) : (VND.format(transportFee))}</p>
+              </div>
+              <hr />
               <div className='total-price'>
-                <h3>TỔNG TIỀN</h3>
-                <h3>{VND.format(totalPrice)}</h3>
+                <h3>
+                TỔNG TIỀN: { totalPrice === 0 ? (VND.format(totalPrice)) : (VND.format(totalPrice + transportFee)) }
+                </h3>
+              </div>
+              <hr />
+              <div className='btn-payment'>
+                <button style={{display: `${listCartLogged.length === 0 ? 'none' : 'block'}`}}>ĐẶT HÀNG</button>
               </div>
             </div>
 
           </div>
 
-          <div className='btn-payment'>
-            <button style={{display: `${listCartLogged.length === 0 ? 'none' : 'block'}`}}>ĐẶT HÀNG</button>
-          </div>
+         
             
         </form>
     </div>

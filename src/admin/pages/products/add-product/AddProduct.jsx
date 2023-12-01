@@ -101,7 +101,7 @@ const AddProduct = (props) => {
               // console.log(res.payload.data.data);
                 reset({
                   name: res.payload?.data?.data?.name,
-                  category_id: res.payload?.data?.data?.category_id,
+                  category_id: (res.payload?.data?.data?.category) ? (res.payload?.data?.data?.category_id) : '',
                   supplier_id: (res.payload?.data?.data?.supplier) ? (res.payload?.data?.data?.supplier_id) : '',
                   price_new: res.payload?.data?.data?.price_new,
                   price_old: res.payload?.data?.data?.price_old,

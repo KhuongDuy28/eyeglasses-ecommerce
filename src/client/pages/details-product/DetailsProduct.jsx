@@ -18,6 +18,7 @@ import { getProductDetailsClientByID } from '../../../redux/slice/admin/productS
 import { addProductInCartLogged, addProductInCartNotLogin, getCartByUser } from '../../../redux/slice/client/cartSlice'
 import { message } from 'antd'
 import { addListFavoritesProduct } from '../../../redux/slice/client/favoritesProductSlice'
+import { Spin } from 'antd'
 
 const DetailsProduct = () => {
   const {VND} = useConvertToVND()
@@ -26,22 +27,21 @@ const DetailsProduct = () => {
   useEffect(() => {
     dispatch(getProductDetailsClientByID(id))
   }, [id])
-  const dataProductDetails = useSelector((state) => state?.product?.productDetailsClientByID)
-  console.log(dataProductDetails);
+  const {productDetailsClientByID, loadingDetailsProduct} = useSelector((state) => state?.product)
 
   const [active, setActive] = useState(0)
   const [mainPicture, setMainPicture] = useState(undefined)
   const handleCheckImage = (index) => {
     setActive(index)
-    if((dataProductDetails?.image_product).length > 0) {
-      setMainPicture(dataProductDetails?.image_product[index]?.image)
+    if((productDetailsClientByID?.image_product).length > 0) {
+      setMainPicture(productDetailsClientByID?.image_product[index]?.image)
     }
     else {
-      setMainPicture(dataProductDetails?.thumbnail)
+      setMainPicture(productDetailsClientByID?.thumbnail)
     }
   }
 
-  console.log(mainPicture);
+  // console.log(mainPicture);
   const [quantityProduct, setQuantityProduct] = useState(1)
   const changeQuantityProduct = (e) => {
     setQuantityProduct(e.target.value)
@@ -62,10 +62,10 @@ const DetailsProduct = () => {
   const addProductOfCart = () => {
     if(!user_id) {
       const dataProductCart = {
-        product_id: dataProductDetails?.id,
-        name: dataProductDetails?.name,
-        image: dataProductDetails?.thumbnail,
-        price: dataProductDetails?.price_new === null ? dataProductDetails?.price_old : dataProductDetails?.price_new,
+        product_id: productDetailsClientByID?.id,
+        name: productDetailsClientByID?.name,
+        image: productDetailsClientByID?.thumbnail,
+        price: productDetailsClientByID?.price_new === null ? productDetailsClientByID?.price_old : productDetailsClientByID?.price_new,
         quantity: parseInt(quantityProduct)
       }
   
@@ -79,7 +79,7 @@ const DetailsProduct = () => {
           product_id: dataRepeatID?.product_id,
           name: dataRepeatID?.name,
           image: dataRepeatID?.image,
-          price: dataRepeatID?.price_new === null ? dataProductDetails?.price_old : dataProductDetails?.price_new,
+          price: dataRepeatID?.price_new === null ? productDetailsClientByID?.price_old : productDetailsClientByID?.price_new,
           quantity: parseInt(quantityProduct) + parseInt(dataRepeatID.quantity)
         }
         // Nếu ID đã tồn tại, cập nhật object
@@ -93,14 +93,14 @@ const DetailsProduct = () => {
     } else {
       const data = {
         user_id: user_id,
-        product_id: dataProductDetails?.id,
+        product_id: productDetailsClientByID?.id,
         quantity: parseInt(quantityProduct)
       }
       dispatch(addProductInCartLogged(data)).then((res) => {
         // console.log(res);
         if(res.payload?.data?.status === 200) {
           dispatch(getCartByUser())
-        } else if(res.payload?.data?.status === 400 || res?.payload === undefined) {
+        } else if(res.payload?.data?.status === 400 || res.payload === undefined) {
           message.error('Hiện tại sản phẩm này không đủ số lượng bạn muốn mua')
         }
       })
@@ -124,108 +124,121 @@ const DetailsProduct = () => {
 
 
   return (
-    <div className='details'>
-      <div className='details-product'>
-        <div className='details-picture'>
-          <Image
-            width={505}
-            src={mainPicture ===  undefined ? dataProductDetails?.thumbnail : mainPicture}
-          />
-          <div className='extra-picture'>
-            {
-              (dataProductDetails?.image_product)?.length > 0 
-              ? (dataProductDetails?.image_product)?.map((item, index) => (
-                <img className={active == index ? 'active' : ''} 
-                src={item.image} key={item?.id} onClick={() => handleCheckImage(index)} width={115}/>
-              ))
-              : <></>
-            }
+   <>
+    {
+      loadingDetailsProduct === false 
+      ? <div className='details'>
+          <div className='details-product'>
+            <div className='details-picture'>
+              <Image
+                width={505}
+                src={mainPicture ===  undefined ? productDetailsClientByID?.thumbnail : mainPicture}
+              />
+              <div className='extra-picture'>
+                {
+                  (productDetailsClientByID?.image_product)?.length > 0 
+                  ? (productDetailsClientByID?.image_product)?.map((item, index) => (
+                    <img className={active == index ? 'active' : ''} 
+                    src={item.image} key={item?.id} onClick={() => handleCheckImage(index)} width={115}/>
+                  ))
+                  : <></>
+                }
+              </div>
+            </div>
+
+            <div className='info-detail'> 
+              <div className='info-detail__product'>
+                <h3>{productDetailsClientByID?.name}</h3>
+                <div className='price'>
+                  {
+                    productDetailsClientByID?.price_new !== null
+                    && 
+                      <>
+                        <h2>{VND.format(productDetailsClientByID?.price_new)}</h2>
+                        <del>{VND.format(productDetailsClientByID?.price_old)}</del>
+                      </>
+                  }
+                  {
+                    productDetailsClientByID?.price_new === null
+                    && 
+                      <h2>{VND.format(productDetailsClientByID?.price_old)}</h2>
+                  }
+                </div>
+                <p>Hình dáng: {productDetailsClientByID?.shape?.name}</p>
+                <p>Chất liệu: {productDetailsClientByID?.material?.name}</p>
+                <p>Màu sắc: <div className='color' style={{background : `${productDetailsClientByID?.color}`}}/></p>
+                <p>
+                Tình trạng: {
+                  productDetailsClientByID?.quantity > 0 
+                  ? `${productDetailsClientByID?.quantity} sản phẩm có sẵn`
+                  : 'hết hàng'
+                  }
+                </p>
+                <div className='transport'>
+                  <LiaShippingFastSolid/>
+                  <p>Miễn phí giao hàng từ 2.000.000đ ( vận chuyển 3 - 5 ngày )</p>
+                </div>
+                <div className='change-quantity'>
+                  <AiOutlineMinus onClick={handleReduce}/>
+                  <input type="number" value={quantityProduct} onChange={changeQuantityProduct}/>
+                  <AiOutlinePlus onClick={handleIncrease}/>
+                </div>
+                <div className='shopping'>
+                  <button style={{
+                    background: `${heart ? '#e9e9e9' : '#000'}`
+                  }} className='btn-favourite' onClick={addFavoritesList}>
+                    <BsFillHeartFill style={{color: `${heart ? '#ff594f' : '#fff'}`}}/>
+                  </button>
+                  <button className={`btn-add__to-cart  ${productDetailsClientByID?.quantity === 0 ? 'disabled-button' : ''}`} onClick={addProductOfCart}>Thêm vào giỏ hàng</button>
+                </div>
+              </div>
+              <div className='interests'>
+                <div className='element-interest'>
+                  <div className='tittle-interest'><GoIssueReopened/><span>Bảo hành trọn đời</span></div>
+                  <p>Bảo hành ốc vít rơi ra, gọng lệch, gọng kênh vênh, lỏng chật, rơi ve đệm mũi trọn đời.</p>
+                </div>
+                <div className='element-interest'>
+                  <div className='tittle-interest'><BsHouseCheck/><span>Giao hàng tận nơi</span></div>
+                  <p>Giao hàng tận nơi, được kiểm tra hàng trước khi thanh toán.</p>
+                </div>
+                <div className='element-interest'>
+                  <div className='tittle-interest'><BsBox2Heart/><span>Đổi trả dễ dàng</span></div>
+                  <p>Bảo hành 1 đổi 1 khi có lỗi của nhà sản xuất, lỗi do đo mắt sai (trong 10 ngày đầu), hỗ trợ giảm 50% nếu đổi gọng mới.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div className='company-info'>
+            <div className='introduce'>
+              <h4>Thông tin</h4>
+              <div className='content'>
+                <p>Chịu trách nhiệm sản phẩm: Công Ty TNHH Dịch vụ và Thương mại Anna Việt Nam</p>
+                <p>Cảnh báo: Bảo quản trong hộp kính</p>
+                <p>Hướng dẫn sử dụng:</p>
+                <p>+ Tháo kính bằng 2 tay.</p>
+                <p>+ Không bỏ kính vào cốp xe hoặc những nơi có nhiệt độ cao làm biến dạng kính.</p>
+                <p>+ Không bỏ kính vào túi sách nếu không có hộp kính, vật dụng nhọn như chìa khóa sẽ làm xước kính.</p>
+                <p>+ Không rửa kính lau kính bằng các chất có tính tẩy rửa mạnh làm bong tróc lớp váng phủ.</p>
+                </div>
+            </div>
+            <img src={IMGlogo1} alt="" />
+          </div>
+
+          <OutstandingProducts/>
+
+          <div className='new-products'>
+            <h2>SẢN PHẨM MỚI NHẤT</h2>
+            <div className='element-container'>
+              <img className='banner__new-product' src={ImgNewProduct} alt="" />
+              <NewProducts/>
+            </div>
           </div>
         </div>
-
-        <div className='info-detail'> 
-          <div className='info-detail__product'>
-            <h3>{dataProductDetails?.name}</h3>
-            <div className='price'>
-              {
-                dataProductDetails?.price_new !== null
-                && 
-                  <>
-                    <h2>{VND.format(dataProductDetails?.price_new)}</h2>
-                    <del>{VND.format(dataProductDetails?.price_old)}</del>
-                  </>
-              }
-              {
-                dataProductDetails?.price_new === null
-                && 
-                  <h2>{VND.format(dataProductDetails?.price_old)}</h2>
-              }
-            </div>
-            <p>Hình dáng: {dataProductDetails?.shape?.name}</p>
-            <p>Chất liệu: {dataProductDetails?.material?.name}</p>
-            <p>Màu sắc: <div className='color' style={{background : `${dataProductDetails?.color}`}}/></p>
-            <div className='transport'>
-              <LiaShippingFastSolid/>
-              <p>Miễn phí giao hàng từ 500k ( vận chuyển 3 - 5 ngày )</p>
-            </div>
-            <div className='change-quantity'>
-              <AiOutlineMinus onClick={handleReduce}/>
-              <input type="number" value={quantityProduct} onChange={changeQuantityProduct}/>
-              <AiOutlinePlus onClick={handleIncrease}/>
-            </div>
-            <div className='shopping'>
-              <button style={{
-                background: `${heart ? '#e9e9e9' : '#000'}`
-              }} className='btn-favourite' onClick={addFavoritesList}>
-                <BsFillHeartFill style={{color: `${heart ? '#ff594f' : '#fff'}`}}/>
-              </button>
-              <button className='btn-add__to-cart' onClick={addProductOfCart}>Thêm vào giỏ hàng</button>
-            </div>
-          </div>
-          <div className='interests'>
-            <div className='element-interest'>
-              <div className='tittle-interest'><GoIssueReopened/><span>Bảo hành trọn đời</span></div>
-              <p>Bảo hành ốc vít rơi ra, gọng lệch, gọng kênh vênh, lỏng chật, rơi ve đệm mũi trọn đời.</p>
-            </div>
-            <div className='element-interest'>
-              <div className='tittle-interest'><BsHouseCheck/><span>Giao hàng tận nơi</span></div>
-              <p>Giao hàng tận nơi, được kiểm tra hàng trước khi thanh toán.</p>
-            </div>
-            <div className='element-interest'>
-              <div className='tittle-interest'><BsBox2Heart/><span>Đổi trả dễ dàng</span></div>
-              <p>Bảo hành 1 đổi 1 khi có lỗi của nhà sản xuất, lỗi do đo mắt sai (trong 10 ngày đầu), hỗ trợ giảm 50% nếu đổi gọng mới.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div className='company-info'>
-        <div className='introduce'>
-          <h4>Thông tin</h4>
-          <div className='content'>
-            <p>Chịu trách nhiệm sản phẩm: Công Ty TNHH Dịch vụ và Thương mại Anna Việt Nam</p>
-            <p>Cảnh báo: Bảo quản trong hộp kính</p>
-            <p>Hướng dẫn sử dụng:</p>
-            <p>+ Tháo kính bằng 2 tay.</p>
-            <p>+ Không bỏ kính vào cốp xe hoặc những nơi có nhiệt độ cao làm biến dạng kính.</p>
-            <p>+ Không bỏ kính vào túi sách nếu không có hộp kính, vật dụng nhọn như chìa khóa sẽ làm xước kính.</p>
-            <p>+ Không rửa kính lau kính bằng các chất có tính tẩy rửa mạnh làm bong tróc lớp váng phủ.</p>
-            </div>
-        </div>
-        <img src={IMGlogo1} alt="" />
-      </div>
-
-      <OutstandingProducts/>
-
-      <div className='new-products'>
-        <h2>SẢN PHẨM MỚI NHẤT</h2>
-        <div className='element-container'>
-          <img className='banner__new-product' src={ImgNewProduct} alt="" />
-          <NewProducts/>
-        </div>
-      </div>
-    </div>
+      : <Spin size="large" />
+    }
+   </>
   )
 }
 

@@ -24,7 +24,12 @@ const OrderProcessApi = {
     getOrderByID(order_id) {
         const url = `admin/orders/${order_id}`
         return instance.get(url)
-    }
+    },
+
+    getOrderWaitConfirm() {
+        const url = `/admin/orders?status=1`
+        return instance.get(url)
+    },
 }
 
 export default OrderProcessApi

@@ -8,6 +8,7 @@ import { deleteFavoritesProduct, deleteMultipleFavoritesProduct, getListFavorite
 import { Image } from 'antd';
 import {MdDelete} from 'react-icons/md'
 import { message } from 'antd';
+import { Link } from 'react-router-dom';
 
 const YourProducts = () => {
   const dispatch = useDispatch()
@@ -20,11 +21,11 @@ const YourProducts = () => {
     {
       title: 'DANH SÁCH',
       dataIndex: 'product',
-      render: (product) => (
-        <div className='info'>
+      render: (product, record) => (
+        <Link className='info' to={`/products/details-product/${record?.product_id}`}>
           <p>Tên sản phẩm: {product?.name}</p>
           <Image src={product?.thumbnail}/>
-        </div>
+        </Link>
       )
     }
   ];

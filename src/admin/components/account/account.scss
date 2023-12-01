@@ -8,9 +8,31 @@ $color-main2: #81c8c2;
     justify-content: flex-end;
     background: $color-main2;
     border-radius: 9px;
-    column-gap: 20px;
+    column-gap: 25px;
     padding: 10px;
     // width: 100%;
+      
+    .notification {
+        display: flex;
+        position: relative;
+        // padding: 0 5px;
+        cursor: pointer;
+
+        p {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ff6c6c;
+            color: #fff;
+            position: absolute;
+            font-size: 10px;
+            left: 17px;
+            bottom: 12.5px;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+        }
+    }
 
     svg {
         font-size: 1.5rem;
@@ -25,3 +47,24 @@ $color-main2: #81c8c2;
     }
 
 }
+
+
+.ant-popover {
+    inset: 67px auto auto 1183px !important;
+    cursor: pointer;
+
+    .notification-title {
+        color: #ff6c6c;
+    }
+
+    .notification-content {
+        font-size: 12.5px;
+    }
+
+    .notification-content:hover {
+        color: #81c8c2;
+    }
+}
+  
+
+

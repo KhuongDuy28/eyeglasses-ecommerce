@@ -7,6 +7,7 @@ import useConvertToVND from '../../../../client/hooks/useConvertToVND'
 
 const Pdf = React.forwardRef((props, ref) => {
   // console.log(props);
+  const transportFee = props?.orderByID?.total_price >= 2000000 ? 0 : 40000
   const {VND} = useConvertToVND()
   return (
     <div className="hidden-for-print" ref={ref}>
@@ -17,6 +18,7 @@ const Pdf = React.forwardRef((props, ref) => {
           </div>
           <hr className='hr1'/>
           <p>Mã hóa đơn: {props?.orderByID?.order_code}</p>
+          <p>Gửi từ: Cửa hàng kính mắt ANNA</p>
           <p>Người nhận: {props?.orderByID?.name}</p>
           <p>Số điện thoại: {props?.orderByID?.phone}</p>
           <p>Địa chỉ nhận hàng: {props?.orderByID?.address}</p>
@@ -33,6 +35,7 @@ const Pdf = React.forwardRef((props, ref) => {
               </div>
             )}
           </div>
+          <p>Phí vận chuyển: {VND.format(transportFee)}</p>
           <hr className='hr2'/>
           <div className='price-qr'>
             <QRCode 

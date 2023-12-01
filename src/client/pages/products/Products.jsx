@@ -57,49 +57,49 @@ const Products = () => {
 
   return (
     <div className='products'>
-        <div className='banner-products'>
-          <img src={BannerProducts} alt="" />
-          <h1>SẢN PHẨM</h1>
-          <div className='location-string'>
-            <p>Trang chủ</p>
+      <div className='banner-products'>
+        <img src={BannerProducts} alt="" />
+        <h1>SẢN PHẨM</h1>
+        <div className='location-string'>
+          <p>Trang chủ</p>
 
-            {arrPath.map((item, index) => (
-              <p key={index}>
-                <BsCircleFill/>
-                {ConvertFromLocationToText(item)}
-              </p>
-            ))}
+          {arrPath.map((item, index) => (
+            <p key={index}>
+              <BsCircleFill/>
+              {ConvertFromLocationToText(item)}
+            </p>
+          ))}
 
-          </div>
         </div>
-        <div className='eyeglass-products' style={{ display: `${lastLocation === 'products' ? 'none' : 'block'}`}}>
-          {/* {
-            lastLocation === 'eyeglass-frames' && <EyeGlassFrames dataProducts={listProductByCategory}/>
-          }
-          {
-            lastLocation === 'the-lens' && <TheLens dataProducts={listProductByCategory}/>
-          }
-          {
-            lastLocation === 'sunglass' && <SunGlass dataProducts={listProductByCategory}/>
-          }
-          {
-            lastLocation === 'children-glasses' && <ChildrenGlasses dataProducts={listProductByCategory}/>
-          } */}
-          <ProductList dataProducts={listProductByCategory}/>
-        </div>
+      </div>
+      <div className='eyeglass-products' style={{ display: `${lastLocation === 'products' ? 'none' : 'block'}`}}>
+        {/* {
+          lastLocation === 'eyeglass-frames' && <EyeGlassFrames dataProducts={listProductByCategory}/>
+        }
+        {
+          lastLocation === 'the-lens' && <TheLens dataProducts={listProductByCategory}/>
+        }
+        {
+          lastLocation === 'sunglass' && <SunGlass dataProducts={listProductByCategory}/>
+        }
+        {
+          lastLocation === 'children-glasses' && <ChildrenGlasses dataProducts={listProductByCategory}/>
+        } */}
+        <ProductList dataProducts={listProductByCategory}/>
+      </div>
 
-        <div className='outstanding-products'>
-          <h2>SẢN PHẨM NỔI BẬT</h2>
-          <OutstandingProducts/>
-        </div>
+      <div className='outstanding-products'>
+        <h2>SẢN PHẨM NỔI BẬT</h2>
+        <OutstandingProducts/>
+      </div>
 
-        <div className='new-products'>
-          <h2>SẢN PHẨM MỚI NHẤT</h2>
-          <div className='elementor-container'>
-            <img className='banner__new-product' src={ImgNewProduct} alt="" />
-            <NewProducts/>
-          </div>
+      <div className='new-products'>
+        <h2>SẢN PHẨM MỚI NHẤT</h2>
+        <div className='elementor-container'>
+          <img className='banner__new-product' src={ImgNewProduct} alt="" />
+          <NewProducts/>
         </div>
+      </div>
     </div>
   )
 }

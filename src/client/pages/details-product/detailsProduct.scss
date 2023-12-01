@@ -45,7 +45,7 @@
             .info-detail__product {
                 display: flex;
                 flex-direction: column;
-                gap: 25px;
+                gap: 20px;
                 height: 505px;
                 border-bottom: solid 1px #dadada;
 
@@ -148,6 +148,11 @@
                         background: #000;
                         color: #fff;
                     }
+
+                    .disabled-button {
+                        pointer-events: none; /* Ngăn chặn tất cả các sự kiện chút chuột và phím cho phần tử */
+                        opacity: 0.25; /* Có thể thêm hiệu ứng mờ hoặc thay đổi màu sắc để làm nổi bật rằng button không thể click */
+                    }
         
                     .btn-add__to-cart:hover {
                         background: #ff594f;
@@ -234,4 +239,13 @@
 
 .ant-image-preview-img {
     max-height: 100% !important;
+}
+
+.ant-spin {
+    display: flex;
+    justify-content: center;
+
+    .ant-spin-dot-item {
+        background: #81c8c2;
+    }
 }

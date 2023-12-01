@@ -49,7 +49,8 @@ const categorySlice = createSlice({
         listCategoryClient: [],
         categoryByID: {},
         categoryByNameSearch: [],
-        categoryByIDClient: {}
+        categoryByIDClient: {},
+        loadingCategoryByIDClient: false
     },
     extraReducers: {
         // All Category
@@ -102,13 +103,13 @@ const categorySlice = createSlice({
 
 
         [getCategoryByIDClient.pending]: (state) => {
-            state.loading = true
+            state.loadingCategoryByIDClient = true
         },
         [getCategoryByIDClient.rejected]: (state) => {
-            state.loading = false
+            state.loadingCategoryByIDClient = false
         },
         [getCategoryByIDClient.fulfilled]: (state, action) => {
-            state.loading = false
+            state.loadingCategoryByIDClient = false
             state.categoryByIDClient = action?.payload?.data?.data
         },
     }
