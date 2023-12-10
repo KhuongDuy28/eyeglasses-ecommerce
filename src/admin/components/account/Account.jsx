@@ -26,11 +26,11 @@ const Account = () => {
     setIsOpen(data)
   }
 
+  const {listOrderWaitConfirm} = useSelector((state) => state?.orderProcess)
   const dispatch = useDispatch()
   useEffect(() => {
       dispatch(getOrderWaitConfirm())
-  }, [dispatch])
-  const {listOrderWaitConfirm} = useSelector((state) => state?.orderProcess)
+  }, [listOrderWaitConfirm.length])
 
   const role = JSON.parse(localStorage.getItem('role'))
 

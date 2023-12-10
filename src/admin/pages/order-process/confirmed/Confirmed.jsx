@@ -24,6 +24,7 @@ const Confirmed = () => {
       dispatch(getOrderByStatus(2))
   }, [])
   const {listOrderByStatus, listOrderByOrderCode, orderByID} = useSelector((state) => state?.orderProcess)
+  // console.log(listOrderByStatus);
 
   const handleTransportOrder = (record) => {
       dispatch(changeStatusOrder({
@@ -73,32 +74,25 @@ const Confirmed = () => {
           render: (text) => <p>{text}</p>,
       },
       {
-          title: 'Tài khoản đặt hàng',
-          dataIndex: 'email',
-          key: 'email',
-          render: (email) => 
-            <p style={{color: `${!email ? '#ff6565' : '#000'}`}}>
-              {!email ? 'Tài khoản này đã bị xóa' : email}
-            </p>,
+        title: 'Người nhận',
+        dataIndex: 'email',
+        key: 'email',
+        render: (_, record) => 
+          <div className='client'>
+            <p>Người nhận: {record?.name}</p>
+            <p style={{color: `${!(record?.email) ? '#ff6565' : '#000'}`}}>
+              Email: {!(record?.email) ? 'Tài khoản này đã bị xóa' : (record?.email)}
+            </p>
+          </div>,
       },
       {
-          title: 'Người nhận',
-          dataIndex: 'name',
-          key: 'name',
-          render: (text) => <p>{text}</p>,
-      },
-      {
-          title: 'Số điện thoại',
+          title: 'Liên hệ',
           dataIndex: 'phone',
           key: 'phone',
-          render: (text) => <p>{text}</p>,
-      },
-      {
-          title: 'Địa chỉ nhận hàng',
-          dataIndex: 'address',
-          key: 'address',
-          width: 150,
-          render: (text) => <p>{text}</p>,
+          render: (_, record) => <>
+            <p>SĐT: {record?.phone}</p>
+            <p>Địa chỉ nhận: {record?.address}</p>
+          </>,
       },
       {
           title: 'Chi tiết đơn hàng',
@@ -107,12 +101,12 @@ const Confirmed = () => {
           render: (record) => (
               record.map((item) => (
                   // console.log(item)
-                <div className='info'>
+              <div className='info'>
                 <Image width={55} src={item?.product[0]?.thumbnail} alt="" />
                 <div className='text'>
-                  <p>{item?.product[0]?.name}</p>
-                  <p>{item?.quantity}</p>
-                  <p>{VND.format(item?.price)}</p>
+                  <p>Tên: {item?.product[0]?.name}</p>
+                  <p>Số lượng: {item?.quantity}</p>
+                  <p>Giá: {VND.format(item?.price)}</p>
                 </div>
               </div>
               ))
@@ -122,19 +116,25 @@ const Confirmed = () => {
           title: 'Tổng tiền',
           dataIndex: 'total_price',
           key: 'total_price',
-          render: (text) => <p>{VND.format(text)}</p>,
+          render: (_, record) => 
+          <div className='price'>
+            <p>Phí vận chuyển: {
+              (record?.order_detail)?.reduce((total, item) => total + item?.price * item?.quantity, 0) >= 2000000 
+              ? VND.format(0) : VND.format(40000)
+            }
+            </p>
+            <p>Tổng tiền: {record?.total_price}</p>
+          </div>,
+          // console.log(record?.order_detail)
       },
       {
-        title: 'Thời gian đặt hàng',
+        title: 'Thời gian',
         dataIndex: 'created_at',
         key: 'created_at',
-        render: (text) => <p>{ConvertToTimeVN(text)}</p>,
-      },
-      {
-        title: 'Thời gian xác nhận',
-        dataIndex: 'updated_at',
-        key: 'updated_at',
-        render: (text) => <p>{ConvertToTimeVN(text)}</p>,
+        render: (_, record) => <div className='time'>
+          <p>Đặt hàng: {ConvertToTimeVN(record?.created_at)}</p>
+          <p>Xác nhận: {ConvertToTimeVN(record?.updated_at)}</p>
+        </div>,
       },
       {
           title: 'Trạng thái',
@@ -147,6 +147,18 @@ const Confirmed = () => {
           ),
       },
       {
+        title: 'Phương thức thanh toán',
+        dataIndex: 'payment_method',
+        key: 'payment_method',
+        render: (record) => (
+            <div className='payment-method'>
+              {record === 1 && 'Thanh toán khi nhận hàng'}
+              {record === 2 && 'Thanh toán bằng ví VNPAY'}
+              {record === 3 && 'Thanh toán bằng ví Momo'}
+            </div>
+        ),
+      },
+      {
           title: 'Hành động',
           key: 'action',
           render: (_, record) => (
@@ -157,7 +169,7 @@ const Confirmed = () => {
             </Space>
           ),
       },
-    ];
+  ];
 
     const [currentPage, setCurrentPage] = useState(1)
     const handlePage = (page) => {
@@ -184,9 +196,11 @@ const Confirmed = () => {
       address: item?.address,
       note: item?.note,
       status: item?.status,
+      payment_method: item?.payment_method,
       created_at: new Date(item?.created_at),
       updated_at: new Date(item?.updated_at)
     }))
+    // console.log(data);
     const [size, setSize] = useState(5)
     const customPaginationText = {
       items_per_page: 'đơn hàng',

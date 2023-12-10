@@ -87,19 +87,18 @@ const OrderChecking = () => {
       title: 'Mã đơn hàng',
       dataIndex: 'order_code',
       key: 'order_code',
+      width: 110,
       render: (text) => <p>{text}</p>,
     },
     {
-      title: 'Họ tên',
+      title: 'Người nhận',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => <p>{text}</p>,
-    },
-    {
-      title: 'Số điện thoại',
-      dataIndex: 'phone',
-      key: 'phone',
-      render: (text) => <p>{text}</p>,
+      width: 180,
+      render: (_, record) => <>
+        <p>Tên: {record?.name}</p>
+        <p>Số điện thoại: {record?.phone}</p>
+      </>,
     },
     {
       title: 'Địa chỉ nhận hàng',
@@ -129,7 +128,15 @@ const OrderChecking = () => {
       title: 'Tổng tiền',
       dataIndex: 'total_price',
       key: 'total_price',
-      render: (text) => <p>{VND.format(text)}</p>,
+      render: (_, record) => 
+        <div className='price'>
+         <p>Phí vận chuyển: {
+            (record?.order_detail)?.reduce((total, item) => total + item?.price * item?.quantity, 0) >= 2000000 
+            ? VND.format(0) : VND.format(40000)
+          }
+        </p>
+        <p>Tổng tiền: {VND.format(record?.total_price)}</p>
+      </div>,
     },
     {
       title: 'Trạng thái',
@@ -151,6 +158,19 @@ const OrderChecking = () => {
       ),
     },
     {
+      title: 'Phương thức thanh toán',
+      dataIndex: 'payment_method',
+      key: 'payment_method',
+      render: (record) => (
+          <p className='payment-method'>
+              {record === 1 && 'Thanh toán khi nhận hàng'}
+              {record === 2 && 'Thanh toán bằng ví VNPAY'}
+              {record === 3 && 'Thanh toán bằng ví Momo'}
+          </p>
+      ),
+    },
+    {
+      // title: '#',
       key: 'action',
       render: (_, record) => (
        <div className='action-container'>
@@ -179,6 +199,7 @@ const OrderChecking = () => {
     address: item?.address,
     note: item?.note,
     status: item?.status,
+    payment_method: item?.payment_method,
   }))
   
   return (
@@ -198,11 +219,11 @@ const OrderChecking = () => {
         open={isModalOpen} 
         onOk={handleOk} 
         onCancel={handleCancel} 
-        closeIcon={null}
+        // closeIcon={null}
         footer={[
           <button className='btn-oke' key="ok" type="primary" onClick={handleOk}>
             Đã hiểu
-          </button>,
+          </button>
         ]}>
         <div className='modal-content'>
           {dataExists?.map((item) => 

@@ -60,6 +60,9 @@ const DetailsProduct = () => {
   const user_id = JSON.parse(localStorage.getItem('user_id'))
 
   const addProductOfCart = () => {
+    if(quantityProduct === '') {
+      return message.warning('Bạn cần nhập số lượng sản phẩm muốn mua trước khi thêm vào Giỏ hàng')
+    }
     if(!user_id) {
       const dataProductCart = {
         product_id: productDetailsClientByID?.id,
@@ -67,6 +70,9 @@ const DetailsProduct = () => {
         image: productDetailsClientByID?.thumbnail,
         price: productDetailsClientByID?.price_new === null ? productDetailsClientByID?.price_old : productDetailsClientByID?.price_new,
         quantity: parseInt(quantityProduct)
+      }
+      if(productDetailsClientByID?.quantity < parseInt(quantityProduct)) {
+        return message.error('Hiện tại sản phẩm này không đủ số lượng bạn muốn mua')
       }
   
       const existingArray = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -81,6 +87,9 @@ const DetailsProduct = () => {
           image: dataRepeatID?.image,
           price: dataRepeatID?.price_new === null ? productDetailsClientByID?.price_old : productDetailsClientByID?.price_new,
           quantity: parseInt(quantityProduct) + parseInt(dataRepeatID.quantity)
+        }
+        if(productDetailsClientByID?.quantity < parseInt(quantityProduct) + parseInt(dataRepeatID.quantity)) {
+          return message.error('Hiện tại sản phẩm này không đủ số lượng bạn muốn mua')
         }
         // Nếu ID đã tồn tại, cập nhật object
         existingArray[existingObjectIndex] = { ...newDataProductCart };
@@ -171,7 +180,7 @@ const DetailsProduct = () => {
                 Tình trạng: {
                   productDetailsClientByID?.quantity > 0 
                   ? `${productDetailsClientByID?.quantity} sản phẩm có sẵn`
-                  : 'hết hàng'
+                  : 'Hết hàng'
                   }
                 </p>
                 <div className='transport'>

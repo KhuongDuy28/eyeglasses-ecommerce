@@ -16,11 +16,31 @@ export const cancelOrder = createAsyncThunk('order/cancelOrder', async(order_id)
     return res
 })
 
+export const vnpayOrder = createAsyncThunk('order/vnpayOrder', async(data) => {
+    const res = await OrderApi.vnpay(data)
+    return res
+})
+
+export const orderClientVNPay = createAsyncThunk('order/orderClientVNPay', async(data) => {
+    const res = await OrderApi.orderVNPay(data)
+    return res
+})
+
+export const momoOrder = createAsyncThunk('order/momoOrder', async(data) => {
+    const res = await OrderApi.momo(data)
+    return res
+})
+
+export const orderClientMomo = createAsyncThunk('order/orderClientMomo', async(data) => {
+    const res = await OrderApi.orderMomo(data)
+    return res
+})
+
 const orderSlice = createSlice({
     name: 'order',
     initialState: {
         loading: false,
-        listOrder: []
+        listOrder: [],
     }, 
     extraReducers: {
         [orderHistory.pending]: (state) => {
@@ -32,7 +52,7 @@ const orderSlice = createSlice({
         [orderHistory.fulfilled]: (state, action) => {
             state.loading = false
             state.listOrder = action?.payload?.data?.data
-        }
+        },
     }
 })
 

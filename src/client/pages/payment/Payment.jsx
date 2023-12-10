@@ -9,14 +9,19 @@ import { useEffect } from 'react'
 import { getAllQuanByTinh, getAllTinh, getAllXaByQuan } from '../../../redux/slice/client/addressSlice'
 import { getCartByUser } from '../../../redux/slice/client/cartSlice'
 import useConvertToVND from '../../hooks/useConvertToVND'
-import { orderClient } from '../../../redux/slice/client/orderSlice'
+import { momoOrder, orderClient, orderClientMomo, orderClientVNPay, vnpayOrder } from '../../../redux/slice/client/orderSlice'
 import { message } from 'antd'
 import { Navigate } from 'react-router-dom'
 import { useState } from 'react'
 import useUnidecode from '../../hooks/useUnidecode'
+import randomStringOrderCode from '../../utils/RandomStringOrderCode'
+import { Radio } from 'antd'
+import { useNavigate } from 'react-router-dom'
+import PaymentMethod1 from '../../assets/img/cash-on-delivery.png'
+import PaymentMethod2 from '../../assets/img/logo-vnpay.png'
+import PaymentMethod3 from '../../assets/img/logo-momo.png'
 
 const {Option} = Select
-
 
 const schema = yup
   .object({
@@ -119,6 +124,12 @@ const PaymentContainer = () => {
     return searchUnidecode(text, option);
   };
 
+  const [paymentMethod, setPaymentMethod] = useState()
+  const onPaymentMethod = (e) => {
+    setPaymentMethod(e.target.value)
+  }
+  // console.log(paymentMethod);
+  // const [dataOrderVNPay, setDataOrderVNPay] = useState()
   const onSubmit = (data) => {
     // console.log(data);
     const dataOrder = {
@@ -126,34 +137,119 @@ const PaymentContainer = () => {
       phone: data.phone,
       tinh: idTinh,
       quan: idQuan,
-      // tinh: data.tinh,
-      // quan: data?.quan,
       xa: data.xa,
       duong: data.address,
       note: data.note
     }
+    sessionStorage.setItem('dataWalletPayment', JSON.stringify(dataOrder))
     // console.log(dataOrder);
-    dispatch(orderClient(dataOrder)).then((res) => {
-      if(res.payload?.data.status === 200) {
-        message.success('Đặt hàng thành công')
-        dispatch(getCartByUser())
-        reset({
-          name: '',
-          phone: '',
-          tinh: '',
-          quan: '',
-          xa: '',
-          address: '',
-          note: ''
-        })
-      } else {
-        message.error('Đặt hàng thất bại')
-      }
-    })
+    if(!paymentMethod) {
+      return message.warning('Vui lòng chọn phương thức thanh toán')
+    }
+    if(paymentMethod === 1) {
+      dispatch(orderClient(dataOrder)).then((res) => {
+        if(res.payload?.data.status === 200) {
+          message.success('Đặt hàng thành công')
+          dispatch(getCartByUser())
+          reset({
+            name: '',
+            phone: '',
+            tinh: '',
+            quan: '',
+            xa: '',
+            address: '',
+            note: ''
+          })
+          setPaymentMethod(undefined)
+        } else {
+          message.error('Đặt hàng thất bại')
+        }
+      })
+    } else if(paymentMethod === 2) {
+      dispatch(vnpayOrder(
+        {
+          order_code: 'ANNA-' + randomStringOrderCode(8),
+          total_price: totalPrice + transportFee,
+          redirect: null
+        }
+      )).then((res) => {
+      // console.log(res);
+        window.location.href = res.payload?.data?.url_vnpay
+      })
+    } else if(paymentMethod === 3) {
+      dispatch(momoOrder(
+        {
+          order_code: 'ANNA-' + randomStringOrderCode(8),
+          total_price: totalPrice + transportFee,
+          redirect: null
+        }
+      )).then((res) => {
+      // console.log(res);
+        window.location.href = res.payload?.data?.url_momo
+      })
+    } 
   }
 
   const transportFee = totalPrice >= 2000000 ? 0 : 40000
 
+  const navigate = useNavigate()
+  const params = new URLSearchParams(window.location.search);
+  // Lấy giá trị của các tham số từ URL
+  const dataWallet = JSON.parse(sessionStorage.getItem('dataWalletPayment'))
+  useEffect(() => {
+    //vnpay
+    const vnp_ResponseCode = params.get('vnp_ResponseCode');
+    const vnp_TxnRef = params.get('vnp_TxnRef');
+    // console.log(vnp_TxnRef);
+    // console.log(dataOrderVNPay);
+    //momo
+    const orderId = params.get('orderId')
+    const resultCode = params.get('resultCode')
+    if(vnp_ResponseCode == '00') {
+      dispatch(orderClientVNPay({
+        order_code: vnp_TxnRef,
+        name: dataWallet?.name,
+        phone: dataWallet?.phone,
+        tinh: dataWallet?.tinh,
+        quan: dataWallet?.quan,
+        xa: dataWallet?.xa,
+        duong: dataWallet?.duong,
+        note: dataWallet?.note
+      })).then((res) => {
+        // console.log(res);
+        if(res.payload?.data.status === 200) {
+          message.success('Đặt hàng thành công')
+          dispatch(getCartByUser())
+          navigate(`/payment`)
+          sessionStorage.removeItem('dataWalletPayment')
+        } else {
+          message.error('Đặt hàng thất bại')
+        }
+      })
+    } else if(resultCode == '0') {
+      dispatch(orderClientMomo({
+        order_code: orderId,
+        name: dataWallet?.name,
+        phone: dataWallet?.phone,
+        tinh: dataWallet?.tinh,
+        quan: dataWallet?.quan,
+        xa: dataWallet?.xa,
+        duong: dataWallet?.duong,
+        note: dataWallet?.note
+      })).then((res) => {
+        // console.log(res);
+        if(res.payload?.data.status === 200) {
+          message.success('Đặt hàng thành công')
+          dispatch(getCartByUser())
+          navigate(`/payment`)
+          sessionStorage.removeItem('dataWalletPayment')
+        } else {
+          message.error('Đặt hàng thất bại')
+        }
+      })
+    }
+  }, [])
+  
   return (
     <div className='payment'>
       <h2>THANH TOÁN</h2>
@@ -265,7 +361,6 @@ const PaymentContainer = () => {
                 locale={{emptyText: 'Bạn chưa có sản phẩm nào để có thể Đặt hàng'}}
               />
               <div className='transport-fee'>
-                <p>Thanh toán khi nhận hàng</p>
                 <p>Phí vận chuyển: { totalPrice === 0 ? (VND.format(0)) : (VND.format(transportFee))}</p>
               </div>
               <hr />
@@ -275,16 +370,28 @@ const PaymentContainer = () => {
                 </h3>
               </div>
               <hr />
+              <div className='payment-mothod'>
+              <Radio.Group onChange={onPaymentMethod} value={paymentMethod}>
+                <Radio value={1}>
+                  <img src={PaymentMethod1}/> Thanh toán khi nhận hàng
+                </Radio>
+                <Radio value={2}>
+                  <img src={PaymentMethod2}/> Thanh toán bằng ví VNPAY
+                </Radio>
+                <Radio value={3}>
+                  <img src={PaymentMethod3}/> Thanh toán bằng ví Momo
+                </Radio>
+              </Radio.Group>
+              </div>
               <div className='btn-payment'>
                 <button style={{display: `${listCartLogged.length === 0 ? 'none' : 'block'}`}}>ĐẶT HÀNG</button>
               </div>
             </div>
 
           </div>
-
          
-            
         </form>
+        {/* <button onClick={handleMomo}>Thanh Toán MOMO</button> */}
     </div>
   )
 }

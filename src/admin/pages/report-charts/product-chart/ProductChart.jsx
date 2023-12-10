@@ -107,7 +107,7 @@ const ProductChart = () => {
         <table ref={tableRef}>
           <thead>
             <tr>
-              <th colspan="2" style={{textAlign: 'center'}}>
+              <th colspan="3" style={{textAlign: 'center'}}>
                {
                 (startTime  === '' && endTime  === '') ? 'THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN RA HÔM NAY' : ''
                }
@@ -120,6 +120,7 @@ const ProductChart = () => {
               </th>
             </tr>
             <tr>
+              <th style={{textAlign: 'center'}}>STT</th>
               <th style={{textAlign: 'center'}}>Tên sản phẩm</th>
               <th style={{textAlign: 'center'}}>Số lượng bán</th>
             </tr>
@@ -127,8 +128,9 @@ const ProductChart = () => {
           <tbody>
             {data?.map((item, index) =>               
               <tr key={index}>
-                <td style={{textAlign: 'center'}}>{item.name}</td>
-                <td style={{textAlign: 'center'}}>{item.quantity}</td>
+                <td style={{textAlign: 'start'}}>{index}</td>
+                <td style={{textAlign: 'center'}}>{item?.name}</td>
+                <td style={{textAlign: 'center'}}>{item?.quantity}</td>
               </tr>)}
           </tbody>
         </table>

@@ -7,7 +7,13 @@ import useConvertToVND from '../../../../client/hooks/useConvertToVND'
 
 const Pdf = React.forwardRef((props, ref) => {
   // console.log(props);
-  const transportFee = props?.orderByID?.total_price >= 2000000 ? 0 : 40000
+  const transportFee = props?.orderByID?.order_detail?.reduce((total, item) => {
+    if(total + item?.quantity * item?.price >= 2000000) {
+      return 0
+    } else if(total + item?.quantity * item?.price < 2000000) {
+      return 40000
+    }
+  }, 0)
   const {VND} = useConvertToVND()
   return (
     <div className="hidden-for-print" ref={ref}>

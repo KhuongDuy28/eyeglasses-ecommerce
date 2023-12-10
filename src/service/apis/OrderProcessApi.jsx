@@ -7,6 +7,7 @@ const OrderProcessApi = {
     },
 
     changeStatusOrder(data) {
+        // console.log(data);
         const url = `/admin/change_status_order`
         return instance.post(url, data)
     },
