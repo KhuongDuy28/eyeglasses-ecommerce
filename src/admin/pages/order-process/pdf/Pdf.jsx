@@ -52,7 +52,7 @@ const Pdf = React.forwardRef((props, ref) => {
           </div>
           <hr className='hr2'/>
           <div className='position'>
-            <h3>Giám đốc</h3>
+            <h3>Quản lý</h3>
             <p>Nguyễn Khương Duy</p>
           </div>
         </div>

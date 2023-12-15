@@ -41,10 +41,10 @@ const Cancelled = () => {
         title: 'Liên hệ',
         dataIndex: 'phone',
         key: 'phone',
-        render: (_, record) => <>
+        render: (_, record) => <div className='contact'>
           <p>SĐT: {record?.phone}</p>
           <p>Địa chỉ nhận: {record?.address}</p>
-        </>,
+        </div>,
     },
     {
         title: 'Chi tiết đơn hàng',

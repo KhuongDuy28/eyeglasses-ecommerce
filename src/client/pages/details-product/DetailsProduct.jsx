@@ -57,6 +57,8 @@ const DetailsProduct = () => {
     setQuantityProduct(parseInt(quantityProduct) + 1)
   }
 
+  // console.log(quantityProduct);
+
   const user_id = JSON.parse(localStorage.getItem('user_id'))
 
   const addProductOfCart = () => {
@@ -81,11 +83,12 @@ const DetailsProduct = () => {
   
       if (existingObjectIndex !== -1) {
         const dataRepeatID = existingArray.find((item) => item.product_id === dataProductCart.product_id)
+        console.log(dataRepeatID);
         const newDataProductCart = {
           product_id: dataRepeatID?.product_id,
           name: dataRepeatID?.name,
           image: dataRepeatID?.image,
-          price: dataRepeatID?.price_new === null ? productDetailsClientByID?.price_old : productDetailsClientByID?.price_new,
+          price: productDetailsClientByID?.price_new === null ? productDetailsClientByID?.price_old : productDetailsClientByID?.price_new,
           quantity: parseInt(quantityProduct) + parseInt(dataRepeatID.quantity)
         }
         if(productDetailsClientByID?.quantity < parseInt(quantityProduct) + parseInt(dataRepeatID.quantity)) {

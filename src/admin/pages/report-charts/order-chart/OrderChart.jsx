@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getReport } from '../../../../redux/slice/admin/reportSlice';
 import { useState } from 'react';
 import { DatePicker } from 'antd';
-import { Bar, BarChart, CartesianGrid, Legend, Pie, PieChart, Rectangle, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, ComposedChart, Legend, Line, Pie, PieChart, Rectangle, Tooltip, XAxis, YAxis } from 'recharts';
 import {RiEmotionSadLine} from 'react-icons/ri'
 
 const OrderChart = () => {
@@ -46,7 +46,7 @@ const OrderChart = () => {
   }))
 
   const CustomTooltip = ({ active, payload, label }) => {
-    console.log(active, payload);
+    // console.log(active, payload);
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
@@ -69,7 +69,7 @@ const OrderChart = () => {
         </div>
         {
           data?.length !== 0
-          ? <BarChart
+          ? <ComposedChart
           width={950}
           height={400}
           data={data}
@@ -95,7 +95,8 @@ const OrderChart = () => {
               activeBar={<Rectangle fill="gold"/>} 
               barSize={50}
             />
-          </BarChart>
+            <Line type="monotone" dataKey="total_orders" stroke="#ff7300" />
+          </ComposedChart>
           : <div className='no-data'>
             <h3><RiEmotionSadLine className='ic-sad'/>KHÔNG CÓ ĐƠN HÀNG NÀO TRONG THỜI GIAN NÀY</h3>
           </div>
