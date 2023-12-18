@@ -21,7 +21,7 @@ const Store = () => {
 
   return (
     <div className='all-stores'>
-      <h1>DANH SÁCH ĐẠI LÝ KÍNH MẮT ANNA</h1>
+      <h1>DANH SÁCH CỬA HÀNG KÍNH MẮT ANNA</h1>
       <div className='list-store'>
         <div className='select-store__by-city'>
           <div className='citis'>

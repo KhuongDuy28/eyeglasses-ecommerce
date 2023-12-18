@@ -98,6 +98,8 @@ const ProductsList = () => {
     filterReset: 'Đặt lại',
     emptyText: 'KHÔNG CÓ SẢN PHẨM NÀO',
     cancelSort: 'Hủy sắp xếp',
+    triggerDesc: 'Giảm dần',
+    triggerAsc: 'Tăng dần', 
   };
   
   const columns = [

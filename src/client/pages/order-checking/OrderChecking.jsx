@@ -12,6 +12,9 @@ import { Space } from 'antd'
 import { addMultipleProductOfCart, addProductInCartLogged, getCartByUser } from '../../../redux/slice/client/cartSlice'
 import { useNavigate } from 'react-router-dom'
 import { Modal } from 'antd'
+import { ConvertToTimeVN } from '../../../admin/utils/ConvertTimeVn'
+import dataListPaymentMothod from '../../utils/PaymentMothod'
+import dataListStatusOrder from '../../utils/StatusOrder'
 
 const OrderChecking = () => {
   const {VND} = useConvertToVND()
@@ -60,7 +63,7 @@ const OrderChecking = () => {
   };
   const handleBuy = (record) => {
     if(record?.order_detail?.every((item) => item?.product[0]?.status === 2 || item?.product[0]?.quantity === 0)) {
-      return message.error('Sản phẩm đang có tình trạng Hết Hàng hoặc Không Còn Tồn Tại trong hệ thống cửa hàng ANNA')
+      return message.error('Sản phẩm đang có tình trạng Hết Hàng hoặc đã Không Còn trong hệ thống cửa hàng ANNA')
     } else if(record?.order_detail?.some((item) => item?.product[0]?.status === 2 || item?.product[0]?.quantity === 0)) {
       showModal()
       setDataExists(record?.order_detail?.filter((item) => item?.product[0]?.status === 1 && item?.product[0]?.quantity > 0))
@@ -81,6 +84,16 @@ const OrderChecking = () => {
       })
     }
   }
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePage = (page) => {
+    setCurrentPage(page)
+  }
+
+  const [_, setFilteredInfo] = useState({});
+  const handleChange = (pagination, filters, sorter) => {
+    setFilteredInfo(filters);
+  };
 
   const columns = [
     {
@@ -104,7 +117,7 @@ const OrderChecking = () => {
       title: 'Địa chỉ nhận hàng',
       dataIndex: 'address',
       key: 'address',
-      width: 200,
+      width: 220,
       render: (text) => <p>{text}</p>,
     },
     {
@@ -120,7 +133,7 @@ const OrderChecking = () => {
             <p>Số lượng: {item?.quantity}</p>
             <p>Giá tiền: {VND.format(item?.price)}</p>
           </div>
-        </div>
+          </div>
         ))
       )
     },
@@ -137,25 +150,35 @@ const OrderChecking = () => {
         </p>
         <p>Tổng tiền: {VND.format(record?.total_price)}</p>
       </div>,
+      sorter: {
+        compare: (a, z) => a.total_price - z.total_price,
+      },
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
-      width: 150,
       key: 'status',
-      render: (status) => (
-            <p className='status' 
-              style={{
-                color: (status === 4 ? '#52c41a' 
-                  : (status === 5 ? '#ff4d4f': '#000'))
-              }}>
-              {status === 1 && 'Chờ xác nhận'}
-              {status === 2 && 'Đang chuẩn bị hàng'}
-              {status === 3 && 'Đang được vận chuyển'}
-              {status === 4 && 'Đơn hàng đã giao thành công'}
-              {status === 5 && 'Đơn hàng đã hủy'}
-            </p>
+      render: (status, record) => (
+            <div className='status-time'>
+              <p className='status' 
+                style={{
+                  color: (status === 4 ? '#52c41a' 
+                    : (status === 5 ? '#ff4d4f': '#000'))
+                }}>
+                {status === 1 && 'Chờ xác nhận'}
+                {status === 2 && 'Đang chuẩn bị hàng'}
+                {status === 3 && 'Đang vận chuyển'}
+                {status === 4 && 'Đã giao thành công'}
+                {status === 5 && 'Đã bị hủy'}
+              </p>
+              <p>{ConvertToTimeVN(record?.updated_at)}</p>
+            </div>
       ),
+      filters: dataListStatusOrder?.map((item) => ({
+        text: item?.name,
+        value: item?.id
+      })),
+      onFilter: (value, record) => record.status === value,
     },
     {
       title: 'Phương thức thanh toán',
@@ -168,6 +191,11 @@ const OrderChecking = () => {
               {record === 3 && 'Thanh toán bằng ví Momo'}
           </p>
       ),
+      filters: dataListPaymentMothod?.map((item) => ({
+        text: item?.name,
+        value: item?.id
+      })),
+      onFilter: (value, record) => record.payment_method === value,
     },
     {
       // title: '#',
@@ -176,7 +204,7 @@ const OrderChecking = () => {
        <div className='action-container'>
          <button className={`btn-cancel ${record?.status === 1 ? '' : 'cancelled'}`} 
          onClick={() => handleCancelOrder(record)}>
-            Hủy đơn hàng
+            Hủy bỏ
         </button>
         <button className={`btn-buy ${record?.status === 4 || record?.status === 5  ? '' : 'repurchase'}`} 
         onClick={() => handleBuy(record)}>
@@ -200,7 +228,18 @@ const OrderChecking = () => {
     note: item?.note,
     status: item?.status,
     payment_method: item?.payment_method,
+    updated_at: new Date(item?.updated_at),
   }))
+
+  const customLocale = {
+    // filterTitle: 'Lọc',
+    filterConfirm: 'Đồng ý',
+    filterReset: 'Đặt lại',
+    emptyText: 'KHÔNG CÓ ĐƠN HÀNG NÀO',
+    cancelSort: 'Hủy sắp xếp',
+    triggerDesc: 'Giảm dần',
+    triggerAsc: 'Tăng dần', 
+  };
   
   return (
     <div className='order-checking'>
@@ -208,11 +247,14 @@ const OrderChecking = () => {
       <Table 
         columns={columns}
         dataSource={data}
-        locale={{emptyText: ''}}
         pagination={{
           pageSize: 5,
-          total: listOrder.length
+          // total: listOrder.length
+          current: currentPage,
+          onChange: (page) => handlePage(page), 
         }}
+        onChange={handleChange}
+        locale={customLocale}
       />
       <Modal 
         title='Thêm vào giỏ hàng'
@@ -237,7 +279,7 @@ const OrderChecking = () => {
               </div>
             </div>
           )}
-          <p className='note'>Sản phẩm đang có tình trạng <span>Hết Hàng</span> hoặc <span>Không Còn Tồn Tại</span> trong hệ thống cửa hàng ANNA đã bị loại bỏ!</p>
+          <p className='note'>Sản phẩm đang có tình trạng <span>Hết Hàng</span> hoặc <span>Không Còn</span> trong hệ thống cửa hàng ANNA đã bị loại bỏ !</p>
         </div>
       </Modal>
     </div>

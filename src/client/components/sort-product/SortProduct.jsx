@@ -153,21 +153,21 @@ const SortProduct = (props) => {
 
             <div className='sort-by-price'>
                 <p>Khoảng giá</p>
-                <Radio value='100000-500000' checked={minPrice === "100000" && maxPrice === "500000"} 
+                <Radio value='1-499999' checked={minPrice === "1" && maxPrice === "499999"} 
                 onClick={getPrice} >
-                    100.000 đ - 500.000 đ
+                    Dưới 500.000 đ
                 </Radio>
-                <Radio value='500000-1000000' checked={minPrice === "500000" && maxPrice === "1000000"} 
+                <Radio value='500000-2000000' checked={minPrice === "500000" && maxPrice === "2000000"} 
                 onClick={getPrice} >
-                    500.000 đ - 1.000.000 đ
+                    500.000 đ - 2.000.000 đ
                 </Radio>
-                <Radio value='1000000-2000000' checked={minPrice === "1000000" && maxPrice === "2000000"} 
+                <Radio value='2000000-4000000' checked={minPrice === "2000000" && maxPrice === "4000000"} 
                 onClick={getPrice} >
-                    1.000.000 đ - 2.000.000 đ
+                    2.000.000 đ - 4.000.000 đ
                 </Radio>
-                <Radio value='2000000-5000000' checked={minPrice === "2000000" && maxPrice === "5000000"} 
+                <Radio value='4000001-9999999999' checked={minPrice === "4000001" && maxPrice === "9999999999"} 
                 onClick={getPrice} >
-                    2.000.000 đ - 5.000.000 đ
+                    Trên 4.000.000 đ
                 </Radio>
             </div>
         </div>

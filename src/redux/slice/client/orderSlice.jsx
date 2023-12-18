@@ -6,7 +6,7 @@ export const orderClient = createAsyncThunk('order/orderClient', async(data) => 
     return res
 })
 
-export const orderHistory = createAsyncThunk('order/orderHistory', async() => {
+export const orderHistory = createAsyncThunk('order/orderHistory', async(status) => {
     const listOrder = await OrderApi.orderHistory()
     return listOrder
 })

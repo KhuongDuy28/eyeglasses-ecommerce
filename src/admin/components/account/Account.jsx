@@ -26,11 +26,11 @@ const Account = () => {
     setIsOpen(data)
   }
 
-  const {listOrderWaitConfirm} = useSelector((state) => state?.orderProcess)
   const dispatch = useDispatch()
   useEffect(() => {
       dispatch(getOrderWaitConfirm())
-  }, [listOrderWaitConfirm.length])
+  }, [dispatch])
+  const {listOrderWaitConfirm} = useSelector((state) => state?.orderProcess)
 
   const role = JSON.parse(localStorage.getItem('role'))
 
@@ -49,7 +49,7 @@ const Account = () => {
       <Popover placement="bottomLeft" title={text} content={content} trigger={'click'}>
         <div className='notification'>
           <IoMdNotificationsOutline/>
-          <p>{listOrderWaitConfirm?.length}</p>
+          <p style={{display: `${listOrderWaitConfirm?.length > 0 ? 'block' : 'none'}`}}>{listOrderWaitConfirm?.length}</p>
         </div> 
       </Popover>
 

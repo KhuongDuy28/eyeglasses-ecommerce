@@ -14,7 +14,7 @@ const Dashboard = () => {
   }, [])
   const {dataTotalProduct, dataTotalAccount} = useSelector((state) => state?.report)
 
-  const dataTotalProductReality = dataTotalProduct.filter((item) => item?.name !== null)
+  const dataTotalProductReality = dataTotalProduct?.filter((item) => item?.name !== null)
   const totalProduct = dataTotalProductReality?.reduce((total, item) => {
     return total = total + item?.total_product
   }, 0)

@@ -83,12 +83,12 @@ const DetailsProduct = () => {
   
       if (existingObjectIndex !== -1) {
         const dataRepeatID = existingArray.find((item) => item.product_id === dataProductCart.product_id)
-        console.log(dataRepeatID);
+        // console.log(dataRepeatID);
         const newDataProductCart = {
           product_id: dataRepeatID?.product_id,
           name: dataRepeatID?.name,
           image: dataRepeatID?.image,
-          price: productDetailsClientByID?.price_new === null ? productDetailsClientByID?.price_old : productDetailsClientByID?.price_new,
+          price: dataRepeatID?.price,
           quantity: parseInt(quantityProduct) + parseInt(dataRepeatID.quantity)
         }
         if(productDetailsClientByID?.quantity < parseInt(quantityProduct) + parseInt(dataRepeatID.quantity)) {

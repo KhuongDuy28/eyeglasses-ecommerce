@@ -64,8 +64,8 @@ const OrderChart = () => {
       <hr className='hr1'/>
       <div className='chart-container'>
         <div className='date'>
-          <DatePicker onChange={onChangeStartTime} placeholder='Start time'/>
-          <DatePicker onChange={onChangeEndTime} placeholder='End time'disabled={startTime !== '' ? false : true}/>
+          <DatePicker onChange={onChangeStartTime} placeholder='Thời gian bắt đầu'/>
+          <DatePicker onChange={onChangeEndTime} placeholder='Thời gian kết thúc'disabled={startTime !== '' ? false : true}/>
         </div>
         {
           data?.length !== 0

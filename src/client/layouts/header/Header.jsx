@@ -133,7 +133,7 @@ const Header = () => {
         <Link to={'/'} ><img src={Logo} /></Link>
       </div>
       <div className='widget-elements'>
-        <li><NavLink to={'/'} >HOME</NavLink></li>
+        <li><NavLink to={'/'} >TRANG CHỦ</NavLink></li>
         <Dropdown
           className='dropdown-product'
           menu={{
@@ -143,24 +143,24 @@ const Header = () => {
         >
         <li>
           <NavLink to={'/products'}>
-              PRODUCT 
+              SẢN PHẨM
               <AiFillCaretDown/>
           </NavLink>
         </li>
         </Dropdown>
         <li>
           <NavLink to={'/about-us'} >
-            ABOUT US
+            VỀ CHÚNG TÔI
           </NavLink>
         </li>
         <li>
           <NavLink to={`${user_id ? '/order-checking' : '/login'}`} onClick={goToOrderChecking}>
-            ORDER CHECKING
+            LỊCH SỬ ĐƠN HÀNG
           </NavLink>
         </li>
         <li>
           <NavLink to={'/store'} >
-            STORE
+            CỬA HÀNG
           </NavLink>
         </li>
       </div>

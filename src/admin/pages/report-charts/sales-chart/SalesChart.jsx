@@ -36,8 +36,8 @@ const SalesChart = () => {
             <h2>DOANH SỐ BÁN HÀNG</h2>
             <hr />
             <div className='date'>
-                <DatePicker onChange={onChangeStartTime} placeholder='Start time'/>
-                <DatePicker onChange={onChangeEndTime} placeholder='End time' disabled={startTime !== '' ? false : true}/>
+                <DatePicker onChange={onChangeStartTime} placeholder='Thời gian bắt đầu'/>
+                <DatePicker onChange={onChangeEndTime} placeholder='Thời gian kết thúc' disabled={startTime !== '' ? false : true}/>
             </div>
             <div className='chart'>
                 {
