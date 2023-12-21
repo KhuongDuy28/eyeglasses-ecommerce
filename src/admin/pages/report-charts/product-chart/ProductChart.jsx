@@ -9,6 +9,7 @@ import { DatePicker, Table } from 'antd'
 import {SiMicrosoftexcel} from 'react-icons/si'
 import { useDownloadExcel } from 'react-export-table-to-excel';
 import { useRef } from 'react'
+import moment from 'moment';
 
 const ProductChart = () => {
   const dispatch = useDispatch()
@@ -21,13 +22,19 @@ const ProductChart = () => {
       }))
   }, [startTime, endTime])
   const {dataReport} = useSelector((state) => state?.report)
-  // console.log(dataReport);
+  // console.log(startTime);
   const onChangeStartTime = (date, dateString) => {
       setStartTime(dateString)
   };
   const onChangeEndTime = (date, dateString) => {
       setEndTime(dateString)
   }
+
+  // Lấy thời gian hiện tại
+  const currentDate = moment();
+  const timeCurrent = currentDate.format('YYYY-MM-DD');
+  // Lấy thời gian 7 ngày trước. Định dạng ngày theo yyyy-mm-dd
+  const timeSevenDaysAgo = (currentDate.subtract(7, 'days')).format('YYYY-MM-DD');
 
   const mergedArray = (dataReport?.total_product_sell)?.reduce((acc, current) => {
     const existingItem = acc.find(item => item.product_id === current.product_id);
@@ -55,7 +62,6 @@ const ProductChart = () => {
     }
   ];
 
-  // console.log(mergedArray);
     const data = mergedArray?.map((item, index) => ({
       key: index,
       name: item?.name,
@@ -74,7 +80,7 @@ const ProductChart = () => {
         filename: 'Thống kê số lượng sản phẩm bán ra',
         sheet: 'Kết quả thống kê'
     })
-  
+
   return (
     <div className='product-chart'>
       <h2>SẢN PHẨM BÁN RA</h2>
@@ -109,13 +115,13 @@ const ProductChart = () => {
             <tr>
               <th colspan="3" style={{textAlign: 'center'}}>
                {
-                (startTime  === '' && endTime  === '') ? 'THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN RA HÔM NAY' : ''
+                (startTime  === '' && endTime  === '') ? `THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN TRONG THỜI GIAN TỪ ${timeSevenDaysAgo.split('-').reverse().join('-')} ĐẾN ${timeCurrent.split('-').reverse().join('-')}` : ''
                }
                {
-                (startTime !== '' && endTime === '') ? `THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN RA TRONG KHOẢNG THỜI GIAN TỪ ${startTime.split('-').reverse().join('-')} ĐẾN NAY` : ''
+                (startTime !== '' && endTime === '') ? `THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN TRONG THỜI GIAN TỪ ${startTime.split('-').reverse().join('-')} ĐẾN ${timeCurrent.split('-').reverse().join('-')}` : ''
                }
                {
-                (startTime && endTime) !== '' ? `THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN RA TRONG KHOẢNG THỜI GIAN TỪ ${startTime.split('-').reverse().join('-')} ĐẾN ${endTime.split('-').reverse().join('-')}` : ''
+                (startTime && endTime) !== '' ? `THỐNG KÊ SỐ LƯỢNG SẢN PHẨM BÁN TRONG THỜI GIAN TỪ ${startTime.split('-').reverse().join('-')} ĐẾN ${endTime.split('-').reverse().join('-')}` : ''
                }
               </th>
             </tr>

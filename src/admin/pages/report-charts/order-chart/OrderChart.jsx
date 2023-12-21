@@ -40,7 +40,7 @@ const OrderChart = () => {
   }, []);
 
   const data = mergedArray?.map((item) => ({
-    status_order: (item?.status_order === 1 ? 'Chờ xác nhận' : (item?.status_order === 2 ? 'Đang chuẩn bị'
+    status_order: (item?.status_order === 1 ? 'Chờ xác nhận' : (item?.status_order === 2 ? 'Đã xác nhận'
                   : (item?.status_order === 3 ? 'Đang vận chuyển' : (item?.status_order === 4 ? 'Giao hàng thành công' : (item?.status_order === 5 && 'Đã hủy'))))),
     total_orders: item?.total_orders,
   }))
@@ -80,7 +80,7 @@ const OrderChart = () => {
           >
             <CartesianGrid strokeDasharray="1 2" />
             <XAxis dataKey="status_order" />
-            <YAxis domain={[0, 40]}/>
+            <YAxis domain={[0, 100]}/>
             <Tooltip content={<CustomTooltip/>}/>
             <Legend payload={[
               {
