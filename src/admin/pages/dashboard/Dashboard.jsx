@@ -45,7 +45,7 @@ const Dashboard = () => {
   const role = JSON.parse(localStorage.getItem('role'))
   return (
     <div className='dashboard'>
-      <h1>HELLO, HAVE A NICE WORKING DAY</h1>
+      <h1>XIN CHÀO, CHÚC BẠN MỘT NGÀY LÀM VIỆC HIỆU QUẢ</h1>
       <hr />
       <div className='dashboard-container' style={{display: `${role === 1 ? 'block' : 'none'}`}}>
         <div className='total-analys'>
